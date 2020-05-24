@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Tiririt.App;
 
 namespace Tiririt.Web
@@ -27,6 +28,15 @@ namespace Tiririt.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Video Poker API",
+                    Version = "v1"
+                });
+            });
+            services.AddSwaggerGenNewtonsoftSupport();
             
             services.AddAppServiceCollection();
             
@@ -39,19 +49,33 @@ namespace Tiririt.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                // prod stuff
+            }
 
             app.UseHttpsRedirection();
-            
+            app.UseStaticFiles(new StaticFileOptions() {
+                OnPrepareResponse = (context) => {
+                    context.Context.Response.Headers["Cache-Control"] = Configuration["StaticFiles:Headers:Cache-Control"];
+                    context.Context.Response.Headers["Pragma"] = Configuration["StaticFiles:Headers:Pragma"];
+                    context.Context.Response.Headers["Expires"] = Configuration["StaticFiles:Headers:Expires"];
+                }
+            });            
 
             app.UseRouting();            
 
-            // app.UseAuthorization();
-            app.UseStaticFiles();
+            app.UseAuthorization();
 
             // app.UseEndpoints(endpoints =>
             // {
             //     endpoints.MapControllers();
             // });
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseEndpoints(endpoints =>
             {
