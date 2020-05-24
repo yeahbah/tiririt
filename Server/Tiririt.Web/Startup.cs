@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Tiririt.App;
 
 namespace Tiririt.Web
 {
@@ -26,6 +27,9 @@ namespace Tiririt.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            
+            services.AddAppServiceCollection();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,14 +41,23 @@ namespace Tiririt.Web
             }
 
             app.UseHttpsRedirection();
+            
 
-            app.UseRouting();
+            app.UseRouting();            
 
-            app.UseAuthorization();
+            // app.UseAuthorization();
+            app.UseStaticFiles();
+
+            // app.UseEndpoints(endpoints =>
+            // {
+            //     endpoints.MapControllers();
+            // });
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
             });
         }
     }
