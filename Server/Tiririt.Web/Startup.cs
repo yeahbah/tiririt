@@ -32,7 +32,7 @@ namespace Tiririt.Web
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Video Poker API",
+                    Title = "Titos and Titas of Finance API",
                     Version = "v1"
                 });
             });
