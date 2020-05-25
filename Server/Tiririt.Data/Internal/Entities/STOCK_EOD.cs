@@ -1,10 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiririt.Data.Entities
 {
-    internal class STOCK_EOD 
+    internal class STOCK_QUOTE : ENTITY_BASE
     {
         [Key]
         public int STOCK_EOD_ID {get; set;}
@@ -29,8 +28,7 @@ namespace Tiririt.Data.Entities
         [Required]        
         public int STOCK_ID { get; set; }
 
-        [ForeignKey("STOCK_ID")]
-        public STOCK Ref_Stock { get; set; }
+        public virtual STOCK Ref_Stock { get; set; }
 
     }
 }

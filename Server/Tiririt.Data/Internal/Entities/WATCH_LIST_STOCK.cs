@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiririt.Data.Entities
 {
-    internal class WATCH_LIST_STOCK
+    internal class WATCH_LIST_STOCK : ENTITY_BASE
     {
         [Key]
         public int WATCH_LIST_STOCK_ID { get; set; }
@@ -11,7 +10,8 @@ namespace Tiririt.Data.Entities
         [Required]
         public string STOCK_ID { get; set; }
 
-        [ForeignKey("STOCK_ID")]
-        public STOCK Ref_Stock { get; set; }
+        public virtual STOCK Ref_Stock { get; set; }
+
+        public virtual WATCH_LIST Ref_WatchList { get; set; }
     }
 }

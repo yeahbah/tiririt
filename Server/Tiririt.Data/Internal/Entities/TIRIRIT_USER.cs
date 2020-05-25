@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiririt.Data.Entities
 {
-    internal class TIRIRIT_USER
+    internal class TIRIRIT_USER : ENTITY_BASE
     {
         [Key]
         public int TIRIRIT_USER_ID { get; set; }
@@ -20,15 +20,18 @@ namespace Tiririt.Data.Entities
         public string PASSWORD { get; set; }
 
         [Required]
+        [MaxLength(50)]
         public string FIRST_NAME { get; set; }
 
         [Required]
+        [MaxLength(50)]
         public string LAST_NAME { get; set; }
         public DateTime? BIRTH_DT { get; set; }
 
         [Required]
+        [Column(TypeName = "timestamp")]
         public DateTime REGISTER_DT { get; set; }
 
-        public ICollection<TIRIRIT_POST> Ref_TiriritPosts { get; set; }
+        public virtual ICollection<TIRIRIT_POST> Ref_TiriritPosts { get; set; }
     }
 }
