@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Tiririt.Data.Internal;
@@ -9,9 +10,10 @@ using Tiririt.Data.Internal;
 namespace Tiririt.Data.Migrations
 {
     [DbContext(typeof(TiriritDbContext))]
-    partial class TiriritDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200526171339_StockWatchListForeignKeys")]
+    partial class StockWatchListForeignKeys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -162,7 +164,7 @@ namespace Tiririt.Data.Migrations
 
                     b.Property<DateTime>("TRADE_DATE")
                         .HasColumnName("trade_date")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("STOCK_QUOTE_ID")
                         .HasName("pk_stock_quote");
@@ -292,6 +294,10 @@ namespace Tiririt.Data.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int?>("Ref_TiriritUserTIRIRIT_USER_ID")
+                        .HasColumnName("ref_tiririt_user_tiririt_user_id")
+                        .HasColumnType("integer");
+
                     b.Property<int>("TIRIRIT_USER_ID")
                         .HasColumnName("tiririt_user_id")
                         .HasColumnType("integer");
@@ -305,8 +311,8 @@ namespace Tiririt.Data.Migrations
                     b.HasKey("WATCH_LIST_ID")
                         .HasName("pk_watch_list");
 
-                    b.HasIndex("TIRIRIT_USER_ID")
-                        .HasName("ix_watch_list_tiririt_user_id");
+                    b.HasIndex("Ref_TiriritUserTIRIRIT_USER_ID")
+                        .HasName("ix_watch_list_ref_tiririt_user_tiririt_user_id");
 
                     b.ToTable("watch_list");
                 });
@@ -401,10 +407,8 @@ namespace Tiririt.Data.Migrations
             modelBuilder.Entity("Tiririt.Data.Entities.WATCH_LIST", b =>
                 {
                     b.HasOne("Tiririt.Data.Entities.TIRIRIT_USER", "Ref_TiriritUser")
-                        .WithMany("Ref_WatchLists")
-                        .HasForeignKey("TIRIRIT_USER_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("Ref_TiriritUserTIRIRIT_USER_ID");
                 });
 
             modelBuilder.Entity("Tiririt.Data.Entities.WATCH_LIST_STOCK", b =>

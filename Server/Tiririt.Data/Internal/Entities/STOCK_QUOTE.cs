@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiririt.Data.Entities
 {
@@ -9,6 +10,7 @@ namespace Tiririt.Data.Entities
         public int STOCK_QUOTE_ID {get; set;}
 
         [Required]
+        [Column(TypeName = "date")]
         public DateTime TRADE_DATE { get; set; }
         
         [Required]

@@ -63,13 +63,21 @@ namespace Tiririt.Data.Internal
             modelBuilder.Entity<STOCK_SECTOR>()
                 .HasAlternateKey(b => b.SECTOR_NAME);
 
+            // a stock can only belong to 1 sector
             modelBuilder.Entity<STOCK>()   
                 .ToTable("stock")                
                 .HasOne(b => b.Ref_Sector);
             modelBuilder.Entity<STOCK>()
                 .HasAlternateKey(b => b.SYMBOL);
+            // a stock can have many stock quotes
             modelBuilder.Entity<STOCK>()
                 .HasMany(b => b.Ref_StockQuotes)
+                .WithOne(b => b.Ref_Stock)
+                .HasForeignKey(b => b.STOCK_ID);
+            
+            // stock can be in many watch lists
+            modelBuilder.Entity<STOCK>()
+                .HasMany(b => b.Ref_StocksInWatchLists)
                 .WithOne(b => b.Ref_Stock)
                 .HasForeignKey(b => b.STOCK_ID);
 
@@ -77,15 +85,18 @@ namespace Tiririt.Data.Internal
                 .ToTable("stock_quote")
                 .HasOne(b => b.Ref_Stock);            
 
+            // a watch list can have many stocks
             modelBuilder.Entity<WATCH_LIST>()
                 .ToTable("watch_list")
                 .HasMany(b => b.Ref_Stocks)
-                .WithOne(b => b.Ref_WatchList);
+                .WithOne(b => b.Ref_WatchList)
+                .HasForeignKey(b => b.WATCH_LIST_ID);
 
             modelBuilder.Entity<WATCH_LIST_STOCK>()      
                 .ToTable("watch_list_stock")          
                 .HasOne(b => b.Ref_Stock);
 
+            // a user can have many posts
             modelBuilder.Entity<TIRIRIT_USER>()
                 .ToTable("tiririt_user")
                 .HasMany(u => u.Ref_TiriritPosts)
@@ -95,6 +106,12 @@ namespace Tiririt.Data.Internal
                 .HasAlternateKey(b => b.EMAIL_ADDRESS);
             modelBuilder.Entity<TIRIRIT_USER>()                
                 .HasAlternateKey(b => b.USER_NAME);
+            
+            // user can have many watch lists
+            modelBuilder.Entity<TIRIRIT_USER>()
+                .HasMany(b => b.Ref_WatchLists)
+                .WithOne(b => b.Ref_TiriritUser)
+                .HasForeignKey(b => b.TIRIRIT_USER_ID);
 
             foreach(var entity in modelBuilder.Model.GetEntityTypes())        
             {
@@ -133,7 +150,7 @@ namespace Tiririt.Data.Internal
         public DbSet<STOCK_SECTOR> StockSectors { get; set; }
         public DbSet<STOCK> Stocks { get; set; }
         public DbSet<TIRIRIT_POST> TiriritPosts { get; set; }
-        public DbSet<WATCH_LIST_STOCK> WatchListStoks { get; set; }
+        public DbSet<WATCH_LIST_STOCK> WatchListStocks { get; set; }
         public DbSet<WATCH_LIST> WatchLists { get; set; }
     }
 

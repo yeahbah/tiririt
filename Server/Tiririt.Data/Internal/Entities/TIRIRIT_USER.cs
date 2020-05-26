@@ -33,5 +33,6 @@ namespace Tiririt.Data.Entities
         public DateTime REGISTER_DT { get; set; }
 
         public virtual ICollection<TIRIRIT_POST> Ref_TiriritPosts { get; set; }
+        public virtual ICollection<WATCH_LIST> Ref_WatchLists { get; set; }
     }
 }

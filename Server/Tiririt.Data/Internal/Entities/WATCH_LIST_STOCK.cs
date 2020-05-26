@@ -8,7 +8,10 @@ namespace Tiririt.Data.Entities
         public int WATCH_LIST_STOCK_ID { get; set; }
 
         [Required]
-        public string STOCK_ID { get; set; }
+        public int STOCK_ID { get; set; }
+
+        [Required]
+        public int WATCH_LIST_ID { get; set; }
 
         public virtual STOCK Ref_Stock { get; set; }
 

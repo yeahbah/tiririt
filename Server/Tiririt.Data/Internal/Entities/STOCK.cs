@@ -24,5 +24,7 @@ namespace Tiririt.Data.Entities
         public virtual ICollection<POST_STOCK> Ref_TiriritPosts { get; set; }
 
         public virtual ICollection<STOCK_QUOTE> Ref_StockQuotes { get; set; }
+
+        public virtual ICollection<WATCH_LIST_STOCK> Ref_StocksInWatchLists { get; set; }
     }
 }
