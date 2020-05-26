@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
-      <y>110</y>
+      <x>40</x>
+      <y>120</y>
       <w>250</w>
       <h>150</h>
     </coordinates>
@@ -25,24 +25,26 @@ register_dt
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>400</x>
-      <y>130</y>
+      <x>440</x>
+      <y>140</y>
       <w>250</w>
-      <h>110</h>
+      <h>130</h>
     </coordinates>
     <panel_attributes>Post
 -
 post_id
 post_text
 user_id
-reponse_to_post_id</panel_attributes>
+reponse_to_post_id
+bullish_level
+bearish_level</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>300</x>
-      <y>340</y>
+      <x>880</x>
+      <y>130</y>
       <w>250</w>
       <h>90</h>
     </coordinates>
@@ -56,8 +58,8 @@ post_id</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>240</x>
-      <y>160</y>
+      <x>280</x>
+      <y>170</y>
       <w>180</w>
       <h>50</h>
     </coordinates>
@@ -69,21 +71,21 @@ m1=1..n
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>460</x>
-      <y>230</y>
-      <w>60</w>
-      <h>130</h>
+      <x>680</x>
+      <y>150</y>
+      <w>220</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=n..n
 </panel_attributes>
-    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+    <additional_attributes>200.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>390</x>
-      <y>520</y>
+      <x>430</x>
+      <y>530</y>
       <w>240</w>
       <h>90</h>
     </coordinates>
@@ -98,8 +100,8 @@ name
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
-      <y>330</y>
+      <x>40</x>
+      <y>340</y>
       <w>240</w>
       <h>120</h>
     </coordinates>
@@ -115,8 +117,8 @@ modified_dt</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>390</x>
-      <y>680</y>
+      <x>430</x>
+      <y>690</y>
       <w>240</w>
       <h>150</h>
     </coordinates>
@@ -136,8 +138,8 @@ net_foreign_buy
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>90</x>
-      <y>250</y>
+      <x>130</x>
+      <y>260</y>
       <w>60</w>
       <h>100</h>
     </coordinates>
@@ -149,8 +151,8 @@ m1=1..n
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
-      <y>510</y>
+      <x>40</x>
+      <y>520</y>
       <w>240</w>
       <h>90</h>
     </coordinates>
@@ -166,8 +168,8 @@ stock_id
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>90</x>
-      <y>440</y>
+      <x>130</x>
+      <y>450</y>
       <w>60</w>
       <h>90</h>
     </coordinates>
@@ -179,8 +181,8 @@ m1=1..n
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>480</x>
-      <y>600</y>
+      <x>520</x>
+      <y>610</y>
       <w>60</w>
       <h>100</h>
     </coordinates>
@@ -192,8 +194,8 @@ m1=1..n
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>230</x>
-      <y>530</y>
+      <x>270</x>
+      <y>540</y>
       <w>180</w>
       <h>40</h>
     </coordinates>
@@ -203,8 +205,8 @@ m1=1..n
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>790</x>
-      <y>130</y>
+      <x>440</x>
+      <y>330</y>
       <w>250</w>
       <h>130</h>
     </coordinates>
@@ -219,41 +221,30 @@ stock_id
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>640</x>
-      <y>170</y>
-      <w>170</w>
-      <h>40</h>
+      <x>530</x>
+      <y>260</y>
+      <w>60</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>m1=n..n</panel_attributes>
-    <additional_attributes>10.0;10.0;150.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>620</x>
-      <y>250</y>
-      <w>340</w>
-      <h>340</h>
-    </coordinates>
-    <panel_attributes>n..n</panel_attributes>
-    <additional_attributes>290.0;10.0;290.0;320.0;10.0;320.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>450</x>
-      <y>30</y>
+      <x>490</x>
+      <y>40</y>
       <w>150</w>
       <h>120</h>
     </coordinates>
-    <panel_attributes>1..n</panel_attributes>
+    <panel_attributes>0..n</panel_attributes>
     <additional_attributes>10.0;100.0;10.0;20.0;130.0;20.0;130.0;100.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>650</x>
-      <y>360</y>
+      <x>880</x>
+      <y>320</y>
       <w>250</w>
       <h>90</h>
     </coordinates>
@@ -267,14 +258,25 @@ post_id</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>540</x>
-      <y>370</y>
-      <w>130</w>
-      <h>50</h>
+      <x>990</x>
+      <y>210</y>
+      <w>60</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=n..n
 </panel_attributes>
-    <additional_attributes>110.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>450</y>
+      <w>60</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>m1=n..n</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
   </element>
 </diagram>

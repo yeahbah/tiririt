@@ -11,7 +11,7 @@ namespace Tiririt.Data.Entities
         public int TIRIRIT_USER_ID { get; set; }
 
         [Required]
-        public string USER_ID { get; set; }
+        public string USER_NAME { get; set; }
 
         [Required]
         public string EMAIL_ADDRESS { get; set; }

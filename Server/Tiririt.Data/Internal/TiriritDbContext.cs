@@ -1,8 +1,6 @@
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Tiririt.Data.Entities;
 
@@ -62,10 +60,14 @@ namespace Tiririt.Data.Internal
                 .HasMany(b => b.Ref_Stocks)
                 .WithOne(b => b.Ref_Sector)
                 .HasForeignKey(b => b.SECTOR_ID);
+            modelBuilder.Entity<STOCK_SECTOR>()
+                .HasAlternateKey(b => b.SECTOR_NAME);
 
             modelBuilder.Entity<STOCK>()   
-                .ToTable("stock")
+                .ToTable("stock")                
                 .HasOne(b => b.Ref_Sector);
+            modelBuilder.Entity<STOCK>()
+                .HasAlternateKey(b => b.SYMBOL);
             modelBuilder.Entity<STOCK>()
                 .HasMany(b => b.Ref_StockQuotes)
                 .WithOne(b => b.Ref_Stock)
@@ -89,6 +91,10 @@ namespace Tiririt.Data.Internal
                 .HasMany(u => u.Ref_TiriritPosts)
                 .WithOne(u => u.Ref_PostedBy)
                 .HasForeignKey(u => u.TIRIRIT_USER_ID);    
+            modelBuilder.Entity<TIRIRIT_USER>()
+                .HasAlternateKey(b => b.EMAIL_ADDRESS);
+            modelBuilder.Entity<TIRIRIT_USER>()                
+                .HasAlternateKey(b => b.USER_NAME);
 
             foreach(var entity in modelBuilder.Model.GetEntityTypes())        
             {
@@ -123,7 +129,7 @@ namespace Tiririt.Data.Internal
         public DbSet<POST_HASH_TAG> PostHashTags { get; set; }
 
         public DbSet<POST_STOCK> PostStocks { get; set; }
-        public DbSet<STOCK_QUOTE> StockEndOfDayData { get; set; }
+        public DbSet<STOCK_QUOTE> StockQuotes { get; set; }
         public DbSet<STOCK_SECTOR> StockSectors { get; set; }
         public DbSet<STOCK> Stocks { get; set; }
         public DbSet<TIRIRIT_POST> TiriritPosts { get; set; }

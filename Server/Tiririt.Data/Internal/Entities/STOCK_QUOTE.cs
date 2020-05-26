@@ -6,7 +6,7 @@ namespace Tiririt.Data.Entities
     internal class STOCK_QUOTE : ENTITY_BASE
     {
         [Key]
-        public int STOCK_EOD_ID {get; set;}
+        public int STOCK_QUOTE_ID {get; set;}
 
         [Required]
         public DateTime TRADE_DATE { get; set; }

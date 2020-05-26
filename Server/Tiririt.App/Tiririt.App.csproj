@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tiririt.Data\Tiririt.Data.csproj" />
+    <ProjectReference Include="..\Tiririt.Domain\Tiririt.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

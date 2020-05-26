@@ -10,15 +10,14 @@ namespace Tiririt.Data.Entities
         public int STOCK_ID { get; set; }
 
         [Required]
-        [MaxLength(10)]
+        [MaxLength(20)]                
         public string SYMBOL { get; set; }
 
         [Required]
         [MaxLength(200)]
         public string NAME { get; set; }
 
-        [Required]
-        public int SECTOR_ID { get; set; }
+        public int? SECTOR_ID { get; set; }
         
         public virtual STOCK_SECTOR Ref_Sector { get; set; }
 

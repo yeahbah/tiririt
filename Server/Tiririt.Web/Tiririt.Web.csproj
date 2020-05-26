@@ -2,6 +2,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tiririt.App\Tiririt.App.csproj" />
+    <ProjectReference Include="..\Tiririt.Core\Tiririt.Core.csproj" />
+    <ProjectReference Include="..\Tiririt.Domain\Tiririt.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
