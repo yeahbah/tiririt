@@ -13,10 +13,11 @@ namespace Tiririt.Data
             return services
                 .AddDbContext<TiriritDbContext>(options => {
                     options.UseNpgsql("Host=localhost; Database=TiriritDb; Username=arnold;Password=1q2w3e4r"); })
-                .AddTransient<IStockRepository, StockRepository>()
-                .AddTransient<IWatchListRepository, WatchListRepository>()
-                .AddTransient<IStockSectorRepository, StockSectorRepository>()
-                .AddTransient<IStockQuoteRepository, StockQuoteRepository>();
+                .AddScoped<IStockRepository, StockRepository>()
+                .AddScoped<IWatchListRepository, WatchListRepository>()
+                .AddScoped<IStockSectorRepository, StockSectorRepository>()
+                .AddScoped<IStockQuoteRepository, StockQuoteRepository>()
+                .AddScoped<ITiriritPostRepository, TiriritPostRepository>();
         }
     }
 }

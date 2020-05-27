@@ -11,10 +11,11 @@ namespace Tiririt.App
         {
             return services                
                 .AddDataService()
-                .AddTransient<IStockService, StockService>()
-                .AddTransient<IWatchListService, WatchListService>()
-                .AddTransient<IStockSectorService, StockSectorService>()
-                .AddTransient<IStockQuoteService, StockQuoteService>();
+                .AddScoped<IStockService, StockService>()
+                .AddScoped<IWatchListService, WatchListService>()
+                .AddScoped<IStockSectorService, StockSectorService>()
+                .AddScoped<IStockQuoteService, StockQuoteService>()
+                .AddScoped<ITiriritPostService, TiriritPostService>();
         }
     }
 }

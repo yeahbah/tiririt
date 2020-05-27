@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Tiririt.Data.Internal;
@@ -9,9 +10,10 @@ using Tiririt.Data.Internal;
 namespace Tiririt.Data.Migrations
 {
     [DbContext(typeof(TiriritDbContext))]
-    partial class TiriritDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200527171417_BullBearLevel-code-max-20")]
+    partial class BullBearLevelcodemax20
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,33 +103,6 @@ namespace Tiririt.Data.Migrations
                         .HasName("pk_hash_tag");
 
                     b.ToTable("hash_tag");
-                });
-
-            modelBuilder.Entity("Tiririt.Data.Entities.LIKE_DISLIKE_POST", b =>
-                {
-                    b.Property<int>("TIRIRIT_USER_ID")
-                        .HasColumnName("tiririt_user_id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TIRIRIT_POST_ID")
-                        .HasColumnName("tiririt_post_id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("LIKE_DISLIKE_POST_ID")
-                        .HasColumnName("like_dislike_post_id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("USER_LIKE_IND")
-                        .HasColumnName("user_like_ind")
-                        .HasColumnType("integer");
-
-                    b.HasKey("TIRIRIT_USER_ID", "TIRIRIT_POST_ID")
-                        .HasName("pk_like_dislike_post");
-
-                    b.HasIndex("TIRIRIT_POST_ID")
-                        .HasName("ix_like_dislike_post_tiririt_post_id");
-
-                    b.ToTable("like_dislike_post");
                 });
 
             modelBuilder.Entity("Tiririt.Data.Entities.POST_HASH_TAG", b =>
@@ -439,21 +414,6 @@ namespace Tiririt.Data.Migrations
                         .HasName("ix_watch_list_stock_watch_list_id");
 
                     b.ToTable("watch_list_stock");
-                });
-
-            modelBuilder.Entity("Tiririt.Data.Entities.LIKE_DISLIKE_POST", b =>
-                {
-                    b.HasOne("Tiririt.Data.Entities.TIRIRIT_POST", "Ref_TiriritPost")
-                        .WithMany("Ref_LikeDislikeByUsers")
-                        .HasForeignKey("TIRIRIT_POST_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Tiririt.Data.Entities.TIRIRIT_USER", "Ref_TiriritUser")
-                        .WithMany("Ref_LikeDislikePosts")
-                        .HasForeignKey("TIRIRIT_USER_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Tiririt.Data.Entities.POST_HASH_TAG", b =>

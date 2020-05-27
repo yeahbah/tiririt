@@ -1,7 +1,10 @@
+using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Logging;
+using Tiririt.Core.Enums;
 using Tiririt.Data.Entities;
 
 namespace Tiririt.Data.Internal
@@ -112,6 +115,38 @@ namespace Tiririt.Data.Internal
                 .HasMany(b => b.Ref_WatchLists)
                 .WithOne(b => b.Ref_TiriritUser)
                 .HasForeignKey(b => b.TIRIRIT_USER_ID);
+            
+            modelBuilder.Entity<BULL_BEAR_LEVEL_CODE>()
+                .ToTable("bull_bear_level_code")
+                .HasAlternateKey("BULL_BEAR_LEVEL_CD");
+            modelBuilder.Entity<BULL_BEAR_LEVEL_CODE>()
+                .HasMany(b => b.Ref_TiriritPosts)
+                .WithOne(b => b.Ref_BullBearLevel)
+                .HasForeignKey(b => b.BULL_BEAR_LEVEL_CODE_ID);
+                              
+            modelBuilder.Entity<BULL_BEAR_LEVEL_CODE>()
+                .HasData(
+                    Enum.GetValues(typeof(BullBearLevel))
+                        .Cast<BullBearLevel>()                        
+                        .Select(e => new BULL_BEAR_LEVEL_CODE{
+                            BULL_BEAR_LEVEL_CD = e.ToString(),
+                            BULL_BEAR_LEVEL_CODE_ID = (int)e
+                        })
+                );
+
+            // many-to-many post users likes/dislikes
+            modelBuilder.Entity<LIKE_DISLIKE_POST>()
+                .ToTable("like_dislike_post")
+                .HasKey(l => new { l.TIRIRIT_USER_ID, l.TIRIRIT_POST_ID });
+            modelBuilder.Entity<LIKE_DISLIKE_POST>()
+                .HasOne(l => l.Ref_TiriritUser)
+                .WithMany(l => l.Ref_LikeDislikePosts)
+                .HasForeignKey(l => l.TIRIRIT_USER_ID);
+            modelBuilder.Entity<LIKE_DISLIKE_POST>()
+                .HasOne(l => l.Ref_TiriritPost)
+                .WithMany(l => l.Ref_LikeDislikeByUsers)
+                .HasForeignKey(l => l.TIRIRIT_POST_ID);
+
 
             foreach(var entity in modelBuilder.Model.GetEntityTypes())        
             {
@@ -139,7 +174,7 @@ namespace Tiririt.Data.Internal
                     index.SetName(index.GetName().ToSnakeCase());
                 }
             }
-        }
+        }        
 
         public DbSet<TIRIRIT_USER> TiriritUsers { get; set; }
 
@@ -152,6 +187,10 @@ namespace Tiririt.Data.Internal
         public DbSet<TIRIRIT_POST> TiriritPosts { get; set; }
         public DbSet<WATCH_LIST_STOCK> WatchListStocks { get; set; }
         public DbSet<WATCH_LIST> WatchLists { get; set; }
+
+        public DbSet<BULL_BEAR_LEVEL_CODE> BullBearLevelCode { get; set; }
+
+        public DbSet<LIKE_DISLIKE_POST> LikeDislikePost { get; set; }
     }
 
     internal static class StringExtensions

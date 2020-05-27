@@ -27,7 +27,10 @@ namespace Tiririt.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options => {
+                    options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+                });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -36,6 +39,7 @@ namespace Tiririt.Web
                     Version = "v1"
                 });
             });
+            
             services.AddSwaggerGenNewtonsoftSupport();
             
             services.AddAppServiceCollection();

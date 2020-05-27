@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Tiririt.Data.Internal;
@@ -9,75 +10,16 @@ using Tiririt.Data.Internal;
 namespace Tiririt.Data.Migrations
 {
     [DbContext(typeof(TiriritDbContext))]
-    partial class TiriritDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200527052657_PostAndModifiedDate")]
+    partial class PostAndModifiedDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-            modelBuilder.Entity("Tiririt.Data.Entities.BULL_BEAR_LEVEL_CODE", b =>
-                {
-                    b.Property<int>("BULL_BEAR_LEVEL_CODE_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("bull_bear_level_code_id")
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("BULL_BEAR_LEVEL_CD")
-                        .IsRequired()
-                        .HasColumnName("bull_bear_level_cd")
-                        .HasColumnType("character varying(20)")
-                        .HasMaxLength(20);
-
-                    b.HasKey("BULL_BEAR_LEVEL_CODE_ID")
-                        .HasName("pk_bull_bear_level_code");
-
-                    b.HasAlternateKey("BULL_BEAR_LEVEL_CD")
-                        .HasName("ak_bull_bear_level_code_bull_bear_level_cd");
-
-                    b.ToTable("bull_bear_level_code");
-
-                    b.HasData(
-                        new
-                        {
-                            BULL_BEAR_LEVEL_CODE_ID = 1,
-                            BULL_BEAR_LEVEL_CD = "Neutral"
-                        },
-                        new
-                        {
-                            BULL_BEAR_LEVEL_CODE_ID = 2,
-                            BULL_BEAR_LEVEL_CD = "SomewhatBullish"
-                        },
-                        new
-                        {
-                            BULL_BEAR_LEVEL_CODE_ID = 3,
-                            BULL_BEAR_LEVEL_CD = "Bullish"
-                        },
-                        new
-                        {
-                            BULL_BEAR_LEVEL_CODE_ID = 4,
-                            BULL_BEAR_LEVEL_CD = "VeryBullish"
-                        },
-                        new
-                        {
-                            BULL_BEAR_LEVEL_CODE_ID = 5,
-                            BULL_BEAR_LEVEL_CD = "SomewhatBearish"
-                        },
-                        new
-                        {
-                            BULL_BEAR_LEVEL_CODE_ID = 6,
-                            BULL_BEAR_LEVEL_CD = "Bearish"
-                        },
-                        new
-                        {
-                            BULL_BEAR_LEVEL_CODE_ID = 7,
-                            BULL_BEAR_LEVEL_CD = "VeryBearish"
-                        });
-                });
 
             modelBuilder.Entity("Tiririt.Data.Entities.HASH_TAG", b =>
                 {
@@ -101,33 +43,6 @@ namespace Tiririt.Data.Migrations
                         .HasName("pk_hash_tag");
 
                     b.ToTable("hash_tag");
-                });
-
-            modelBuilder.Entity("Tiririt.Data.Entities.LIKE_DISLIKE_POST", b =>
-                {
-                    b.Property<int>("TIRIRIT_USER_ID")
-                        .HasColumnName("tiririt_user_id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TIRIRIT_POST_ID")
-                        .HasColumnName("tiririt_post_id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("LIKE_DISLIKE_POST_ID")
-                        .HasColumnName("like_dislike_post_id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("USER_LIKE_IND")
-                        .HasColumnName("user_like_ind")
-                        .HasColumnType("integer");
-
-                    b.HasKey("TIRIRIT_USER_ID", "TIRIRIT_POST_ID")
-                        .HasName("pk_like_dislike_post");
-
-                    b.HasIndex("TIRIRIT_POST_ID")
-                        .HasName("ix_like_dislike_post_tiririt_post_id");
-
-                    b.ToTable("like_dislike_post");
                 });
 
             modelBuilder.Entity("Tiririt.Data.Entities.POST_HASH_TAG", b =>
@@ -291,22 +206,18 @@ namespace Tiririt.Data.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("BULL_BEAR_LEVEL_CODE_ID")
-                        .HasColumnName("bull_bear_level_code_id")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("MODIFIED_DATE")
+                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnName("modified_date")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("POST_DATE")
-                        .HasColumnName("post_date")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("POST_TEXT")
                         .IsRequired()
                         .HasColumnName("post_text")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("PostDate")
+                        .HasColumnName("post_date")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("RESPONSE_TO_POST_ID")
                         .HasColumnName("response_to_post_id")
@@ -318,9 +229,6 @@ namespace Tiririt.Data.Migrations
 
                     b.HasKey("TIRIRIT_POST_ID")
                         .HasName("pk_tiririt_post");
-
-                    b.HasIndex("BULL_BEAR_LEVEL_CODE_ID")
-                        .HasName("ix_tiririt_post_bull_bear_level_code_id");
 
                     b.HasIndex("RESPONSE_TO_POST_ID")
                         .HasName("ix_tiririt_post_response_to_post_id");
@@ -441,21 +349,6 @@ namespace Tiririt.Data.Migrations
                     b.ToTable("watch_list_stock");
                 });
 
-            modelBuilder.Entity("Tiririt.Data.Entities.LIKE_DISLIKE_POST", b =>
-                {
-                    b.HasOne("Tiririt.Data.Entities.TIRIRIT_POST", "Ref_TiriritPost")
-                        .WithMany("Ref_LikeDislikeByUsers")
-                        .HasForeignKey("TIRIRIT_POST_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Tiririt.Data.Entities.TIRIRIT_USER", "Ref_TiriritUser")
-                        .WithMany("Ref_LikeDislikePosts")
-                        .HasForeignKey("TIRIRIT_USER_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Tiririt.Data.Entities.POST_HASH_TAG", b =>
                 {
                     b.HasOne("Tiririt.Data.Entities.HASH_TAG", "Ref_HashTag")
@@ -504,12 +397,6 @@ namespace Tiririt.Data.Migrations
 
             modelBuilder.Entity("Tiririt.Data.Entities.TIRIRIT_POST", b =>
                 {
-                    b.HasOne("Tiririt.Data.Entities.BULL_BEAR_LEVEL_CODE", "Ref_BullBearLevel")
-                        .WithMany("Ref_TiriritPosts")
-                        .HasForeignKey("BULL_BEAR_LEVEL_CODE_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Tiririt.Data.Entities.TIRIRIT_POST", "Ref_TiriritPost")
                         .WithMany("Ref_Responses")
                         .HasForeignKey("RESPONSE_TO_POST_ID");

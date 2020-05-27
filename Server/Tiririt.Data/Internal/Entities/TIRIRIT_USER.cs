@@ -34,5 +34,7 @@ namespace Tiririt.Data.Entities
 
         public virtual ICollection<TIRIRIT_POST> Ref_TiriritPosts { get; set; }
         public virtual ICollection<WATCH_LIST> Ref_WatchLists { get; set; }
+
+        public virtual ICollection<LIKE_DISLIKE_POST> Ref_LikeDislikePosts { get; set;}
     }
 }
