@@ -25,6 +25,8 @@ namespace Tiririt.Data.Entities
         [Required]
         public decimal CLOSE { get; set; }
 
+        public long VOLUMNE { get; set; }
+
         public decimal? NET_FOREIGN_BUY { get; set; }
 
         [Required]        

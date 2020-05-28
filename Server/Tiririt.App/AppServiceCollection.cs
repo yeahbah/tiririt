@@ -5,7 +5,7 @@ using Tiririt.App.Service;
 
 namespace Tiririt.App
 {
-    public static class ServiceCollection
+    public static class AppServiceCollection
     {
         public static IServiceCollection AddAppServiceCollection(this IServiceCollection services)
         {

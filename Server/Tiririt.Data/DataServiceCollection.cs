@@ -6,7 +6,7 @@ using Tiririt.Data.Service;
 
 namespace Tiririt.Data
 {
-    public static class ServiceCollection 
+    public static class DataServiceCollection 
     {
         public static IServiceCollection AddDataService(this IServiceCollection services) 
         {

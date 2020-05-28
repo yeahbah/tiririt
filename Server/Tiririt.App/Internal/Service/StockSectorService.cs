@@ -16,5 +16,10 @@ namespace Tiririt.App.Internal.Service
         {
             return stockSectorRepository.AddSector(sector);
         }
+
+        public StockSectorModel GetSector(string name)
+        {
+            return stockSectorRepository.GetSector(name);
+        }
     }
 }

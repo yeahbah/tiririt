@@ -23,7 +23,8 @@ namespace Tiririt.Data.Internal.Service
                 NET_FOREIGN_BUY = stockQuote.NetForeignBuy,
                 OPEN = stockQuote.Open,
                 STOCK_ID = stockQuote.StockId,
-                TRADE_DATE = stockQuote.TradeDate
+                TRADE_DATE = stockQuote.TradeDate,
+                VOLUMNE = stockQuote.Volume
             };
             dbContext.StockQuotes.Add(quote);
             dbContext.SaveChanges();

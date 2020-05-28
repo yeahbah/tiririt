@@ -5,5 +5,6 @@ namespace Tiririt.App.Service
     public interface IStockSectorService
     {
         StockSectorModel AddSector(StockSectorModel sector);
+        StockSectorModel GetSector(string name);
     }
 }

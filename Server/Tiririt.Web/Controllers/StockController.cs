@@ -84,6 +84,7 @@ namespace Tiririt.Web.Controllers
                     High = decimal.Parse(values[4]),
                     Low = decimal.Parse(values[5]),
                     Close = decimal.Parse(values[6]),
+                    Volume = long.Parse(values[7]),
                     NetForeignBuy = netForeignBuy,
                     StockId = stock.StockId
                 });
