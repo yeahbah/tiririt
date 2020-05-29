@@ -15,6 +15,9 @@ namespace Tiririt.Data.Entities
         [Required]
         public int TIRIRIT_USER_ID { get; set; }
 
+        [Range(0, 1)]
+        public int DELETED_IND { get; set; }
+
         public virtual TIRIRIT_USER Ref_TiriritUser { get; set; }
 
         public virtual ICollection<WATCH_LIST_STOCK> Ref_Stocks { get; set; }

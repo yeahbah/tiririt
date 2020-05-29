@@ -39,38 +39,38 @@ namespace Tiririt.Data.Service
                 .SingleOrDefault(w => w.WATCH_LIST_ID == id);
             if (watchList != null) 
             {
-                dbContext.Remove(watchList);
+                watchList.DELETED_IND = 1;
+                dbContext.SaveChanges();
             }
         }        
 
-        public async Task<IEnumerable<WatchListModel>> GetWatchList()
+        public IQueryable<WatchListModel> GetAll()
         {
-            // TODO use current principal
-            var currentPrincipal = 1;
-            var query = dbContext.WatchLists
-                .AsNoTracking()
-                .Where(w => w.TIRIRIT_USER_ID == currentPrincipal)
-                //.SelectMany(w => w.Ref_Stocks, (watchList, stock) => new { WatchList = watchList, Stocks = stock} )
+            return dbContext.WatchLists
+                .AsNoTracking()                
+                .Where(w => w.DELETED_IND == 0)
                 .Select(data => new WatchListModel {
                     UserId = data.TIRIRIT_USER_ID,
                     WatchListId = data.WATCH_LIST_ID,
                     WatchListName = data.WATCH_LIST_NAME,
                     Stocks = data.Ref_Stocks.Select(stock => stock.Ref_Stock.ToDomainModel())
                 });
+        }
+
+        public async Task<IEnumerable<WatchListModel>> GetWatchList()
+        {
+            // TODO use current principal
+            var currentPrincipal = 2;
+            var query = GetAll()
+                .Where(w => w.UserId == currentPrincipal);
             
             return await query.ToListAsync();
         }
 
         public WatchListModel GetWatchList(int watchListId)
         {
-            var result = dbContext.WatchLists
-                .Where(w => w.WATCH_LIST_ID == watchListId)        
-                .Select(data => new WatchListModel {
-                    Stocks = data.Ref_Stocks.Select(s => s.Ref_Stock.ToDomainModel()),
-                    WatchListId = data.WATCH_LIST_ID,
-                    UserId = data.TIRIRIT_USER_ID,
-                    WatchListName = data.WATCH_LIST_NAME                    
-                })
+            var result = GetAll()
+                .Where(w => w.WatchListId == watchListId)                        
                 .SingleOrDefault();
             
             return result;
@@ -86,7 +86,7 @@ namespace Tiririt.Data.Service
             dbContext.WatchLists.Add(watchList);
             
             watchListModel.Stocks.ToList()
-                .ForEach(stock => {
+                .ForEach(stock => {                    
                     var stocks = new WATCH_LIST_STOCK
                     {
                         Ref_WatchList = watchList,

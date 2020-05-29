@@ -27,11 +27,11 @@ namespace Tiririt.Web.Common
         public static class WatchList
         {
             public const string NewWatchList = "";
-            public const string DeleteWatchList = "{postId}";
+            public const string DeleteWatchList = "{id}";
 
-            public const string Rename = "{postId}";
+            public const string Rename = "{id}";
 
-            public const string AddStock = "{postId}/stock/{symbol}";
+            public const string AddStock = "{id}/stock/{symbol}";
 
         }
     }

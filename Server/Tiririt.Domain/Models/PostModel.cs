@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Tiririt.Core.Enums;
 
 namespace Tiririt.Domain.Models
 {

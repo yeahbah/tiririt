@@ -31,19 +31,19 @@ namespace Tiririt.Web.Controllers
         //PUT: WatchList/id/stock/{stockSymbol}
         [HttpPut(RouteConsts.WatchList.AddStock)]
         [ProducesResponseType(200)]
-        public ActionResult<WatchListViewModel> PutStock(int postId, string symbol)
+        public ActionResult<WatchListViewModel> PutStock(int id, string symbol)
         {
             var result = watchListService
-                .AddStock(postId, symbol)
+                .AddStock(id, symbol)
                 .ToViewModel();
             return Ok(result);
         }
 
         [HttpPut(RouteConsts.WatchList.Rename)]
         [ProducesResponseType(200)]
-        public ActionResult<WatchListViewModel> RenameWatchList(int postId, [FromBody]string newName) 
+        public ActionResult<WatchListViewModel> RenameWatchList(int id, [FromBody]string newName) 
         {
-            var result = watchListService.RenameWatchList(postId, newName).ToViewModel();
+            var result = watchListService.RenameWatchList(id, newName).ToViewModel();
             return Ok(result);
         }
 
@@ -58,9 +58,9 @@ namespace Tiririt.Web.Controllers
         }
 
         [HttpDelete(RouteConsts.WatchList.DeleteWatchList)]
-        public IActionResult DeleteWatchList(int postId)
+        public IActionResult DeleteWatchList(int id)
         {
-            watchListService.DeleteWatchList(postId);
+            watchListService.DeleteWatchList(id);
             return Ok();
         }
     }
