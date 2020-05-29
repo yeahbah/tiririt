@@ -25,11 +25,10 @@ namespace Tiririt.Web.Controllers
         public ActionResult<PagingResultEnvelope<PostViewModel>> GetPosts(int userId, PagingParam pagingParam)
         {
             var result = tiriritPostService
-                .GetPostsByUserId(userId, pagingParam)                
-                .Data.Select(post => post.ToViewModel())
-                .AsQueryable();
+                .GetPostsByUserId(userId, pagingParam)                    
+                .Data.Select(post => post.ToViewModel());                
                 
-            return Ok(PagingResultEnvelope<PostViewModel>.ToPagingEnvelope(result, pagingParam));
+            return Ok(new PagingResultEnvelope<PostViewModel>(result, pagingParam));
         }
 
         /// <summary>
@@ -86,9 +85,9 @@ namespace Tiririt.Web.Controllers
         {
             var result = tiriritPostService
                 .GetResponses(postId, pagingParam)
-                .Data.Select(post => post.ToResponseViewModel())
-                .AsQueryable();
-            return Ok(PagingResultEnvelope<ResponseViewModel>.ToPagingEnvelope(result, pagingParam));
+                .Data.Select(post => post.ToResponseViewModel());
+
+            return Ok(new PagingResultEnvelope<ResponseViewModel>(result, pagingParam));
         }
 
     }

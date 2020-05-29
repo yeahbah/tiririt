@@ -8,7 +8,7 @@ namespace Tiririt.Core.Collection
 {
     public class PagingResultEnvelope<T>
     {        
-        private PagingResultEnvelope(IEnumerable<T> data, PagingParam pagingParam)
+        public PagingResultEnvelope(IEnumerable<T> data, PagingParam pagingParam)
         {
             Data = data;
             PageIndex = pagingParam.PageIndex;
@@ -36,11 +36,12 @@ namespace Tiririt.Core.Collection
                 data = data.Where(filter);
             }
 
-            data
+            var result = data
                 .Skip(pagingParam.PageSize * pagingParam.PageIndex)
-                .Take(pagingParam.PageSize);            
+                .Take(pagingParam.PageSize)
+                .ToList();            
                 
-            return new PagingResultEnvelope<T>(data, pagingParam);
+            return new PagingResultEnvelope<T>(result, pagingParam);
         }
 
         private static bool IsValidProperty<T>(string propertyName, bool throwExceptionIfNotFound = true)
