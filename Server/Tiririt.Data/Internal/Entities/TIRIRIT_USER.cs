@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiririt.Data.Entities
 {
-    internal class TIRIRIT_USER : ENTITY_BASE
+    public class TIRIRIT_USER : ENTITY_BASE
     {
         [Key]
         public int TIRIRIT_USER_ID { get; set; }

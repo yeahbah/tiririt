@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Tiririt.Data.Internal;
@@ -9,9 +10,10 @@ using Tiririt.Data.Internal;
 namespace Tiririt.Data.Migrations
 {
     [DbContext(typeof(TiriritDbContext))]
-    partial class TiriritDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200529053114_RemovePostIdFromHashTag")]
+    partial class RemovePostIdFromHashTag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,9 +96,9 @@ namespace Tiririt.Data.Migrations
                         .HasMaxLength(20);
 
                     b.HasKey("HASH_TAG_ID")
-                        .HasName("pk_hash_tag");
+                        .HasName("pk_hash_tags");
 
-                    b.ToTable("hash_tag");
+                    b.ToTable("hash_tags");
                 });
 
             modelBuilder.Entity("Tiririt.Data.Entities.LIKE_DISLIKE_POST", b =>
@@ -151,20 +153,23 @@ namespace Tiririt.Data.Migrations
 
             modelBuilder.Entity("Tiririt.Data.Entities.POST_STOCK", b =>
                 {
-                    b.Property<int>("STOCK_ID")
-                        .HasColumnName("stock_id")
+                    b.Property<int>("POST_STOCK_ID")
+                        .HasColumnName("post_stock_id")
                         .HasColumnType("integer");
 
                     b.Property<int>("TIRIRIT_POST_ID")
                         .HasColumnName("tiririt_post_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("POST_STOCK_ID")
-                        .HasColumnName("post_stock_id")
+                    b.Property<int>("STOCK_ID")
+                        .HasColumnName("stock_id")
                         .HasColumnType("integer");
 
-                    b.HasKey("STOCK_ID", "TIRIRIT_POST_ID")
+                    b.HasKey("POST_STOCK_ID", "TIRIRIT_POST_ID")
                         .HasName("pk_post_stock");
+
+                    b.HasIndex("STOCK_ID")
+                        .HasName("ix_post_stock_stock_id");
 
                     b.HasIndex("TIRIRIT_POST_ID")
                         .HasName("ix_post_stock_tiririt_post_id");

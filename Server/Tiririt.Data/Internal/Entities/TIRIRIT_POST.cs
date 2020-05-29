@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Tiririt.Data.Entities
 {
-    internal class TIRIRIT_POST : ENTITY_BASE
+    public class TIRIRIT_POST : ENTITY_BASE
     {
         [Key]
         public int TIRIRIT_POST_ID { get; set; }

@@ -4,6 +4,6 @@ namespace Tiririt.Domain.Models
     {
         public int HashTagId { get; set; }
         public string HashTagText { get; set; }
-        public int PostId { get; set; }        
+
     }
 }

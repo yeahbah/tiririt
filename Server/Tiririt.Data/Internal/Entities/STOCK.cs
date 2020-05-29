@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiririt.Data.Entities
 {
-    internal class STOCK : ENTITY_BASE
+    public class STOCK : ENTITY_BASE
     {
         [Key]
         public int STOCK_ID { get; set; }

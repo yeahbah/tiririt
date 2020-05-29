@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Tiririt.Data.Entities
 {
-    internal class WATCH_LIST : ENTITY_BASE
+    public class WATCH_LIST : ENTITY_BASE
     {
         [Key]
         public int WATCH_LIST_ID { get; set; }

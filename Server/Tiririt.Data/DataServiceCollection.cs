@@ -17,7 +17,8 @@ namespace Tiririt.Data
                 .AddScoped<IWatchListRepository, WatchListRepository>()
                 .AddScoped<IStockSectorRepository, StockSectorRepository>()
                 .AddScoped<IStockQuoteRepository, StockQuoteRepository>()
-                .AddScoped<ITiriritPostRepository, TiriritPostRepository>();
+                .AddScoped<ITiriritPostRepository, TiriritPostRepository>()
+                .AddScoped<IHashTagRepository, HashTagRepository>();
         }
     }
 }

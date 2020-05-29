@@ -1,6 +1,6 @@
 namespace Tiririt.Data.Entities
 {
-    internal class ENTITY_BASE 
+    public class ENTITY_BASE 
     {
 
     }

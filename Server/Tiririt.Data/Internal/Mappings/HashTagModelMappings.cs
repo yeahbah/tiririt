@@ -13,7 +13,7 @@ namespace Tiririt.Data.Internal.Mappings
             {
                 HashTagId = value.HASH_TAG_ID,
                 HashTagText = value.HASH_TAG_TEXT,
-                PostId = value.TIRIRIT_POST_ID
+                // PostId = value.TIRIRIT_POST_ID
             };
         }
     }

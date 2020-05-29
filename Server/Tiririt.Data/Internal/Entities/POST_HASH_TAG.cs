@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Tiririt.Data.Entities
 {
-    internal class POST_HASH_TAG : ENTITY_BASE
+    public class POST_HASH_TAG : ENTITY_BASE
     {
         [Key]
         public int POST_HASH_TAG_ID { get; set; }

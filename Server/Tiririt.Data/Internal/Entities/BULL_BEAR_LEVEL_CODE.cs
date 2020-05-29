@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Tiririt.Data.Entities
 {
-    internal class BULL_BEAR_LEVEL_CODE 
+    public class BULL_BEAR_LEVEL_CODE 
     {
         [Key]
         public int BULL_BEAR_LEVEL_CODE_ID { get; set; }

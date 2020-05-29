@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Tiririt.App.Service;
@@ -7,7 +6,7 @@ using Tiririt.Web.Models;
 using Tiririt.Web.Models.Mappings;
 
 namespace Tiririt.Web.Controllers
-{    
+{
     public class PostController : TiriritControllerBase
     {
         private readonly ITiriritPostService tiriritPostService;
@@ -39,7 +38,7 @@ namespace Tiririt.Web.Controllers
         public ActionResult<PostViewModel> NewPost([FromBody]string postText)
         {
             var result = tiriritPostService
-                .NewPost(postText)
+                .AddOrModifyPost(postText)
                 .ToViewModel();
             return Ok(result);
         }
@@ -49,7 +48,7 @@ namespace Tiririt.Web.Controllers
         public ActionResult<PostViewModel> NewResponse(int postId, [FromBody]string postText)
         {
             var result = tiriritPostService
-                .NewPost(postText, postId)
+                .AddOrModifyPost(postText, null, postId)
                 .ToViewModel();
             return Ok(result);
         }
@@ -63,7 +62,7 @@ namespace Tiririt.Web.Controllers
         public ActionResult<PostViewModel> ModifyPost(int postId, [FromBody]string postText)
         {
             var result = tiriritPostService
-                .ModifyPost(postId, postText)
+                .AddOrModifyPost(postText, postId)
                 .ToViewModel();
             return Ok(result);
         }

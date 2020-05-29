@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Tiririt.Data.Entities
 {
-    internal class POST_STOCK : ENTITY_BASE
+    public class POST_STOCK : ENTITY_BASE
     {
         [Key]
         public int POST_STOCK_ID { get; set; }

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Tiririt.Data.Entities
 {
-    internal class LIKE_DISLIKE_POST 
+    public class LIKE_DISLIKE_POST 
     {
         [Key]
         public int LIKE_DISLIKE_POST_ID { get; set; }

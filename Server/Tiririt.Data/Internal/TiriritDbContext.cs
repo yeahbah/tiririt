@@ -9,7 +9,7 @@ using Tiririt.Data.Entities;
 
 namespace Tiririt.Data.Internal
 {
-    internal class TiriritDbContext : DbContext
+    public class TiriritDbContext : DbContext
     {
         public static readonly ILoggerFactory _loggerFactory  = LoggerFactory.Create(builder => { builder.AddConsole(); });
 
@@ -27,6 +27,9 @@ namespace Tiririt.Data.Internal
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<HASH_TAG>()
+                .ToTable("hash_tag");
+                
             // many-to-many POST-HASH-TAG
             modelBuilder.Entity<POST_HASH_TAG>()
                 .ToTable("post_hash_tag")
@@ -48,7 +51,7 @@ namespace Tiririt.Data.Internal
             // many-to-many POST-STOCK
             modelBuilder.Entity<POST_STOCK>()
                 .ToTable("post_stock")
-                .HasKey(b => new { b.POST_STOCK_ID, b.TIRIRIT_POST_ID });                
+                .HasKey(b => new { b.STOCK_ID, b.TIRIRIT_POST_ID });                
             modelBuilder.Entity<POST_STOCK>()
                 .HasOne(ps => ps.Ref_Stock)
                 .WithMany(ps => ps.Ref_TiriritPosts)
@@ -191,6 +194,8 @@ namespace Tiririt.Data.Internal
         public DbSet<BULL_BEAR_LEVEL_CODE> BullBearLevelCode { get; set; }
 
         public DbSet<LIKE_DISLIKE_POST> LikeDislikePost { get; set; }
+
+        public DbSet<HASH_TAG> HashTags { get; set; }
     }
 
     internal static class StringExtensions

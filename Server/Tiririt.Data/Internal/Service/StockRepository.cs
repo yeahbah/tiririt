@@ -4,7 +4,6 @@ using Tiririt.Data.Service;
 using Tiririt.Data.Internal.Mappings;
 using Tiririt.Domain.Models;
 using System.Threading.Tasks;
-using System.IO;
 using Tiririt.Data.Entities;
 
 namespace Tiririt.Data.Internal.Service
@@ -12,10 +11,12 @@ namespace Tiririt.Data.Internal.Service
     internal class StockRepository : IStockRepository
     {
         private readonly TiriritDbContext dbContext;
+        private readonly ITiriritPostRepository postRepository;
 
-        public StockRepository(TiriritDbContext dbContext)
+        public StockRepository(TiriritDbContext dbContext, ITiriritPostRepository postRepository)
         {
             this.dbContext = dbContext;
+            this.postRepository = postRepository;
         }
 
         public StockModel AddStock(StockModel stockModel)
@@ -41,5 +42,32 @@ namespace Tiririt.Data.Internal.Service
             return query.ToDomainModel();
         }
 
+        public void LinkPostToStocks(int postId, string[] symbols)
+        {
+            var stocks = dbContext.Stocks                            
+                .Where(s => symbols.Contains(s.SYMBOL));
+            
+            foreach(var stock in stocks)
+            {                
+                var link = new POST_STOCK 
+                {
+                    TIRIRIT_POST_ID = postId,
+                    Ref_Stock = stock
+                };
+                dbContext.PostStocks.Add(link);                
+            }
+            dbContext.SaveChanges();
+        }
+
+        public void RemoveStockLinksFromPost(int postId)
+        {
+            dbContext.PostStocks
+                .Where(p => p.TIRIRIT_POST_ID == postId)
+                .ToList()
+                .ForEach(p => {
+                    dbContext.PostStocks.Remove(p);
+                });
+            dbContext.SaveChanges();            
+        }
     }
 }
