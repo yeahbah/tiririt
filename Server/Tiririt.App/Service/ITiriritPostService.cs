@@ -9,5 +9,6 @@ namespace Tiririt.App.Service
         PostModel AddOrModifyPost(string postText, int? postId = null, int? responseToPostId = null);
         void DeletePost(int postId);
         PagingResultEnvelope<PostModel> GetResponses(int postId, PagingParam pagingParam);
+        PostModel LikeOrDislikePost(int postId, bool like);
     }
 }

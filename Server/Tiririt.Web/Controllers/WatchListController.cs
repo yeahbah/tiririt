@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Tiririt.App.Service;
+using Tiririt.Web.Common;
 using Tiririt.Web.Models;
 using Tiririt.Web.Models.Mappings;
 
@@ -28,21 +29,21 @@ namespace Tiririt.Web.Controllers
         }
 
         //PUT: WatchList/id/stock/{stockSymbol}
-        [HttpPut("{id}/stock/{symbol}")]
+        [HttpPut(RouteConsts.WatchList.AddStock)]
         [ProducesResponseType(200)]
-        public ActionResult<WatchListViewModel> PutStock(int id, string symbol)
+        public ActionResult<WatchListViewModel> PutStock(int postId, string symbol)
         {
             var result = watchListService
-                .AddStock(id, symbol)
+                .AddStock(postId, symbol)
                 .ToViewModel();
             return Ok(result);
         }
 
-        [HttpPut("{id}/{newName}")]
+        [HttpPut(RouteConsts.WatchList.Rename)]
         [ProducesResponseType(200)]
-        public ActionResult<WatchListViewModel> RenameWatchList(int id, string newName) 
+        public ActionResult<WatchListViewModel> RenameWatchList(int postId, [FromBody]string newName) 
         {
-            var result = watchListService.RenameWatchList(id, newName).ToViewModel();
+            var result = watchListService.RenameWatchList(postId, newName).ToViewModel();
             return Ok(result);
         }
 
@@ -56,10 +57,10 @@ namespace Tiririt.Web.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult DeleteWatchList(int id)
+        [HttpDelete(RouteConsts.WatchList.DeleteWatchList)]
+        public IActionResult DeleteWatchList(int postId)
         {
-            watchListService.DeleteWatchList(id);
+            watchListService.DeleteWatchList(postId);
             return Ok();
         }
     }

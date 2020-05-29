@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Tiririt.App.Service;
-using Tiririt.Domain.Models;
+using Tiririt.Web.Common;
 
 namespace Tiririt.Web.Controllers
 {
-    // [Route("api/[controller]")]
     public class StockController : TiriritControllerBase
     {
         private readonly IStockService stockService;
@@ -28,16 +24,12 @@ namespace Tiririt.Web.Controllers
             this.environment = environment;
         }
 
-        [HttpGet("{symbol}")]    
+        [HttpGet(RouteConsts.Stock.GetStock)]    
         [ProducesResponseType(200)]
         public IActionResult GetStock(string symbol)
         {
             var result = stockService.GetStock(symbol);
-            if (result == null)            
-            {
-                return NotFound();
-            }
-            return Ok(result);
+            return OkOrNotFound(result);
         }        
     }
 }

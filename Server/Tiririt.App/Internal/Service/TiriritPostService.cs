@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Tiririt.App.Service;
 using Tiririt.Core.Collection;
 using Tiririt.Data.Service;
@@ -30,7 +29,25 @@ namespace Tiririt.App.Internal.Service
         public void DeletePost(int postId)
         {
             //TODO validate if user can delete
-            postRepository.DeletePost(postId);
+
+            using var transaction = dbContext.Database.BeginTransaction();
+            try
+            {
+                hashTagRepository.RemoveTagsFromPost(postId);
+                stockRepository.RemoveStockLinksFromPost(postId);            
+                var responses = postRepository.GetResponsesNoPaging(postId);
+                foreach(var response in responses) 
+                {
+                    postRepository.DeletePost(response.PostId);
+                }
+                postRepository.DeletePost(postId);
+                transaction.Commit();
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
 
         public PagingResultEnvelope<PostModel> GetPostsByUserId(int userId, PagingParam pagingParam)
@@ -73,6 +90,11 @@ namespace Tiririt.App.Internal.Service
                 transaction.Rollback();
                 throw;
             }
+        }
+
+        public PostModel LikeOrDislikePost(int postId, bool like)
+        {
+            return postRepository.LikeOrDislikePost(postId, like);
         }
     }
 }

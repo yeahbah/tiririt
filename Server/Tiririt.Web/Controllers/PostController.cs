@@ -2,6 +2,8 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Tiririt.App.Service;
 using Tiririt.Core.Collection;
+using Tiririt.Core.Enums;
+using Tiririt.Web.Common;
 using Tiririt.Web.Models;
 using Tiririt.Web.Models.Mappings;
 
@@ -20,7 +22,7 @@ namespace Tiririt.Web.Controllers
         /// Get all postings of a user
         /// </summary>
         /// <returns></returns>
-        [HttpGet("user/{userId}")]
+        [HttpGet(RouteConsts.TiriritPost.UserPostings)]
         public ActionResult<PagingResultEnvelope<PostViewModel>> GetPosts(int userId, PagingParam pagingParam)
         {
             var result = tiriritPostService
@@ -35,7 +37,7 @@ namespace Tiririt.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<PostViewModel> NewPost([FromBody]string postText)
+        public ActionResult<PostViewModel> NewPost([FromBody]string postText, BullBearLevel? bullBearLevel)
         {
             var result = tiriritPostService
                 .AddOrModifyPost(postText)
@@ -44,7 +46,7 @@ namespace Tiririt.Web.Controllers
         }
 
                 
-        [HttpPost("{postId}/reply")]
+        [HttpPost(RouteConsts.TiriritPost.Reply)]
         public ActionResult<PostViewModel> NewResponse(int postId, [FromBody]string postText)
         {
             var result = tiriritPostService
@@ -58,7 +60,7 @@ namespace Tiririt.Web.Controllers
         /// </summary>
         /// <param name="postId"></param>
         /// <returns></returns>
-        [HttpPut("{postId}")]
+        [HttpPut(RouteConsts.TiriritPost.ModifyPost)]
         public ActionResult<PostViewModel> ModifyPost(int postId, [FromBody]string postText)
         {
             var result = tiriritPostService
@@ -79,7 +81,7 @@ namespace Tiririt.Web.Controllers
         /// </summary>
         /// <param name="postId"></param>
         /// <returns></returns>
-        [HttpGet("{postId}/responses")]
+        [HttpGet(RouteConsts.TiriritPost.Responses)]
         public ActionResult<PagingResultEnvelope<ResponseViewModel>> GetResponses(int postId, PagingParam pagingParam)
         {
             var result = tiriritPostService
@@ -87,6 +89,19 @@ namespace Tiririt.Web.Controllers
                 .Data.Select(post => post.ToResponseViewModel());
 
             return Ok(new PagingResultEnvelope<ResponseViewModel>(result, pagingParam));
+        }
+
+        /// <summary>
+        /// Like or dislike a post
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <param name="like"></param>
+        /// <returns></returns>
+        [HttpGet(RouteConsts.TiriritPost.LikeDislike)]
+        public ActionResult<PostViewModel> LikeDislike(int postId, int like)
+        {
+            var result = tiriritPostService.LikeOrDislikePost(postId, like == 1 ? true : false);
+            return Ok(result.ToViewModel());
         }
 
     }

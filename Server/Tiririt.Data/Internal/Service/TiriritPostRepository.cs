@@ -87,6 +87,50 @@ namespace Tiririt.Data.Internal.Service
             return PagingResultEnvelope<PostModel>.ToPagingEnvelope(result, pagingParam);
         }
 
+        public IEnumerable<PostModel> GetResponsesNoPaging(int postId)
+        {
+            var result = GetAll()
+                .Where(post => post.ResponseToPostId == postId);
+                
+            return result.ToList();
+        }
+
+        public PostModel LikeOrDislikePost(int postId, bool like)
+        {
+            // TODO get current user
+            var userId = 2;
+            // delete existing user like/dislike
+            var existingRecord = dbContext.LikeDislikePost
+                .SingleOrDefault(l => l.TIRIRIT_USER_ID == userId && l.TIRIRIT_POST_ID == postId);
+            
+            if (existingRecord != null)
+            {
+                // toggle like/dislike
+                var pastAction = existingRecord.USER_LIKE_IND == 1 ? true : false;
+                if (pastAction == like)
+                {
+                    // withdraw the action by deleting
+                    dbContext.LikeDislikePost.Remove(existingRecord);
+                }
+                else
+                {
+                    existingRecord.USER_LIKE_IND = like ? 1 : 0;
+                }
+            }
+            else 
+            {
+                var newRecord = new LIKE_DISLIKE_POST
+                {
+                    TIRIRIT_POST_ID = postId,
+                    TIRIRIT_USER_ID = userId,
+                    USER_LIKE_IND = like ? 1 : 0
+                };
+                dbContext.LikeDislikePost.Add(newRecord);
+            }
+            dbContext.SaveChanges();
+            return GetPost(postId);
+        }
+
         public void ModifyPost(int postId, string postText)
         {
             var post = dbContext.TiriritPosts
@@ -94,7 +138,6 @@ namespace Tiririt.Data.Internal.Service
             
             if (post != null)
             {
-                // TODO reset tags and related stocks
                 post.POST_TEXT = postText;
                 dbContext.SaveChanges();
             }
@@ -102,7 +145,6 @@ namespace Tiririt.Data.Internal.Service
 
         public int NewPost(string postText, int? responseToPostId = null)
         {
-            // TODO post parameter to include tags and stocks
             // TODO current user 
             var post = new TIRIRIT_POST 
             {
