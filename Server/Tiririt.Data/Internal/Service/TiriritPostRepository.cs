@@ -80,14 +80,14 @@ namespace Tiririt.Data.Internal.Service
             var result = GetAll()
                 .Where(post => post.UserId == userId);
                         
-            return PagingResultEnvelope<PostModel>.ToPagingEnvelope(result, pagingParam);
+            return PagingResultEnvelope<PostModel>.ToPagingEnvelope(result, pagingParam).Result;
         }
 
         public PagingResultEnvelope<PostModel> GetResponses(int postId, PagingParam pagingParam)
         {
             var result = GetAll()
                 .Where(post => post.ResponseToPostId == postId);
-            return PagingResultEnvelope<PostModel>.ToPagingEnvelope(result, pagingParam);
+            return PagingResultEnvelope<PostModel>.ToPagingEnvelope(result, pagingParam).Result;
         }
 
         public IEnumerable<PostModel> GetResponsesNoPaging(int postId)

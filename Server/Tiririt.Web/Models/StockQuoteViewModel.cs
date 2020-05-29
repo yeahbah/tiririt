@@ -1,8 +1,8 @@
 using System;
 
-namespace Tiririt.Domain.Models
+namespace Tiririt.Web.Models
 {
-    public class StockQuoteModel 
+    public class StockQuoteViewModel
     {
         public int StockQuoteId { get; set; }
         public int StockId { get; set; }

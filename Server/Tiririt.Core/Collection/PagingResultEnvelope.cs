@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Linq.Dynamic.Core;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Tiririt.Core.Collection
 {
     public class PagingResultEnvelope<T>
     {        
-        public PagingResultEnvelope(IEnumerable<T> data, PagingParam pagingParam)
+        public PagingResultEnvelope(IEnumerable<T> data, int totalCount, PagingParam pagingParam)
         {
             Data = data;
             PageIndex = pagingParam.PageIndex;
@@ -17,11 +19,11 @@ namespace Tiririt.Core.Collection
             SortOrder = pagingParam.SortOrder;
             FilterColumn = pagingParam.FilterColumn;
             FilterQuery = pagingParam.FilterQuery;
-            TotalCount = data.Count();
+            TotalCount = totalCount;
             TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
         }
 
-        public static PagingResultEnvelope<T> ToPagingEnvelope(IQueryable<T> data, PagingParam pagingParam)
+        public static async Task<PagingResultEnvelope<T>> ToPagingEnvelope(IQueryable<T> data, PagingParam pagingParam)
         {        
             pagingParam.PageSize = pagingParam.PageSize == 0 ? 10 : pagingParam.PageSize;
             if (!string.IsNullOrEmpty(pagingParam.SortColumn) && IsValidProperty(pagingParam.SortColumn)) 
@@ -36,13 +38,14 @@ namespace Tiririt.Core.Collection
                 var filter = string.Format("{0}.Contains(\"{1}\")", pagingParam.FilterColumn, pagingParam.FilterQuery);
                 data = data.Where(filter);
             }
+            var totalCount = await data.CountAsync();
 
-            var result = data
+            var result = await data
                 .Skip(pagingParam.PageSize * pagingParam.PageIndex)
                 .Take(pagingParam.PageSize)
-                .ToList();            
+                .ToListAsync();            
                 
-            return new PagingResultEnvelope<T>(result, pagingParam);
+            return new PagingResultEnvelope<T>(result, totalCount, pagingParam);
         }
 
         private static bool IsValidProperty(string propertyName, bool throwExceptionIfNotFound = true)

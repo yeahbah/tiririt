@@ -19,6 +19,11 @@ namespace Tiririt.Web.Common
             public const string GetStock = "{symbol}";
         }
 
+        public static class StockQuote
+        {
+            public const string EndOfDay = "stock/{symbol}/eod";
+        }
+
         public static class WatchList
         {
             public const string NewWatchList = "";
