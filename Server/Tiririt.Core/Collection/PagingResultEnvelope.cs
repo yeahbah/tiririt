@@ -23,6 +23,7 @@ namespace Tiririt.Core.Collection
 
         public static PagingResultEnvelope<T> ToPagingEnvelope(IQueryable<T> data, PagingParam pagingParam)
         {        
+            pagingParam.PageSize = pagingParam.PageSize == 0 ? 10 : pagingParam.PageSize;
             if (!string.IsNullOrEmpty(pagingParam.SortColumn) && IsValidProperty(pagingParam.SortColumn)) 
             {
                 pagingParam.SortOrder = !string.IsNullOrEmpty(pagingParam.SortOrder) && pagingParam.SortOrder.ToUpper() == "ASC" ? "ASC" : "DESC";

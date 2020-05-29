@@ -19,6 +19,6 @@ namespace Tiririt.Data.Service
         /// Unlink a stock from a post
         /// </summary>
         /// <param name="postId"></param>
-        void RemoveStockLinksFromPost(int postId);
+        void RemoveStockLinksFromPost(int postId, bool permanent = false);
     }
 }

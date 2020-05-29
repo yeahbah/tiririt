@@ -15,7 +15,7 @@ namespace Tiririt.Data.Service
         /// Unlink tags from post
         /// </summary>
         /// <param name="postId"></param>
-        void RemoveTagsFromPost(int postId);
+        void RemoveTagsFromPost(int postId, bool permanent = false);
 
         /// <summary>
         /// Add a single has tag

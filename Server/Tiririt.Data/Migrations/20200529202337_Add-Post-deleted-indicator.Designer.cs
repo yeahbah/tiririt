@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Tiririt.Data.Internal;
@@ -9,9 +10,10 @@ using Tiririt.Data.Internal;
 namespace Tiririt.Data.Migrations
 {
     [DbContext(typeof(TiriritDbContext))]
-    partial class TiriritDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200529202337_Add-Post-deleted-indicator")]
+    partial class AddPostdeletedindicator
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,10 +109,6 @@ namespace Tiririt.Data.Migrations
 
                     b.Property<int>("TIRIRIT_POST_ID")
                         .HasColumnName("tiririt_post_id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("DELETED_IND")
-                        .HasColumnName("deleted_ind")
                         .HasColumnType("integer");
 
                     b.Property<int>("LIKE_DISLIKE_POST_ID")

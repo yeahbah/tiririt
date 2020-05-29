@@ -27,15 +27,16 @@ namespace Tiririt.Data.Internal.Service
                 .SingleOrDefault(p => p.TIRIRIT_POST_ID == postId);
             if (post != null)
             {
-                dbContext.TiriritPosts.Remove(post);
-            }
-
+                post.DELETED_IND = 1;                
+                dbContext.SaveChanges();
+            }            
         }
 
         public IQueryable<PostModel> GetAll()
         {
             var result = dbContext.TiriritPosts
-                .AsNoTracking()                                
+                .AsNoTracking()           
+                .Where(post => post.DELETED_IND == 0)                     
                 .Select(data => new PostModel {
                     PostId = data.TIRIRIT_POST_ID,
                     ModifiedDate = data.MODIFIED_DATE,
@@ -55,9 +56,11 @@ namespace Tiririt.Data.Internal.Service
                         .Select(l => l.Ref_TiriritUser.ToDomainModel()),
 
                     RelatedStocks = data.Ref_Stocks
+                        .Where(stock => stock.DELETED_IND == 0)
                         .Select(stock => stock.Ref_Stock.ToDomainModel()),
                     
                     Tags = data.Ref_HashTags
+                        .Where(tag => tag.DELETED_IND == 0)
                         .Select(tag => tag.Ref_HashTag.ToDomainModel())                                        
                 });
             
@@ -139,6 +142,7 @@ namespace Tiririt.Data.Internal.Service
             if (post != null)
             {
                 post.POST_TEXT = postText;
+                post.MODIFIED_DATE = DateTime.Now;                
                 dbContext.SaveChanges();
             }
         }
@@ -152,7 +156,8 @@ namespace Tiririt.Data.Internal.Service
                 POST_DATE = DateTime.Now,
                 POST_TEXT = postText,
                 TIRIRIT_USER_ID = 2,
-                RESPONSE_TO_POST_ID = responseToPostId
+                RESPONSE_TO_POST_ID = responseToPostId,
+                DELETED_IND = 0
             };
             dbContext.TiriritPosts.Add(post);
             dbContext.SaveChanges();

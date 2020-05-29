@@ -34,12 +34,8 @@ namespace Tiririt.App.Internal.Service
             try
             {
                 hashTagRepository.RemoveTagsFromPost(postId);
-                stockRepository.RemoveStockLinksFromPost(postId);            
-                var responses = postRepository.GetResponsesNoPaging(postId);
-                foreach(var response in responses) 
-                {
-                    postRepository.DeletePost(response.PostId);
-                }
+                stockRepository.RemoveStockLinksFromPost(postId);                            
+                
                 postRepository.DeletePost(postId);
                 transaction.Commit();
             }
@@ -76,8 +72,8 @@ namespace Tiririt.App.Internal.Service
                 }
                 else
                 {
-                    hashTagRepository.RemoveTagsFromPost(postId.Value);
-                    stockRepository.RemoveStockLinksFromPost(postId.Value);
+                    hashTagRepository.RemoveTagsFromPost(postId.Value, true);
+                    stockRepository.RemoveStockLinksFromPost(postId.Value, true);
                     postRepository.ModifyPost(postId.Value, postText);
                 }
                 hashTagRepository.AddTagsToPost(postId.Value, tags);

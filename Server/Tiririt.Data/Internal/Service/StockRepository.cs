@@ -59,14 +59,24 @@ namespace Tiririt.Data.Internal.Service
             dbContext.SaveChanges();
         }
 
-        public void RemoveStockLinksFromPost(int postId)
+        public void RemoveStockLinksFromPost(int postId, bool permanent = false)
         {
-            dbContext.PostStocks
-                .Where(p => p.TIRIRIT_POST_ID == postId)
-                .ToList()
-                .ForEach(p => {
-                    dbContext.PostStocks.Remove(p);
-                });
+            var stocks = dbContext.PostStocks
+                .Where(p => p.TIRIRIT_POST_ID == postId);
+            if (permanent) 
+            {
+                stocks.ToList()
+                    .ForEach(p => {
+                        dbContext.PostStocks.Remove(p);
+                    });
+            }
+            else
+            {
+                stocks.ToList()
+                    .ForEach(p => {
+                        p.DELETED_IND = 1;
+                    });
+            }
             dbContext.SaveChanges();            
         }
     }

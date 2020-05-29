@@ -14,6 +14,9 @@ namespace Tiririt.Data.Entities
         [Required]
         public int TIRIRIT_POST_ID { get; set; }
 
+        [Range(0, 1)]
+        public int DELETED_IND { get; set; }
+
         public virtual TIRIRIT_POST Ref_TiriritPost { get; set; }
         public virtual HASH_TAG Ref_HashTag { get; set; }
 

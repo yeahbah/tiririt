@@ -68,14 +68,27 @@ namespace Tiririt.Data.Internal.Service
             dbContext.SaveChanges();
         }
 
-        public void RemoveTagsFromPost(int postId)
+        public void RemoveTagsFromPost(int postId, bool permanent = false)
         {
-            dbContext.PostHashTags
-                .Where(post => post.TIRIRIT_POST_ID == postId)
-                .ToList()
-                .ForEach(post => {
-                    dbContext.PostHashTags.Remove(post);
-                });            
+            var tags = dbContext.PostHashTags
+                .Where(post => post.TIRIRIT_POST_ID == postId);
+                
+            if (permanent)
+            {
+                tags.ToList()
+                    .ForEach(tag => {                    
+                        dbContext.PostHashTags.Remove(tag);
+                    });            
+            }
+            else
+            {
+                tags.ToList()
+                    .ForEach(tag => {                    
+                        tag.DELETED_IND = 1;
+                    });            
+            }
+
+            dbContext.SaveChanges();
         }
     }
 }

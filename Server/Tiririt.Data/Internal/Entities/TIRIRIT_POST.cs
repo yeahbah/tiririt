@@ -23,6 +23,9 @@ namespace Tiririt.Data.Entities
 
         public int BULL_BEAR_LEVEL_CODE_ID { get; set; }
 
+        [Range(0, 1)]
+        public int DELETED_IND { get; set;}
+
         public virtual BULL_BEAR_LEVEL_CODE Ref_BullBearLevel { get; set; }
 
         public virtual TIRIRIT_USER Ref_PostedBy { get; set; }

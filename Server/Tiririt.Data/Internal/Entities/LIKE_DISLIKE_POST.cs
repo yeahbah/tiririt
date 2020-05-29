@@ -16,6 +16,9 @@ namespace Tiririt.Data.Entities
         [Range(0, 1)]        
         public int USER_LIKE_IND { get; set; }
 
+        [Range(0, 1)]
+        public int DELETED_IND { get; set; }
+
         public virtual TIRIRIT_USER Ref_TiriritUser { get; set; }
         public virtual TIRIRIT_POST Ref_TiriritPost { get; set; }
     }

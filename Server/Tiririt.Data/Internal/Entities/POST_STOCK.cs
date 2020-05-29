@@ -13,13 +13,12 @@ namespace Tiririt.Data.Entities
         [Required]        
         public int STOCK_ID { get; set; }
 
+        [Range(0, 1)]
+        public int DELETED_IND { get; set; }
+
         public virtual TIRIRIT_POST Ref_TiriritPost { get; set; }
 
         public virtual STOCK Ref_Stock { get; set; }
-
-        // public ICollection<TIRIRIT_POST> Ref_ManyPosts { get; set; }
-
-        // public ICollection<STOCK> Ref_ManyStocks { get; set; }
 
     }
 }
