@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Tiririt.App.Service;
+using Tiririt.Core.Collection;
 using Tiririt.Web.Models;
 using Tiririt.Web.Models.Mappings;
 
@@ -21,12 +22,14 @@ namespace Tiririt.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("user/{userId}")]
-        public ActionResult<IEnumerable<PostViewModel>> GetPosts(int userId)
+        public ActionResult<PagingResultEnvelope<PostViewModel>> GetPosts(int userId, PagingParam pagingParam)
         {
             var result = tiriritPostService
-                .GetPostsByUserId(userId)
-                .Select(post => post.ToViewModel());
-            return Ok(result);
+                .GetPostsByUserId(userId, pagingParam)                
+                .Data.Select(post => post.ToViewModel())
+                .AsQueryable();
+                
+            return Ok(PagingResultEnvelope<PostViewModel>.ToPagingEnvelope(result, pagingParam));
         }
 
         /// <summary>
@@ -79,12 +82,13 @@ namespace Tiririt.Web.Controllers
         /// <param name="postId"></param>
         /// <returns></returns>
         [HttpGet("{postId}/responses")]
-        public ActionResult<IEnumerable<ResponseViewModel>> GetResponses(int postId)
+        public ActionResult<PagingResultEnvelope<ResponseViewModel>> GetResponses(int postId, PagingParam pagingParam)
         {
             var result = tiriritPostService
-                .GetResponses(postId)
-                .Select(post => post.ToResponseViewModel());
-            return Ok(result);
+                .GetResponses(postId, pagingParam)
+                .Data.Select(post => post.ToResponseViewModel())
+                .AsQueryable();
+            return Ok(PagingResultEnvelope<ResponseViewModel>.ToPagingEnvelope(result, pagingParam));
         }
 
     }

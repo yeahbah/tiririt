@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Tiririt.Core.Collection;
 using Tiririt.Core.Enums;
 using Tiririt.Data.Entities;
 using Tiririt.Data.Internal.Mappings;
 using Tiririt.Data.Service;
 using Tiririt.Domain.Models;
+using System.Linq.Dynamic.Core;
 
 namespace Tiririt.Data.Internal.Service
 {
@@ -70,19 +72,19 @@ namespace Tiririt.Data.Internal.Service
             return result;
         }
 
-        public IEnumerable<PostModel> GetPostsByUserId(int userId)
+        public PagingResultEnvelope<PostModel> GetPostsByUserId(int userId, PagingParam pagingParam)
         {
             var result = GetAll()
                 .Where(post => post.UserId == userId);
-            
-            return result;
+                        
+            return PagingResultEnvelope<PostModel>.ToPagingEnvelope(result, pagingParam);
         }
 
-        public IEnumerable<PostModel> GetResponses(int postId)
+        public PagingResultEnvelope<PostModel> GetResponses(int postId, PagingParam pagingParam)
         {
             var result = GetAll()
                 .Where(post => post.ResponseToPostId == postId);
-            return result;
+            return PagingResultEnvelope<PostModel>.ToPagingEnvelope(result, pagingParam);
         }
 
         public void ModifyPost(int postId, string postText)
