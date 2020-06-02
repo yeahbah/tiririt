@@ -1,0 +1,3 @@
+https://investing.einnews.com/rss/dh5LoBFONe1cJ1s0
+
+dividends: POST https://edge.pse.com.ph/disclosureData/dividends_and_rights_info_list.ax
