@@ -16,7 +16,6 @@ namespace Tiririt.Web.Models.Mappings
                 Open = value.Open,
                 StockId = value.StockId,
                 StockQuoteId = value.StockQuoteId,
-                Symbol = value.Symbol,
                 TradeDate = value.TradeDate,
                 Volume = value.Volume
             };

@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Tiririt.Core.Collection;
 using Tiririt.Data.Entities;
@@ -16,7 +17,7 @@ namespace Tiririt.Data.Internal.Service
             this.dbContext = dbContext;
         }
 
-        public StockQuoteModel AddStockQuote(StockQuoteModel stockQuote)
+        public async Task<StockQuoteModel> AddStockQuote(StockQuoteModel stockQuote)
         {
             var quote = new STOCK_QUOTE 
             {
@@ -30,7 +31,7 @@ namespace Tiririt.Data.Internal.Service
                 VOLUMNE = stockQuote.Volume
             };
             dbContext.StockQuotes.Add(quote);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
             stockQuote.StockQuoteId = quote.STOCK_ID;
             return stockQuote;
         }
@@ -39,8 +40,7 @@ namespace Tiririt.Data.Internal.Service
         {
             var result = dbContext.StockQuotes
                 .AsNoTracking()
-                .Select(data => new StockQuoteModel {
-                    Symbol = data.Ref_Stock.SYMBOL,
+                .Select(data => new StockQuoteModel {                    
                     Close = data.CLOSE,
                     High = data.HIGH,
                     Low = data.LOW,
@@ -54,11 +54,24 @@ namespace Tiririt.Data.Internal.Service
             return result;
         }
 
-        public PagingResultEnvelope<StockQuoteModel> GetStockQuotes(string symbol, PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<StockQuoteModel>> GetStockQuotes(string symbol, PagingParam pagingParam)
         {
-            var result = GetAll()
-                .Where(quote => quote.Symbol == symbol);
-            return PagingResultEnvelope<StockQuoteModel>.ToPagingEnvelope(result, pagingParam).Result;
+            var result = dbContext.StockQuotes
+                .AsNoTracking()
+                .Where(quote => quote.Ref_Stock.SYMBOL == symbol)
+                .Select(data => new StockQuoteModel
+                {
+                    Close = data.CLOSE,
+                    High = data.HIGH,
+                    Low = data.LOW,
+                    NetForeignBuy = data.NET_FOREIGN_BUY,
+                    Open = data.OPEN,
+                    StockId = data.Ref_Stock.STOCK_ID,
+                    StockQuoteId = data.STOCK_QUOTE_ID,
+                    TradeDate = data.TRADE_DATE,
+                    Volume = data.VOLUMNE
+                });                
+            return await PagingResultEnvelope<StockQuoteModel>.ToPagingEnvelope(result, pagingParam);
         }
     }
 }

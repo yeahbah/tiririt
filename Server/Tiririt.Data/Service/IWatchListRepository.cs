@@ -8,10 +8,10 @@ namespace Tiririt.Data.Service
     {
         // get default watchlist
         Task<IEnumerable<WatchListModel>> GetWatchList();
-        WatchListModel GetWatchList(int watchListId);
-        WatchListModel AddStock(int id, string stockSymbol);
-        void DeleteWatchList(int id);
-        WatchListModel NewWatchList(WatchListModel watchListModel);
-        WatchListModel RenameWatchList(int id, string newName);
+        Task<WatchListModel> GetWatchList(int watchListId);
+        Task<WatchListModel> AddStock(int id, string stockSymbol);
+        Task DeleteWatchList(int id);
+        Task<WatchListModel> NewWatchList(WatchListModel watchListModel);
+        Task<WatchListModel> RenameWatchList(int id, string newName);
     }
 }

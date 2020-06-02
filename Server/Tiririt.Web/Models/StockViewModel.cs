@@ -1,3 +1,5 @@
+using System;
+
 namespace Tiririt.Web.Models
 {
     public class StockViewModel 
@@ -6,5 +8,6 @@ namespace Tiririt.Web.Models
         public string Symbol { get; set; }
         public string Name { get; set; }
         public int? SectorId { get; set; }
+        public decimal? Price { get; set; }
     }
 }

@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using Tiririt.Data.Internal.Mappings;
 using Tiririt.Data.Service;
 using Tiririt.Domain.Models;
 using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 
 namespace Tiririt.Data.Internal.Service
 {
@@ -21,14 +23,14 @@ namespace Tiririt.Data.Internal.Service
             this.dbContext = dbContext;
         }
 
-        public void DeletePost(int postId)
+        public async Task DeletePost(int postId)
         {
-            var post = dbContext.TiriritPosts
-                .SingleOrDefault(p => p.TIRIRIT_POST_ID == postId);
+            var post = await dbContext.TiriritPosts
+                .SingleOrDefaultAsync(p => p.TIRIRIT_POST_ID == postId);
             if (post != null)
             {
                 post.DELETED_IND = 1;                
-                dbContext.SaveChanges();
+                await dbContext.SaveChangesAsync();
             }            
         }
 
@@ -57,7 +59,15 @@ namespace Tiririt.Data.Internal.Service
 
                     RelatedStocks = data.Ref_Stocks
                         .Where(stock => stock.DELETED_IND == 0)
-                        .Select(stock => stock.Ref_Stock.ToDomainModel()),
+                        .Select(stock => new StockModel
+                        {
+                            Name = stock.Ref_Stock.NAME,
+                            SectorId = stock.Ref_Stock.SECTOR_ID,
+                            StockId = stock.Ref_Stock.STOCK_ID,
+                            StockQuotes = stock.Ref_Stock.Ref_StockQuotes
+                                .Select(q => q.ToDomainModel()),
+                            Symbol = stock.Ref_Stock.SYMBOL                            
+                        }),
                     
                     Tags = data.Ref_HashTags
                         .Where(tag => tag.DELETED_IND == 0)
@@ -67,44 +77,44 @@ namespace Tiririt.Data.Internal.Service
             return result;
         }
 
-        public PostModel GetPost(int postId)
+        public async Task<PostModel> GetPost(int postId)
         {
-            var result = GetAll()                
-                .SingleOrDefault(post => post.PostId == postId);
+            var result = await GetAll()                
+                .SingleOrDefaultAsync(post => post.PostId == postId);
 
             return result;
         }
 
-        public PagingResultEnvelope<PostModel> GetPostsByUserId(int userId, PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<PostModel>> GetPostsByUserId(int userId, PagingParam pagingParam)
         {
             var result = GetAll()
                 .Where(post => post.UserId == userId);
                         
-            return PagingResultEnvelope<PostModel>.ToPagingEnvelope(result, pagingParam).Result;
+            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(result, pagingParam);
         }
 
-        public PagingResultEnvelope<PostModel> GetResponses(int postId, PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<PostModel>> GetResponses(int postId, PagingParam pagingParam)
         {
             var result = GetAll()
                 .Where(post => post.ResponseToPostId == postId);
-            return PagingResultEnvelope<PostModel>.ToPagingEnvelope(result, pagingParam).Result;
+            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(result, pagingParam);
         }
 
-        public IEnumerable<PostModel> GetResponsesNoPaging(int postId)
+        public async Task<IEnumerable<PostModel>> GetResponsesNoPaging(int postId)
         {
             var result = GetAll()
                 .Where(post => post.ResponseToPostId == postId);
                 
-            return result.ToList();
+            return await result.ToListAsync();
         }
 
-        public PostModel LikeOrDislikePost(int postId, bool like)
+        public async Task<PostModel> LikeOrDislikePost(int postId, bool like)
         {
             // TODO get current user
-            var userId = 2;
+            var userId = 1;
             // delete existing user like/dislike
-            var existingRecord = dbContext.LikeDislikePost
-                .SingleOrDefault(l => l.TIRIRIT_USER_ID == userId && l.TIRIRIT_POST_ID == postId);
+            var existingRecord = await dbContext.LikeDislikePost
+                .SingleOrDefaultAsync(l => l.TIRIRIT_USER_ID == userId && l.TIRIRIT_POST_ID == postId);
             
             if (existingRecord != null)
             {
@@ -130,37 +140,38 @@ namespace Tiririt.Data.Internal.Service
                 };
                 dbContext.LikeDislikePost.Add(newRecord);
             }
-            dbContext.SaveChanges();
-            return GetPost(postId);
+            await dbContext.SaveChangesAsync();
+            return await GetPost(postId);
         }
 
-        public void ModifyPost(int postId, string postText)
+        public async Task ModifyPost(int postId, string postText)
         {
-            var post = dbContext.TiriritPosts
-                .SingleOrDefault(p => p.TIRIRIT_POST_ID == postId);
+            var post = await dbContext.TiriritPosts
+                .SingleOrDefaultAsync(p => p.TIRIRIT_POST_ID == postId);
             
             if (post != null)
             {
                 post.POST_TEXT = postText;
                 post.MODIFIED_DATE = DateTime.Now;                
-                dbContext.SaveChanges();
+                await dbContext.SaveChangesAsync();
             }
         }
 
-        public int NewPost(string postText, int? responseToPostId = null)
+        public async Task<int> NewPost(string postText, int? responseToPostId = null)
         {
             // TODO current user 
+            var userId = 1;
             var post = new TIRIRIT_POST 
             {
                 BULL_BEAR_LEVEL_CODE_ID = (int)BullBearLevel.Neutral,
                 POST_DATE = DateTime.Now,
                 POST_TEXT = postText,
-                TIRIRIT_USER_ID = 2,
+                TIRIRIT_USER_ID = userId,
                 RESPONSE_TO_POST_ID = responseToPostId,
                 DELETED_IND = 0
             };
             dbContext.TiriritPosts.Add(post);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
             return post.TIRIRIT_POST_ID;
         }
     }

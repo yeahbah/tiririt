@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Tiririt.App.Service;
 using Tiririt.Core.Collection;
 using Tiririt.Data.Service;
@@ -13,14 +14,14 @@ namespace Tiririt.App.Internal.Service
         {
             this.stockQuoteRepository = stockQuoteRepository;
         }
-        public StockQuoteModel AddStockQuote(StockQuoteModel stockQuote)
+        public async Task<StockQuoteModel> AddStockQuote(StockQuoteModel stockQuote)
         {
-            return stockQuoteRepository.AddStockQuote(stockQuote);
+            return await stockQuoteRepository.AddStockQuote(stockQuote);
         }
 
-        public PagingResultEnvelope<StockQuoteModel> GetStockQuotes(string symbol, PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<StockQuoteModel>> GetStockQuotes(string symbol, PagingParam pagingParam)
         {
-            return stockQuoteRepository.GetStockQuotes(symbol, pagingParam);
+            return await stockQuoteRepository.GetStockQuotes(symbol, pagingParam);
         }
     }
 }

@@ -1,10 +1,11 @@
+using System.Threading.Tasks;
 using Tiririt.Domain.Models;
 
 namespace Tiririt.App.Service
 {
     public interface IStockService
     {
-        StockModel GetStock(string stockSymbol);
-        StockModel AddStock(StockModel stockModel);
+        Task<StockModel> GetStock(string stockSymbol);
+        Task<StockModel> AddStock(StockModel stockModel);
     }
 }

@@ -18,8 +18,23 @@ namespace Tiririt.Data.Internal.Service
             this.dbContext = dbContext;
             this.postRepository = postRepository;
         }
+        
+        public IQueryable<StockModel> GetAll()
+        {
+            var result = dbContext.Stocks
+                .AsNoTracking()
+                .Select(stock => new StockModel
+                {
+                    Name = stock.NAME,
+                    SectorId = stock.SECTOR_ID,
+                    StockId = stock.STOCK_ID,
+                    Symbol = stock.SYMBOL,
+                    StockQuotes = stock.Ref_StockQuotes.Select(q => q.ToDomainModel()),
+                });
+            return result;
+        }
 
-        public StockModel AddStock(StockModel stockModel)
+        public async Task<StockModel> AddStock(StockModel stockModel)
         {
             var stock = new STOCK 
             {                
@@ -28,56 +43,55 @@ namespace Tiririt.Data.Internal.Service
                 SYMBOL = stockModel.Symbol
             };
             dbContext.Stocks.Add(stock);
-            dbContext.SaveChanges();
-            return GetStock(stockModel.Symbol).Result;
+            await dbContext.SaveChangesAsync();
+            return await GetStock(stockModel.Symbol);
         }
 
         public async Task<StockModel> GetStock(string stockSymbol)
         {
-            var query = await dbContext.Stocks
-                .AsNoTracking()
-                .Where(stock => stock.SYMBOL == stockSymbol)
-                .SingleOrDefaultAsync(stock => stock.SYMBOL == stockSymbol);
-                            
-            return query.ToDomainModel();
+            return await GetAll()                
+                .SingleOrDefaultAsync(stock => stock.Symbol == stockSymbol);
         }
 
-        public void LinkPostToStocks(int postId, string[] symbols)
+        public async Task LinkPostToStocks(int postId, string[] symbols)
         {
-            var stocks = dbContext.Stocks                            
-                .Where(s => symbols.Contains(s.SYMBOL));
+            var stocks = await GetAll()                            
+                .Where(s => symbols.Contains(s.Symbol))
+                .ToListAsync();
             
             foreach(var stock in stocks)
             {                
                 var link = new POST_STOCK 
                 {
                     TIRIRIT_POST_ID = postId,
-                    Ref_Stock = stock
+                    STOCK_ID = stock.StockId
                 };
                 dbContext.PostStocks.Add(link);                
             }
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
         }
 
-        public void RemoveStockLinksFromPost(int postId, bool permanent = false)
+        public async Task RemoveStockLinksFromPost(int postId, bool permanent = false)
         {
-            var stocks = dbContext.PostStocks
-                .Where(p => p.TIRIRIT_POST_ID == postId);
+            var stocks = await dbContext.PostStocks
+                .Where(p => p.TIRIRIT_POST_ID == postId)
+                .ToListAsync();
+
             if (permanent) 
             {
-                stocks.ToList()
+                stocks
                     .ForEach(p => {
                         dbContext.PostStocks.Remove(p);
                     });
             }
             else
             {
-                stocks.ToList()
+                stocks
                     .ForEach(p => {
                         p.DELETED_IND = 1;
                     });
             }
-            dbContext.SaveChanges();            
+            await dbContext.SaveChangesAsync();            
         }
     }
 }

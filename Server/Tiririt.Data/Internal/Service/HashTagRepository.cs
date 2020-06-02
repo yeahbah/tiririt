@@ -1,6 +1,8 @@
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 using Tiririt.Data.Entities;
+using Tiririt.Data.Internal.Mappings;
 using Tiririt.Data.Service;
 using Tiririt.Domain.Models;
 
@@ -15,21 +17,22 @@ namespace Tiririt.Data.Internal.Service
             this.dbContext = dbContext;
         }
 
-        public IQueryable<HashTagModel> GetAll()
+        private IQueryable<HashTagModel> GetAll()
         {
             var result = dbContext.HashTags
                 .AsNoTracking()
-                .Select(tag => new HashTagModel {
+                .Select(tag => new HashTagModel
+                {
                     HashTagId = tag.HASH_TAG_ID,
-                    HashTagText = tag.HASH_TAG_TEXT                    
+                    HashTagText = tag.HASH_TAG_TEXT
                 });
             return result;
         }
 
-        public HashTagModel AddHashTag(string tag)
+        public async Task<HashTagModel> AddHashTag(string tag)
         {
-            var hashTag = GetAll()                
-                .SingleOrDefault(h => h.HashTagText == tag);
+            var hashTag = await GetAll()                
+                .SingleOrDefaultAsync(h => h.HashTagText == tag);
             if (hashTag != null) 
             {
                 var newTag = new HASH_TAG 
@@ -37,14 +40,14 @@ namespace Tiririt.Data.Internal.Service
                     HASH_TAG_TEXT = tag
                 };
                 dbContext.HashTags.Add(newTag);
-                dbContext.SaveChanges();
-                hashTag = GetAll()
-                    .SingleOrDefault(h => h.HashTagText == tag);
+                await dbContext.SaveChangesAsync();
+                hashTag = await GetAll()
+                    .SingleOrDefaultAsync(h => h.HashTagText == tag);
             }
             return hashTag;
         }
 
-        public void AddTagsToPost(int postId, string[] hashTags)
+        public async Task AddTagsToPost(int postId, string[] hashTags)
         {                    
             foreach(var tag in hashTags)
             {
@@ -65,30 +68,39 @@ namespace Tiririt.Data.Internal.Service
                     dbContext.PostHashTags.Add(link);                    
                 }
             }
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
         }
 
-        public void RemoveTagsFromPost(int postId, bool permanent = false)
+        public async Task RemoveTagsFromPost(int postId, bool permanent = false)
         {
             var tags = dbContext.PostHashTags
                 .Where(post => post.TIRIRIT_POST_ID == postId);
                 
             if (permanent)
             {
-                tags.ToList()
+                var tagList = await tags.ToListAsync();
+                tagList
                     .ForEach(tag => {                    
                         dbContext.PostHashTags.Remove(tag);
                     });            
             }
             else
             {
-                tags.ToList()
+                var tagList = await tags.ToListAsync();
+                tagList
                     .ForEach(tag => {                    
                         tag.DELETED_IND = 1;
                     });            
             }
 
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
+        }        
+
+        public async Task<HashTagModel> Get(int id)
+        {
+            return await GetAll()
+                .SingleOrDefaultAsync(tag => tag.HashTagId == id);        
         }
+        
     }
 }

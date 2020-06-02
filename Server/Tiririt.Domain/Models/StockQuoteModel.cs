@@ -6,7 +6,7 @@ namespace Tiririt.Domain.Models
     {
         public int StockQuoteId { get; set; }
         public int StockId { get; set; }
-        public string Symbol { get; set; }
+        //public string Symbol { get; set; }
         public DateTime TradeDate { get; set; }
 
         public decimal Open { get; set; }

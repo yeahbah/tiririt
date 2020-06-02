@@ -30,12 +30,14 @@ namespace Tiririt.Data.Migrations
                 name: "ref_watch_list_watch_list_id",
                 table: "watch_list_stock");
 
-            migrationBuilder.AlterColumn<int>(
-                name: "stock_id",
-                table: "watch_list_stock",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "text");
+            //migrationBuilder.AlterColumn<int>(
+            //    name: "stock_id",
+            //    table: "watch_list_stock",
+            //    nullable: false,
+            //    oldClrType: typeof(string),
+            //    oldType: "text");            
+            migrationBuilder.Sql("ALTER TABLE WATCH_LIST_STOCK ALTER COLUMN STOCK_ID TYPE INTEGER USING (STOCK_ID::integer)");
+
 
             migrationBuilder.AddColumn<int>(
                 name: "watch_list_id",

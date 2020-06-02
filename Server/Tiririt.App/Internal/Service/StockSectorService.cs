@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Tiririt.App.Service;
 using Tiririt.Data.Service;
 using Tiririt.Domain.Models;
@@ -12,14 +13,14 @@ namespace Tiririt.App.Internal.Service
         {
             this.stockSectorRepository = stockSectorRepository;
         }
-        public StockSectorModel AddSector(StockSectorModel sector)
+        public async Task<StockSectorModel> AddSector(StockSectorModel sector)
         {
-            return stockSectorRepository.AddSector(sector);
+            return await stockSectorRepository.AddSector(sector);
         }
 
-        public StockSectorModel GetSector(string name)
+        public async Task<StockSectorModel> GetSector(string name)
         {
-            return stockSectorRepository.GetSector(name);
+            return await stockSectorRepository.GetSector(name);
         }
     }
 }

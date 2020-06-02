@@ -1,10 +1,11 @@
+using System.Threading.Tasks;
 using Tiririt.Domain.Models;
 
 namespace Tiririt.Data.Service
 {
     public interface IStockSectorRepository 
     {
-        StockSectorModel AddSector(StockSectorModel sectorModel);
-        StockSectorModel GetSector(string name);
+        Task<StockSectorModel> AddSector(StockSectorModel sectorModel);
+        Task<StockSectorModel> GetSector(string name);
     }
 }

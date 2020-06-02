@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Tiririt.App.Service;
 using Tiririt.Data.Service;
 using Tiririt.Domain.Models;
@@ -13,14 +14,14 @@ namespace Tiririt.App.Internal.Service
             this.stockRepository = stockRepository;
         }
 
-        public StockModel AddStock(StockModel stockModel)
+        public async Task<StockModel> AddStock(StockModel stockModel)
         {
-            return this.stockRepository.AddStock(stockModel);
+            return await this.stockRepository.AddStock(stockModel);
         }        
 
-        public StockModel GetStock(string stockSymbol)
+        public async Task<StockModel> GetStock(string stockSymbol)
         {
-            return stockRepository.GetStock(stockSymbol).Result;
+            return await stockRepository.GetStock(stockSymbol);
         }
     }
 }

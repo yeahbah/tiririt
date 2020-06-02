@@ -1,11 +1,12 @@
 using Tiririt.Domain.Models;
 using Tiririt.Core.Collection;
+using System.Threading.Tasks;
 
 namespace Tiririt.Data.Service
 {
     public interface IStockQuoteRepository
     {
-        StockQuoteModel AddStockQuote(StockQuoteModel stockQuote);
-        PagingResultEnvelope<StockQuoteModel> GetStockQuotes(string symbol, PagingParam pagingParam);
+        Task<StockQuoteModel> AddStockQuote(StockQuoteModel stockQuote);
+        Task<PagingResultEnvelope<StockQuoteModel>> GetStockQuotes(string symbol, PagingParam pagingParam);
     }
 }

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Tiririt.App.Service;
 using Tiririt.Data.Service;
 using Tiririt.Domain.Models;
@@ -14,29 +16,29 @@ namespace Tiririt.App.Internal.Service
             this.watchListRepository = watchListRepository;
         }
 
-        public WatchListModel AddStock(int id, string stockSymbol)
+        public async Task<WatchListModel> AddStock(int id, string stockSymbol)
         {
-            return watchListRepository.AddStock(id, stockSymbol);
+            return await watchListRepository.AddStock(id, stockSymbol);
         }
 
-        public void DeleteWatchList(int id)
+        public async Task DeleteWatchList(int id)
         {
-            watchListRepository.DeleteWatchList(id);
+            await watchListRepository.DeleteWatchList(id);
         }
 
-        public IEnumerable<WatchListModel> GetWatchList()
+        public async Task<IEnumerable<WatchListModel>> GetWatchList()
         {            
-            return watchListRepository.GetWatchList().Result;            
+            return await watchListRepository.GetWatchList();            
         }
 
-        public WatchListModel NewWatchList(WatchListModel watchListModel)
+        public async Task<WatchListModel> NewWatchList(WatchListModel watchListModel)
         {
-            return watchListRepository.NewWatchList(watchListModel);
+            return await watchListRepository.NewWatchList(watchListModel);
         }
 
-        public WatchListModel RenameWatchList(int id, string newName)
+        public async Task<WatchListModel> RenameWatchList(int id, string newName)
         {
-            return watchListRepository.RenameWatchList(id, newName);
+            return await watchListRepository.RenameWatchList(id, newName);
         }
     }
 }

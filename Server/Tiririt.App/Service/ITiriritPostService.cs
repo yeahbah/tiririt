@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Tiririt.Core.Collection;
 using Tiririt.Domain.Models;
 
@@ -5,10 +6,10 @@ namespace Tiririt.App.Service
 {
     public interface ITiriritPostService
     {
-        PagingResultEnvelope<PostModel> GetPostsByUserId(int userId, PagingParam pagingParam);
-        PostModel AddOrModifyPost(string postText, int? postId = null, int? responseToPostId = null);
-        void DeletePost(int postId);
-        PagingResultEnvelope<PostModel> GetResponses(int postId, PagingParam pagingParam);
-        PostModel LikeOrDislikePost(int postId, bool like);
+        Task<PagingResultEnvelope<PostModel>> GetPostsByUserId(int userId, PagingParam pagingParam);
+        Task<PostModel> AddOrModifyPost(string postText, int? postId = null, int? responseToPostId = null);
+        Task DeletePost(int postId);
+        Task<PagingResultEnvelope<PostModel>> GetResponses(int postId, PagingParam pagingParam);
+        Task<PostModel> LikeOrDislikePost(int postId, bool like);
     }
 }

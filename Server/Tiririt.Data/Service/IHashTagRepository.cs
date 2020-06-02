@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Tiririt.Domain.Models;
 
 namespace Tiririt.Data.Service
@@ -9,19 +10,19 @@ namespace Tiririt.Data.Service
         /// </summary>
         /// <param name="postId"></param>
         /// <param name="tags"></param>
-        void AddTagsToPost(int postId, string[] tags);
+        Task AddTagsToPost(int postId, string[] tags);
 
         /// <summary>
         /// Unlink tags from post
         /// </summary>
         /// <param name="postId"></param>
-        void RemoveTagsFromPost(int postId, bool permanent = false);
+        Task RemoveTagsFromPost(int postId, bool permanent = false);
 
         /// <summary>
         /// Add a single has tag
         /// </summary>
         /// <param name="hashTag"></param>
-        /// <returns></returns>
-        HashTagModel AddHashTag(string hashTag);
+        /// <returns></returns>        
+        Task<HashTagModel> AddHashTag(string hashTag);
     }
 }

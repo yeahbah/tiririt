@@ -4,6 +4,7 @@ using Tiririt.Data.Service;
 using Tiririt.Domain.Models;
 using Tiririt.Core.Extensions;
 using Tiririt.Data.Internal;
+using System.Threading.Tasks;
 
 namespace Tiririt.App.Internal.Service
 {
@@ -26,71 +27,69 @@ namespace Tiririt.App.Internal.Service
             this.stockRepository = stockRepository;
         }
 
-        public void DeletePost(int postId)
+        public async Task DeletePost(int postId)
         {
             //TODO validate if user can delete
 
-            using var transaction = dbContext.Database.BeginTransaction();
+            using var transaction = await dbContext.Database.BeginTransactionAsync();
             try
             {
-                hashTagRepository.RemoveTagsFromPost(postId);
-                stockRepository.RemoveStockLinksFromPost(postId);                            
+                await hashTagRepository.RemoveTagsFromPost(postId);
+                await stockRepository.RemoveStockLinksFromPost(postId);                            
                 
-                postRepository.DeletePost(postId);
-                transaction.Commit();
+                await postRepository.DeletePost(postId);
+                await transaction.CommitAsync();
             }
             catch
             {
-                transaction.Rollback();
+                await transaction.RollbackAsync();
                 throw;
             }
         }
 
-        public PagingResultEnvelope<PostModel> GetPostsByUserId(int userId, PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<PostModel>> GetPostsByUserId(int userId, PagingParam pagingParam)
         {
-            var result = postRepository.GetPostsByUserId(userId, pagingParam);
-            return result;
+            return await postRepository.GetPostsByUserId(userId, pagingParam);
         }
 
-        public PagingResultEnvelope<PostModel> GetResponses(int postId, PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<PostModel>> GetResponses(int postId, PagingParam pagingParam)
         {
-            var result = postRepository.GetResponses(postId, pagingParam);
-            return result;
+            return await postRepository.GetResponses(postId, pagingParam);
         }   
 
-        public PostModel AddOrModifyPost(string postText, int? postId = null, int? responseToPostId = null)
+        public async Task<PostModel> AddOrModifyPost(string postText, int? postId = null, int? responseToPostId = null)
         {
             var tags = postText.ParseTags("#");
             var stocks = postText.ParseTags("$");
 
-            using var transaction = dbContext.Database.BeginTransaction();
+            using var transaction = await dbContext.Database.BeginTransactionAsync();
             try
             {
                 if (postId == null) 
                 {
-                    postId = postRepository.NewPost(postText, responseToPostId);
+                    postId = await postRepository.NewPost(postText, responseToPostId);
                 }
                 else
                 {
-                    hashTagRepository.RemoveTagsFromPost(postId.Value, true);
-                    stockRepository.RemoveStockLinksFromPost(postId.Value, true);
-                    postRepository.ModifyPost(postId.Value, postText);
+                    await hashTagRepository.RemoveTagsFromPost(postId.Value, true);
+                    await stockRepository.RemoveStockLinksFromPost(postId.Value, true);
+                    await postRepository.ModifyPost(postId.Value, postText);
                 }
-                hashTagRepository.AddTagsToPost(postId.Value, tags);
-                stockRepository.LinkPostToStocks(postId.Value, stocks);
-                transaction.Commit();
-                return postRepository.GetPost(postId.Value);
+                await hashTagRepository.AddTagsToPost(postId.Value, tags);
+                await stockRepository.LinkPostToStocks(postId.Value, stocks);
+                await transaction.CommitAsync();
+                return await postRepository.GetPost(postId.Value);
             }
             catch
             {
-                transaction.Rollback();
+                await transaction.RollbackAsync();
                 throw;
             }
         }
 
-        public PostModel LikeOrDislikePost(int postId, bool like)
+        public async Task<PostModel> LikeOrDislikePost(int postId, bool like)
         {
-            return postRepository.LikeOrDislikePost(postId, like);
+            return await postRepository.LikeOrDislikePost(postId, like);
         }
     }
 }

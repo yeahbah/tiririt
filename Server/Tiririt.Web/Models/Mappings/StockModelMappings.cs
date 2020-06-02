@@ -1,3 +1,4 @@
+using System.Linq;
 using Tiririt.Domain.Models;
 
 namespace Tiririt.Web.Models.Mappings
@@ -13,22 +14,24 @@ namespace Tiririt.Web.Models.Mappings
                 Name = value.Name,
                 SectorId = value.SectorId,
                 StockId = value.StockId,
-                Symbol = value.Symbol                
+                Symbol = value.Symbol,
+                Price = value.StockQuotes.OrderByDescending(o => o.TradeDate).FirstOrDefault()?.Close                
             };
             
         }
 
-        public static StockModel ToDomainModel(this StockViewModel value)
-        {
-            if (value == null) return null;
+        //public static StockModel ToDomainModel(this StockViewModel value)
+        //{
+        //    if (value == null) return null;
 
-            return new StockModel
-            {
-                Name = value.Name,
-                SectorId = value.SectorId,
-                StockId = value.StockId,
-                Symbol = value.Symbol
-            };
-        }
+        //    return new StockModel
+        //    {
+        //        Name = value.Name,
+        //        SectorId = value.SectorId,
+        //        StockId = value.StockId,
+        //        Symbol = value.Symbol,
+        //        Price = value.Price
+        //    };
+        //}
     }
 }

@@ -1,0 +1,17 @@
+.watchlist-container {
+    margin: 5px;
+    width: 100%;
+}
+
+.toolbar {
+    width: 100%;
+    /* text-align: right;     */
+}
+
+.mat-form-field {
+    width: 100px;
+}
+
+table {
+    width: 100%;
+}

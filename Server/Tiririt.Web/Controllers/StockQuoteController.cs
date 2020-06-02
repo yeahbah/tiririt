@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Tiririt.App.Service;
 using Tiririt.Core.Collection;
@@ -18,9 +19,9 @@ namespace Tiririt.Web.Controllers
         }
 
         [HttpGet(RouteConsts.StockQuote.EndOfDay)]
-        public ActionResult<PagingResultEnvelope<StockQuoteViewModel>> GetStockQuotes(string symbol, PagingParam pagingParam)
+        public async Task<ActionResult<PagingResultEnvelope<StockQuoteViewModel>>> GetStockQuotes(string symbol, PagingParam pagingParam)
         {
-            var pagedResult = stockQuoteService
+            var pagedResult = await stockQuoteService
                 .GetStockQuotes(symbol, pagingParam);
             var data = pagedResult
                 .Data.Select(q => q.ToViewModel())

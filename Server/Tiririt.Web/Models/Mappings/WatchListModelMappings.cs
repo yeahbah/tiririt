@@ -18,17 +18,17 @@ namespace Tiririt.Web.Models.Mappings
             };
         }
 
-        public static WatchListModel ToDomainModel(this WatchListViewModel value)
-        {
-            if (value == null) return null;
+        //public static WatchListModel ToDomainModel(this WatchListViewModel value)
+        //{
+        //    if (value == null) return null;
 
-            return new WatchListModel
-            {
-                Stocks = value.Stocks.Select(s => s.ToDomainModel()),
-                UserId = value.UserId,
-                WatchListId = value.WatchListId,
-                WatchListName = value.WatchListName
-            };
-        }
+        //    return new WatchListModel
+        //    {
+        //        Stocks = value.Stocks.Select(s => s.ToDomainModel()),
+        //        UserId = value.UserId,
+        //        WatchListId = value.WatchListId,
+        //        WatchListName = value.WatchListName
+        //    };
+        //}
     }
 }

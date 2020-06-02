@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Tiririt.App.Service;
 using Tiririt.Core.Collection;
@@ -23,9 +24,9 @@ namespace Tiririt.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet(RouteConsts.TiriritPost.UserPostings)]
-        public ActionResult<PagingResultEnvelope<PostViewModel>> GetPosts(int userId, PagingParam pagingParam)
+        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetPosts(int userId, PagingParam pagingParam)
         {
-            var pagedResult = tiriritPostService
+            var pagedResult = await tiriritPostService
                 .GetPostsByUserId(userId, pagingParam);
             
             var data = pagedResult.Data
@@ -39,22 +40,21 @@ namespace Tiririt.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<PostViewModel> NewPost([FromBody]string postText, BullBearLevel? bullBearLevel)
+        public async Task<ActionResult<PostViewModel>> NewPost([FromBody]string postText, BullBearLevel? bullBearLevel)
         {
-            var result = tiriritPostService
-                .AddOrModifyPost(postText)
-                .ToViewModel();
-            return Ok(result);
+            var result = await tiriritPostService
+                .AddOrModifyPost(postText);
+                
+            return Ok(result.ToViewModel());
         }
 
                 
         [HttpPost(RouteConsts.TiriritPost.Reply)]
-        public ActionResult<PostViewModel> NewResponse(int postId, [FromBody]string postText)
+        public async Task<ActionResult<PostViewModel>> NewResponse(int postId, [FromBody]string postText)
         {
-            var result = tiriritPostService
-                .AddOrModifyPost(postText, null, postId)
-                .ToViewModel();
-            return Ok(result);
+            var result = await tiriritPostService
+                .AddOrModifyPost(postText, null, postId);
+            return Ok(result.ToViewModel());
         }
 
         /// <summary>
@@ -63,18 +63,17 @@ namespace Tiririt.Web.Controllers
         /// <param name="postId"></param>
         /// <returns></returns>
         [HttpPut(RouteConsts.TiriritPost.ModifyPost)]
-        public ActionResult<PostViewModel> ModifyPost(int postId, [FromBody]string postText)
+        public async Task<ActionResult<PostViewModel>> ModifyPost(int postId, [FromBody]string postText)
         {
-            var result = tiriritPostService
-                .AddOrModifyPost(postText, postId)
-                .ToViewModel();
-            return Ok(result);
+            var result = await tiriritPostService
+                .AddOrModifyPost(postText, postId);
+            return Ok(result.ToViewModel());
         }
 
         [HttpDelete]
-        public IActionResult DeletePost(int postId)
+        public async Task<IActionResult> DeletePost(int postId)
         {
-            tiriritPostService.DeletePost(postId);
+            await tiriritPostService.DeletePost(postId);
             return Ok();
         }        
 
@@ -84,9 +83,9 @@ namespace Tiririt.Web.Controllers
         /// <param name="postId"></param>
         /// <returns></returns>
         [HttpGet(RouteConsts.TiriritPost.Responses)]
-        public ActionResult<PagingResultEnvelope<ResponseViewModel>> GetResponses(int postId, PagingParam pagingParam)
+        public async Task<ActionResult<PagingResultEnvelope<ResponseViewModel>>> GetResponses(int postId, PagingParam pagingParam)
         {
-            var pagedResult = tiriritPostService
+            var pagedResult = await tiriritPostService
                 .GetResponses(postId, pagingParam);
             var data = pagedResult.Data.Select(post => post.ToResponseViewModel());                
 
@@ -100,9 +99,9 @@ namespace Tiririt.Web.Controllers
         /// <param name="like"></param>
         /// <returns></returns>
         [HttpGet(RouteConsts.TiriritPost.LikeDislike)]
-        public ActionResult<PostViewModel> LikeDislike(int postId, int like)
+        public async Task<ActionResult<PostViewModel>> LikeDislike(int postId, int like)
         {
-            var result = tiriritPostService.LikeOrDislikePost(postId, like == 1 ? true : false);
+            var result = await tiriritPostService.LikeOrDislikePost(postId, like == 1 ? true : false);
             return Ok(result.ToViewModel());
         }
 

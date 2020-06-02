@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using Tiririt.App.Service;
 using Tiririt.Web.Common;
 
@@ -26,9 +27,9 @@ namespace Tiririt.Web.Controllers
 
         [HttpGet(RouteConsts.Stock.GetStock)]    
         [ProducesResponseType(200)]
-        public IActionResult GetStock(string symbol)
+        public async Task<IActionResult> GetStock(string symbol)
         {
-            var result = stockService.GetStock(symbol);
+            var result = await stockService.GetStock(symbol.ToUpper());
             return OkOrNotFound(result);
         }        
     }

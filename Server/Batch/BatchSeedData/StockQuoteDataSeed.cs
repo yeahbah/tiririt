@@ -58,22 +58,26 @@ namespace BatchSeedData
                 if (stock == null) {
                     stock = stockService.AddStock(new StockModel { Symbol = symbol, SectorId = sectorId, Name = values[1] });
                 }
-                decimal? netForeignBuy = null;
-                if (values.Length == 8) 
+
+                if (DateTime.TryParse(values[1], out var tradeDate))
                 {
-                    netForeignBuy = decimal.Parse(values[7]);
+                    decimal? netForeignBuy = null;
+                    if (values.Length == 8)
+                    {
+                        netForeignBuy = decimal.Parse(values[7]);
+                    }
+                    stockQuoteService.AddStockQuote(new StockQuoteModel
+                    {
+                        TradeDate = tradeDate,//DateTime.Parse(values[1]),
+                        Open = decimal.Parse(values[2]),
+                        High = decimal.Parse(values[3]),
+                        Low = decimal.Parse(values[4]),
+                        Close = decimal.Parse(values[5]),
+                        Volume = long.Parse(values[6]),
+                        NetForeignBuy = netForeignBuy,
+                        StockId = stock.StockId
+                    });
                 }
-                stockQuoteService.AddStockQuote(new StockQuoteModel 
-                {
-                    TradeDate = DateTime.Parse(values[1]),
-                    Open = decimal.Parse(values[2]),
-                    High = decimal.Parse(values[3]),
-                    Low = decimal.Parse(values[4]),
-                    Close = decimal.Parse(values[5]),
-                    Volume = long.Parse(values[6]),
-                    NetForeignBuy = netForeignBuy,
-                    StockId = stock.StockId
-                });
             }
         }
     }

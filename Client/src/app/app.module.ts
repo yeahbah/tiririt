@@ -5,18 +5,27 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgMaterialModule } from './ngmaterial/ngmaterial.module';
+import { WatchlistComponent } from './watchlist/watchlist.component';
+import { WatchlistService } from './watchlist/watchlist.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent
+    HomeComponent,
+    WatchlistComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    HttpClientModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    NgMaterialModule
   ],
-  providers: [],
+  providers: [WatchlistService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

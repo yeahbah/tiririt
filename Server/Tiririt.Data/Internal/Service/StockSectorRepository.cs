@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 using Tiririt.Data.Entities;
 using Tiririt.Data.Service;
 using Tiririt.Domain.Models;
@@ -14,26 +16,26 @@ namespace Tiririt.Data.Internal.Service
             this.dbContext = dbContext;
         }
 
-        public StockSectorModel AddSector(StockSectorModel sectorModel)
+        public async Task<StockSectorModel> AddSector(StockSectorModel sectorModel)
         {
             var sector = new STOCK_SECTOR 
             {
                 SECTOR_NAME = sectorModel.SectorName
             };
             dbContext.StockSectors.Add(sector);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
             return new StockSectorModel { SectorName = sector.SECTOR_NAME, SectorId = sector.STOCK_SECTOR_ID };
         }
 
-        public StockSectorModel GetSector(string name)
+        public async Task<StockSectorModel> GetSector(string name)
         {
-            var result = dbContext.StockSectors
+            var result = await dbContext.StockSectors
                 .Where(s => s.SECTOR_NAME == name)
                 .Select(s => new StockSectorModel {
                     SectorId = s.STOCK_SECTOR_ID,
                     SectorName = s.SECTOR_NAME
                 })                
-                .SingleOrDefault();
+                .SingleOrDefaultAsync();
             return result;
         }
     }
