@@ -1,3 +1,44 @@
-<ul>
-	<li *ngFor="let o of rssData?.rss.channel[0].item"><a href="{{o.link[0]}}">{{o.title[0]}}</a></li>
-</ul>
+<!-- <ul>
+	<li *ngFor="let o of rssData?.rss.channel.item">
+		<a href="{{ o.link }}">{{ o.title }}</a>
+	</li>
+</ul> -->
+
+<div *ngFor="let rss of rssData?.rss.channel.item">    
+	<mat-card>
+		<mat-card-header>     
+			<div mat-card-avatar class="example-header-image"></div>
+			<mat-card-subtitle>
+				<div>
+				<a href="https://investing.einnews.com/news/philippine-stock-exchange">EIN News</a>   <br>
+				Posted {{ rss.pubDate }}
+				</div>            
+			</mat-card-subtitle>	
+		</mat-card-header>
+		
+		<mat-card-content>
+			<a href="{{ rss.link }}"><p>{{ rss.title }}</p></a>
+			
+			{{ rss.description }}
+		</mat-card-content>
+	
+		<mat-card-actions>			
+			<button mat-icon-button >
+				<mat-icon>format_quote</mat-icon>
+			</button>
+			<!-- <button mat-icon-button>
+				<span matBadge="{{ post.responseCount }}" matBadgePosition="before" matBadgeColor="accent"></span>
+					<mat-icon>mode_comment</mat-icon>
+			</button>
+			<button mat-icon-button>
+				<span matBadge="{{ post.likeCount }}" matBadgePosition="before" matBadgeColor="accent"></span>
+					<img src="https://img.icons8.com/material-sharp/24/000000/thumb-up.png"/>                
+			</button> -->
+			<!-- <button mat-stroked-button matBadge="{{ post.dislikeCount }}" matBadgePosition="before" matBadgeColor="accent">
+					<img src="https://img.icons8.com/material-rounded/24/000000/thumbs-down.png"/>
+			</button> -->
+			
+		</mat-card-actions>
+	</mat-card>
+	<mat-divider></mat-divider>
+	</div>

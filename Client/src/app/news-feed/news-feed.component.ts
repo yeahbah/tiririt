@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { NewsRss } from './news-rss';
 // import * as xml2js from "xml2js";
 // import { NewsRss } from './news-rss';
 
@@ -10,27 +11,26 @@ import { HttpClient } from '@angular/common/http';
 })
 export class NewsFeedComponent implements OnInit {
 
-  // rssData: NewsRss;
+  rssData: NewsRss;
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    // this.getRssFeedData();
+    this.getRssFeedData();
   }
 
-  // getRssFeedData() {
-  //   const requestOptions: Object = {
-  //     observe: "body",
-  //     responseType: "text"
-  //   };
-  //   this.http
-  //     .get<any>("https://investing.einnews.com/rss/dh5LoBFONe1cJ1s0", requestOptions)
-  //     .subscribe(data => {
-  //       console.log(data);
-  //       let parseString = xml2js.parseString;
-  //       parseString(data, (err, result: NewsRss) => {
-  //         this.rssData = result;
-  //       });
-  //     });
-  // }
+  getRssFeedData() {
+  
+    this.http
+      .get<NewsRss>("../assets/news-feed.json")
+      .subscribe(data => {          
+        this.rssData = data;
+        if (this.rssData) {
+          for(let i = 0; i < this.rssData.rss.channel.item.length; i++) {
+            this.rssData.rss.channel.item[i].description = this.rssData.rss.channel.item[i].description.replace(/(<([^>]+)>|&#\d+;)/ig, "");
+          }
+        }
+        console.log(this.rssData.rss.channel);
+      });
+  }
 
 }
