@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Tiririt.Data.Internal.Entities;
 
 namespace Tiririt.Data.Entities
 {
@@ -35,6 +36,8 @@ namespace Tiririt.Data.Entities
         public virtual ICollection<TIRIRIT_POST> Ref_TiriritPosts { get; set; }
         public virtual ICollection<WATCH_LIST> Ref_WatchLists { get; set; }
 
-        public virtual ICollection<LIKE_DISLIKE_POST> Ref_LikeDislikePosts { get; set;}
+        public virtual ICollection<LIKE_DISLIKE_POST> Ref_LikeDislikePosts { get; set; }
+
+        public virtual ICollection<MENTION> Ref_MentionedInPosts { get; set; }
     }
 }

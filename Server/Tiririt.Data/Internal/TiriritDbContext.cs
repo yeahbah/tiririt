@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Logging;
 using Tiririt.Core.Enums;
 using Tiririt.Data.Entities;
+using Tiririt.Data.Internal.Entities;
 
 namespace Tiririt.Data.Internal
 {
@@ -60,7 +61,21 @@ namespace Tiririt.Data.Internal
                 .HasOne(ps => ps.Ref_TiriritPost)
                 .WithMany(ps => ps.Ref_Stocks)
                 .HasForeignKey(ps => ps.TIRIRIT_POST_ID);
-            
+
+            // many-to-many post-user-mentions
+            modelBuilder.Entity<MENTION>()
+                .ToTable("mention")
+                .HasKey(m => new { m.TIRIRIT_POST_ID, m.TIRIRIT_USER_ID });
+            modelBuilder.Entity<MENTION>()
+                .HasOne(post => post.Ref_TiriritPost)
+                .WithMany(post => post.Ref_MentionUsers)
+                .HasForeignKey(post => post.TIRIRIT_POST_ID);
+            modelBuilder.Entity<MENTION>()
+                .HasOne(user => user.Ref_TiriritUser)
+                .WithMany(user => user.Ref_MentionedInPosts)
+                .HasForeignKey(user => user.TIRIRIT_USER_ID);
+
+
             modelBuilder.Entity<STOCK_SECTOR>()
                 .ToTable("stock_sector")
                 .HasMany(b => b.Ref_Stocks)

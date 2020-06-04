@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Tiririt.Data.Internal.Entities;
 
 namespace Tiririt.Data.Entities
 {
@@ -39,5 +40,7 @@ namespace Tiririt.Data.Entities
         public virtual ICollection<POST_STOCK> Ref_Stocks { get; set; }
 
         public virtual ICollection<LIKE_DISLIKE_POST> Ref_LikeDislikeByUsers { get; set; }
+
+        public virtual ICollection<MENTION> Ref_MentionUsers { get; set; }
     }
 }
