@@ -1,0 +1,32 @@
+.tiririt-form {
+    width: 100%;
+}
+
+.form-field {
+    width: 100%;
+}
+
+.post-action-container {
+    display: flex;
+}
+
+.post-bear-bull {
+    width: 70%;
+}
+
+.post-buttons {
+    width: 30%;
+    text-align: right;
+}
+
+.isBearish {
+    background-color: red;
+    color: white;
+}
+
+.isBullish {
+    background-color: green;
+    color: white;
+}
+
+

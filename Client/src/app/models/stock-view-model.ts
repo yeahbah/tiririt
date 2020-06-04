@@ -3,5 +3,5 @@ export interface StockViewModel {
     symbol: string;
     name: string;
     sectorId: number;
-    price: number;
+    price?: number;
 }

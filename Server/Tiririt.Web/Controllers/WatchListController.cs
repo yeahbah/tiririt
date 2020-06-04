@@ -8,11 +8,11 @@ using Tiririt.Web.Models.Mappings;
 
 namespace Tiririt.Web.Controllers
 {    
-    public class WathcListController : TiriritControllerBase
+    public class WatchListController : TiriritControllerBase
     {
         private readonly IWatchListService watchListService;
 
-        public WathcListController(IWatchListService watchListService)
+        public WatchListController(IWatchListService watchListService)
         {
             this.watchListService = watchListService;
         }
@@ -27,8 +27,8 @@ namespace Tiririt.Web.Controllers
         public async Task<ActionResult<WatchListViewModel>> Get()
         {
             var result = await watchListService
-                .GetWatchList();           
-            return Ok(result.Select(w => w.ToViewModel()));
+                .GetWatchList()                ;           
+            return Ok(result.FirstOrDefault()?.ToViewModel());
         }
 
         //PUT: WatchList/id/stock/{stockSymbol}

@@ -15,8 +15,7 @@ export class WatchlistService {
   }
 
   getWatchList(): Observable<WatchlistModel> {
-    const url = 'https://localhost:44303/api/v1/WatchList';
-    console.log(url);
+    const url = 'https://localhost:44303/api/v1/WatchList';    
     return this.http.get<WatchlistModel>(url);
   }
 }

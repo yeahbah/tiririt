@@ -10,13 +10,22 @@ import { NgMaterialModule } from './ngmaterial/ngmaterial.module';
 import { WatchlistComponent } from './watchlist/watchlist.component';
 import { WatchlistService } from './watchlist/watchlist.service';
 import { HttpClientModule } from '@angular/common/http';
+import { SubmitPostFormComponent } from './submit-post-form/submit-post-form.component';
+import { FeedContainerComponent } from './feed-container/feed-container.component';
+import { MyFeedComponent } from './my-feed/my-feed.component';
+import { MyFeedService } from './my-feed/my-feed.service';
+import { NewsFeedComponent } from './news-feed/news-feed.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    WatchlistComponent
+    WatchlistComponent,
+    SubmitPostFormComponent,
+    FeedContainerComponent,
+    MyFeedComponent,
+    NewsFeedComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +34,7 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     NgMaterialModule
   ],
-  providers: [WatchlistService],
+  providers: [WatchlistService, MyFeedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

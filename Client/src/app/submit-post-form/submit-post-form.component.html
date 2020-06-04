@@ -1,0 +1,27 @@
+<mat-card>
+
+    <mat-card-content>
+    <form class="tiririt-form">
+        <mat-form-field class="form-field">
+            <mat-label>Say something about your favorite stock</mat-label>
+            <textarea matInput placeholder="Ex. @supertrader @bulltactics $GLO did very well last quarter. #panalo" 
+                maxlength="300"></textarea>
+        </mat-form-field>
+    </form>    
+<!-- <mat-card-actions> -->
+    <div class="post-action-container">
+        <div class="post-bear-bull">
+            <button mat-stroked-button color="basic" (click)="bearishClick()" [class.isBearish]="isBearish">
+                Bearish</button>
+            <button mat-stroked-button color="basic" (click)="bullishClick()" [class.isBullish]="isBullish">                
+                Bullish</button>
+
+        </div>
+        <div class="post-buttons">
+            <button mat-raised-button color="primary" (click)="submit()">Post</button>
+        </div>
+    </div>
+</mat-card-content>
+
+<!-- </mat-card-actions>     -->
+</mat-card>

@@ -1,0 +1,5 @@
+GET https://localhost:44303/api/v1/WathcList
+
+###
+
+GET https://investing.einnews.com/rss/dh5LoBFONe1cJ1s0

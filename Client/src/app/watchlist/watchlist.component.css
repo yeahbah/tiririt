@@ -5,11 +5,11 @@
 
 .toolbar {
     width: 100%;
-    /* text-align: right;     */
 }
 
 .mat-form-field {
     width: 100px;
+    margin-right: 5px;
 }
 
 table {

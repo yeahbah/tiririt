@@ -17,9 +17,21 @@ namespace Tiririt.Web
 
         public IConfiguration Configuration { get; }
 
+        private string corsSpecificOrigins = "_corsSpecificOrigins";
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: corsSpecificOrigins,
+                    builder =>
+                    {
+                        builder
+                            .AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
             services.AddControllers()
                 .AddJsonOptions(options => {
                     options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
@@ -60,7 +72,8 @@ namespace Tiririt.Web
                 }
             });            
 
-            app.UseRouting();            
+            app.UseRouting();
+            app.UseCors(corsSpecificOrigins);
 
             app.UseAuthorization();
 

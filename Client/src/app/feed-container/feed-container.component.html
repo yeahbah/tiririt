@@ -1,0 +1,23 @@
+<mat-tab-group mat-align-tabs="left" backgroundColor="primary" color="accent">
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon>chat_bubble_outline</mat-icon>
+            My Feed
+        </ng-template>
+        <app-my-feed></app-my-feed>
+    </mat-tab>
+    <mat-tab label="Trending">
+        <ng-template mat-tab-label>
+            <mat-icon>trending_up</mat-icon>
+            Trending
+        </ng-template>
+        Content 3</mat-tab>
+    <mat-tab label="News">
+        <ng-template mat-tab-label>
+            <mat-icon>rss_feed</mat-icon>
+            News
+        </ng-template>
+        <app-news-feed></app-news-feed>
+    </mat-tab>
+    
+</mat-tab-group>

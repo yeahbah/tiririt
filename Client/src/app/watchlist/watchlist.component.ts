@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WatchlistService } from './watchlist.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { WatchlistModel } from './watchlist-model';
-import { ThrowStmt } from '@angular/compiler';
 import { StockViewModel } from '../models/stock-view-model';
 
 @Component({
@@ -12,8 +10,8 @@ import { StockViewModel } from '../models/stock-view-model';
 })
 export class WatchlistComponent implements OnInit {
 
-  dataSource: MatTableDataSource<StockViewModel>;
-  displayedColumns = ['symbol', 'price'];
+  dataSource = new MatTableDataSource<StockViewModel>();
+  displayedColumns: string[] = ['symbol', 'price'];
 
   constructor(
     private watchListService: WatchlistService
@@ -23,6 +21,7 @@ export class WatchlistComponent implements OnInit {
     this.watchListService.getWatchList()
       .subscribe(result => {
         this.dataSource = new MatTableDataSource<StockViewModel>(result.stocks);
+        console.log(result);
       }, error => console.error(error));
   }
 
