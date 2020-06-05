@@ -21,4 +21,8 @@ export class MyFeedComponent implements OnInit {
       }, error => console.error(error));
   }
 
+  goToPost() {
+    console.log('hello');
+  }
+
 }

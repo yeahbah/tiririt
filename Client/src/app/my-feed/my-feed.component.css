@@ -14,9 +14,8 @@
     flex-shrink: 0;
 }
 
-.bearbullindicator {
-    text-align: right;
-    flex-grow: 1;
+.mat-card-actions {
+    height: fit-content;
 }
 
 .example-header-image {
@@ -33,10 +32,27 @@
     text-align: center;
 }
 
-/* .bullish {
-    background-color: green;
-    height: 40px;
-    width: 40px;
+button {
+    color: grey;
+}
+
+.bearbullindicator {    
+    color: white;
+    width: 50px;    
+    text-align: center;
+    height: 25px;
+    font-size: 9pt;
     float: right;
-    padding: 2px; 
-} */
+}
+
+.bullish {
+    background-color: green;
+}
+
+.bearish {
+    background-color: red;
+}
+
+.icon-display {
+    transform: scale(0.7);
+}

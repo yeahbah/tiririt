@@ -24,11 +24,11 @@ export class NewsFeedComponent implements OnInit {
       .get<NewsRss>("../assets/news-feed.json")
       .subscribe(data => {          
         this.rssData = data;
-        if (this.rssData) {
-          for(let i = 0; i < this.rssData.rss.channel.item.length; i++) {
-            this.rssData.rss.channel.item[i].description = this.rssData.rss.channel.item[i].description.replace(/(<([^>]+)>|&#\d+;)/ig, "");
-          }
-        }
+        // if (this.rssData) {
+        //   for(let i = 0; i < this.rssData.rss.channel.item.length; i++) {
+        //     this.rssData.rss.channel.item[i].description = this.rssData.rss.channel.item[i].description.replace(/(<([^>]+)>|&#\d+;)/ig, "");
+        //   }
+        // }
         console.log(this.rssData.rss.channel);
       });
   }

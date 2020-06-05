@@ -1,3 +1,17 @@
 .mat-card-content {
     word-wrap: normal;
 }
+
+.example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+}
+
+
+.icon-display {
+    transform: scale(0.7);
+}
+
+button {
+    color: grey;
+}

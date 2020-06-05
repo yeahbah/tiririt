@@ -15,6 +15,12 @@ import { FeedContainerComponent } from './feed-container/feed-container.componen
 import { MyFeedComponent } from './my-feed/my-feed.component';
 import { MyFeedService } from './my-feed/my-feed.service';
 import { NewsFeedComponent } from './news-feed/news-feed.component';
+import { LinkifyPipe } from './pipes/linkify-pipe';
+import { PostDetailsComponent } from './post-details/post-details.component';
+import { StockComponent } from './stock/stock.component';
+import { UserComponent } from './user/user.component';
+import { TagComponent } from './tag/tag.component';
+import { StripHtmlPipe } from './pipes/stirp-html-pipe';
 
 @NgModule({
   declarations: [
@@ -25,7 +31,13 @@ import { NewsFeedComponent } from './news-feed/news-feed.component';
     SubmitPostFormComponent,
     FeedContainerComponent,
     MyFeedComponent,
-    NewsFeedComponent
+    NewsFeedComponent,
+    LinkifyPipe,
+    StripHtmlPipe,
+    PostDetailsComponent,
+    StockComponent,
+    UserComponent,
+    TagComponent
   ],
   imports: [
     BrowserModule,

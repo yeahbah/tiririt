@@ -19,12 +19,12 @@
 		<mat-card-content>
 			<a href="{{ rss.link }}"><p>{{ rss.title }}</p></a>
 			
-			{{ rss.description }}
+			{{ rss.description | striphtml }}
 		</mat-card-content>
 	
 		<mat-card-actions>			
 			<button mat-icon-button >
-				<mat-icon>format_quote</mat-icon>
+				<mat-icon class="icon-display">format_quote</mat-icon>
 			</button>
 			<!-- <button mat-icon-button>
 				<span matBadge="{{ post.responseCount }}" matBadgePosition="before" matBadgeColor="accent"></span>
