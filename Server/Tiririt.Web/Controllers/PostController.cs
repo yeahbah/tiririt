@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tiririt.App.Service;
 using Tiririt.Core.Collection;
@@ -23,6 +24,7 @@ namespace Tiririt.Web.Controllers
         /// Get all postings of a user
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet(RouteConsts.TiriritPost.UserPostings)]
         public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetPosts(int userId, PagingParam pagingParam)
         {

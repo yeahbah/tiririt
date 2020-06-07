@@ -15,8 +15,8 @@ namespace Tiririt.Data.Internal.Mappings
                 FirstName = value.FIRST_NAME,
                 Lastname = value.LAST_NAME,
                 RegisterDate = value.REGISTER_DT,
-                UserId = value.TIRIRIT_USER_ID,
-                UserName = value.USER_NAME
+                UserId = value.Id,
+                UserName = value.UserName
             };
         }
     }

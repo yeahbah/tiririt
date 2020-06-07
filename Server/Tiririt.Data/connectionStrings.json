@@ -1,0 +1,6 @@
+{
+	"ConnectionStrings": {
+		"DefaultConnection": "",
+		"DefaultConnection_comment": "Moved to secrets.json"
+	}
+}

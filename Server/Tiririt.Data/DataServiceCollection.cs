@@ -10,7 +10,7 @@ namespace Tiririt.Data
     {
         public static IServiceCollection AddDataService(this IServiceCollection services) 
         {
-            return services
+           services
                 .AddDbContext<TiriritDbContext>(options => {
                     options.UseNpgsql("Host=localhost; Database=TiriritDb; Username=arnold;Password=1q2w3e4r"); })
                 .AddScoped<IStockRepository, StockRepository>()
@@ -19,6 +19,10 @@ namespace Tiririt.Data
                 .AddScoped<IStockQuoteRepository, StockQuoteRepository>()
                 .AddScoped<ITiriritPostRepository, TiriritPostRepository>()
                 .AddScoped<IHashTagRepository, HashTagRepository>();
+
+            
+
+            return services;
         }
     }
 }

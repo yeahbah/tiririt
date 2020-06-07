@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Tiririt.App\Tiririt.App.csproj" />
     <ProjectReference Include="..\Tiririt.Core\Tiririt.Core.csproj" />
+    <ProjectReference Include="..\Tiririt.Data\Tiririt.Data.csproj" />
     <ProjectReference Include="..\Tiririt.Domain\Tiririt.Domain.csproj" />
   </ItemGroup>
 
@@ -15,6 +16,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>bcfa453a-450b-47c5-84b1-7d03c5ed6671</UserSecretsId>
   </PropertyGroup>
 
 

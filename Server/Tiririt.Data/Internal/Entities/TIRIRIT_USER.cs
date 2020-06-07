@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,19 +7,22 @@ using Tiririt.Data.Internal.Entities;
 
 namespace Tiririt.Data.Entities
 {
-    public class TIRIRIT_USER : ENTITY_BASE
+    public class TIRIRIT_USER : IdentityUser<int>
     {
-        [Key]
-        public int TIRIRIT_USER_ID { get; set; }
+        //[Key]
+        //public int TIRIRIT_USER_ID { get; set; }
 
-        [Required]
-        public string USER_NAME { get; set; }
+        //[Required]
+        //public string IDENTITY_USER_ID { get; set; }
 
-        [Required]
-        public string EMAIL_ADDRESS { get; set; }
+        //[Required]
+        //public string USER_NAME { get; set; }
 
-        [Required]
-        public string PASSWORD { get; set; }
+        //[Required]
+        //public string EMAIL_ADDRESS { get; set; }
+
+        //[Required]
+        //public string PASSWORD { get; set; }
 
         [Required]
         [MaxLength(50)]
@@ -39,5 +43,7 @@ namespace Tiririt.Data.Entities
         public virtual ICollection<LIKE_DISLIKE_POST> Ref_LikeDislikePosts { get; set; }
 
         public virtual ICollection<MENTION> Ref_MentionedInPosts { get; set; }
+
+        //public APP_IDENTITY_USER Ref_IdentityUser { get; set; }
     }
 }

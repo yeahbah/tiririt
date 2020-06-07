@@ -1,16 +1,20 @@
-using System;
-using System.Linq;
-using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Tiririt.Core.Enums;
 using Tiririt.Data.Entities;
 using Tiririt.Data.Internal.Entities;
 
 namespace Tiririt.Data.Internal
 {
-    public class TiriritDbContext : DbContext
+    public class TiriritDbContext : IdentityDbContext<TIRIRIT_USER, IdentityRole<int>, int>
     {
         public static readonly ILoggerFactory _loggerFactory  = LoggerFactory.Create(builder => { builder.AddConsole(); });
 
@@ -28,6 +32,26 @@ namespace Tiririt.Data.Internal
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            // a user can have many posts
+            modelBuilder.Entity<TIRIRIT_USER>()
+                .ToTable("tiririt_user");
+
+            modelBuilder.Entity<TIRIRIT_USER>()
+                .HasMany(u => u.Ref_TiriritPosts)
+                .WithOne(u => u.Ref_PostedBy)
+                .HasForeignKey(u => u.TIRIRIT_USER_ID);            
+
+            //modelBuilder.Entity<TIRIRIT_USER>()
+            //    .HasAlternateKey(u => u.TIRIRIT_USER_ID);
+
+            // user can have many watch lists
+            modelBuilder.Entity<TIRIRIT_USER>()
+                .HasMany(b => b.Ref_WatchLists)
+                .WithOne(b => b.Ref_TiriritUser)
+                .HasForeignKey(b => b.TIRIRIT_USER_ID);            
+
             modelBuilder.Entity<HASH_TAG>()
                 .ToTable("hash_tag");
                 
@@ -43,12 +67,18 @@ namespace Tiririt.Data.Internal
                 .HasOne(ph => ph.Ref_TiriritPost)
                 .WithMany(ph => ph.Ref_HashTags)
                 .HasForeignKey(ph => ph.TIRIRIT_POST_ID);
+
+
             
             modelBuilder.Entity<TIRIRIT_POST>()
                 .ToTable("tiririt_post")
                 .HasOne(p => p.Ref_TiriritPost)
                 .WithMany(p => p.Ref_Responses)
                 .HasForeignKey(p => p.RESPONSE_TO_POST_ID);                        
+
+            //modelBuilder.Entity<TIRIRIT_POST>()                
+                
+                
             // many-to-many POST-STOCK
             modelBuilder.Entity<POST_STOCK>()
                 .ToTable("post_stock")
@@ -62,6 +92,8 @@ namespace Tiririt.Data.Internal
                 .WithMany(ps => ps.Ref_Stocks)
                 .HasForeignKey(ps => ps.TIRIRIT_POST_ID);
 
+            
+
             // many-to-many post-user-mentions
             modelBuilder.Entity<MENTION>()
                 .ToTable("mention")
@@ -74,7 +106,6 @@ namespace Tiririt.Data.Internal
                 .HasOne(user => user.Ref_TiriritUser)
                 .WithMany(user => user.Ref_MentionedInPosts)
                 .HasForeignKey(user => user.TIRIRIT_USER_ID);
-
 
             modelBuilder.Entity<STOCK_SECTOR>()
                 .ToTable("stock_sector")
@@ -117,22 +148,7 @@ namespace Tiririt.Data.Internal
                 .ToTable("watch_list_stock")          
                 .HasOne(b => b.Ref_Stock);
 
-            // a user can have many posts
-            modelBuilder.Entity<TIRIRIT_USER>()
-                .ToTable("tiririt_user")
-                .HasMany(u => u.Ref_TiriritPosts)
-                .WithOne(u => u.Ref_PostedBy)
-                .HasForeignKey(u => u.TIRIRIT_USER_ID);    
-            modelBuilder.Entity<TIRIRIT_USER>()
-                .HasAlternateKey(b => b.EMAIL_ADDRESS);
-            modelBuilder.Entity<TIRIRIT_USER>()                
-                .HasAlternateKey(b => b.USER_NAME);
-            
-            // user can have many watch lists
-            modelBuilder.Entity<TIRIRIT_USER>()
-                .HasMany(b => b.Ref_WatchLists)
-                .WithOne(b => b.Ref_TiriritUser)
-                .HasForeignKey(b => b.TIRIRIT_USER_ID);
+
             
             modelBuilder.Entity<BULL_BEAR_LEVEL_CODE>()
                 .ToTable("bull_bear_level_code")
@@ -229,11 +245,17 @@ namespace Tiririt.Data.Internal
     {
         public TiriritDbContext CreateDbContext(string[] args)
         {
-            //IConfigurationRoot configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(@Directory.GetCurrentDirectory() + "/../MyCookingMaster.API/appsettings.json").Build(); 
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(@Directory.GetCurrentDirectory() + "\\connectionStrings.json")
+                .AddUserSecrets("8c724486-0e01-4d42-bfff-aeda2705bfc7")                
+                .Build(); 
+
             var builder = new DbContextOptionsBuilder<TiriritDbContext>(); 
-            // var connectionString = configuration.GetConnectionString("DatabaseConnection"); 
-            var connectionString = "Host=localhost; Database=TiriritDb; Username=arnold;Password=1q2w3e4r";
-            builder.UseNpgsql(connectionString); 
+            
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            builder.UseNpgsql(connectionString);
+            
             return new TiriritDbContext(builder.Options); 
         }
     }

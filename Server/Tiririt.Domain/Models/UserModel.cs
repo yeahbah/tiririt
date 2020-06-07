@@ -1,3 +1,4 @@
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 
 namespace Tiririt.Domain.Models
