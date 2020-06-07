@@ -159,3 +159,4 @@ yarn-error.log
 
 .notes.md
 baseline.json
+Server/Tiririt.Data/connectionStrings.json
