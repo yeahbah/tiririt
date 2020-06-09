@@ -51,20 +51,6 @@ namespace Tiririt.Web
             services.AddSwaggerGenNewtonsoftSupport();
             
             services.AddAppServiceCollection();
-
-            services
-                .AddDefaultIdentity<Tiririt.Data.Entities.TIRIRIT_USER>(config =>
-                {
-                    config.Password.RequireNonAlphanumeric = false;
-                    config.Password.RequiredLength = 4;
-                    config.Password.RequireDigit = false;
-                    config.Password.RequireLowercase = false;
-                    config.Password.RequireUppercase = false;
-                    config.SignIn.RequireConfirmedEmail = false;
-                })
-                .AddEntityFrameworkStores<TiriritDbContext>()
-                .AddDefaultTokenProviders();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
