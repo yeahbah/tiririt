@@ -1,3 +1,4 @@
+using AutoMapper.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tiririt.Data.Internal;
@@ -12,7 +13,9 @@ namespace Tiririt.Data
         {
            services
                 .AddDbContext<TiriritDbContext>(options => {
-                    options.UseNpgsql("Host=localhost; Database=TiriritDb; Username=arnold;Password=1q2w3e4r"); })
+                    options.UseNpgsql("Host=localhost; Database=TiriritDb; Username=arnold;Password=1q2w3e4r"); 
+                })
+
                 .AddScoped<IStockRepository, StockRepository>()
                 .AddScoped<IWatchListRepository, WatchListRepository>()
                 .AddScoped<IStockSectorRepository, StockSectorRepository>()

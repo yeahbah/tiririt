@@ -53,7 +53,7 @@ namespace Tiririt.Web
             services.AddAppServiceCollection();
 
             services
-                .AddIdentity<IdentityUser, IdentityRole>(config =>
+                .AddDefaultIdentity<Tiririt.Data.Entities.TIRIRIT_USER>(config =>
                 {
                     config.Password.RequireNonAlphanumeric = false;
                     config.Password.RequiredLength = 4;
@@ -110,6 +110,7 @@ namespace Tiririt.Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }

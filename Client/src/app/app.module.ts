@@ -21,6 +21,7 @@ import { StockComponent } from './stock/stock.component';
 import { UserComponent } from './user/user.component';
 import { TagComponent } from './tag/tag.component';
 import { StripHtmlPipe } from './pipes/stirp-html-pipe';
+import { ApiAuthorizationModule } from './api-authorization/api-authorization.module';
 
 @NgModule({
   declarations: [
@@ -41,8 +42,9 @@ import { StripHtmlPipe } from './pipes/stirp-html-pipe';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
+    HttpClientModule,    
     AppRoutingModule,
+    ApiAuthorizationModule,
     BrowserAnimationsModule,
     NgMaterialModule
   ],
