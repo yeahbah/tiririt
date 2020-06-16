@@ -8,3 +8,9 @@ GET https://investing.einnews.com/rss/dh5LoBFONe1cJ1s0
 GET http://localhost:49242/Home/Secret
     Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzb21lX2lkIiwiR3Jhbm55IjoiY29va2llIiwibmJmIjoxNTkxNDA5NzkyLCJleHAiOjE1OTE0OTYxOTIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDkyNDIiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjQ5MjQyIn0.A3rvuu60PQXCVtPjAqhYqGHdJZqsbT0TpmDgp9W6Up8"
 
+###
+GET http://localhost/tiriritapi/connect/authorize?client_id=Tirir2it&scope=openid&response_type=id_token&redirect_uri=http://localhost:4200/authentication/login-callback&state=abc&nonce=xyz
+
+###
+GET /common/v2.0/.well-known/openid-configuration
+Host: login.microsoftonline.com

@@ -9,7 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgMaterialModule } from './ngmaterial/ngmaterial.module';
 import { WatchlistComponent } from './watchlist/watchlist.component';
 import { WatchlistService } from './watchlist/watchlist.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SubmitPostFormComponent } from './submit-post-form/submit-post-form.component';
 import { FeedContainerComponent } from './feed-container/feed-container.component';
 import { MyFeedComponent } from './my-feed/my-feed.component';
@@ -22,6 +22,7 @@ import { UserComponent } from './user/user.component';
 import { TagComponent } from './tag/tag.component';
 import { StripHtmlPipe } from './pipes/stirp-html-pipe';
 import { ApiAuthorizationModule } from './api-authorization/api-authorization.module';
+import { AuthorizeInterceptor } from './api-authorization/authorize.interceptor';
 
 @NgModule({
   declarations: [
@@ -42,13 +43,16 @@ import { ApiAuthorizationModule } from './api-authorization/api-authorization.mo
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,    
+    HttpClientModule,
+    ApiAuthorizationModule,    
     AppRoutingModule,
-    ApiAuthorizationModule,
     BrowserAnimationsModule,
     NgMaterialModule
   ],
-  providers: [WatchlistService, MyFeedService],
+  providers: [
+    WatchlistService, 
+    MyFeedService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

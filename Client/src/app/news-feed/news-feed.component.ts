@@ -21,7 +21,7 @@ export class NewsFeedComponent implements OnInit {
   getRssFeedData() {
   
     this.http
-      .get<NewsRss>("../assets/news-feed.json")
+      .get<NewsRss>("./assets/news-feed.json")
       .subscribe(data => {          
         this.rssData = data;
         // if (this.rssData) {

@@ -13,7 +13,7 @@ export class MyFeedService {
   ) { }
 
   getMyFeed(): Observable<PostModel[]> {
-    const url = '../assets/myfeed.json'
+    const url = './assets/myfeed.json';
     return this.http.get<PostModel[]>(url);
   }
 }

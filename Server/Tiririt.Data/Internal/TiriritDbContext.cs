@@ -1,27 +1,34 @@
+using IdentityServer4.EntityFramework.Entities;
+using IdentityServer4.EntityFramework.Extensions;
+using IdentityServer4.EntityFramework.Interfaces;
+using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Tiririt.Core.Enums;
 using Tiririt.Data.Entities;
 using Tiririt.Data.Internal.Entities;
 
 namespace Tiririt.Data.Internal
 {
-    public class TiriritDbContext : IdentityDbContext<TIRIRIT_USER, IdentityRole<int>, int>
+    public class TiriritDbContext : IdentityDbContext<TIRIRIT_USER, IdentityRole<int>, int>, IPersistedGrantDbContext
     {
         public static readonly ILoggerFactory _loggerFactory  = LoggerFactory.Create(builder => { builder.AddConsole(); });
+        private readonly IOptions<OperationalStoreOptions> operationalStoreOptions;
 
-        public TiriritDbContext(DbContextOptions options)
+        public TiriritDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions)
             : base(options)
         {
-            
+            this.operationalStoreOptions = operationalStoreOptions;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
@@ -33,6 +40,7 @@ namespace Tiririt.Data.Internal
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.ConfigurePersistedGrantContext(this.operationalStoreOptions.Value);
 
             // a user can have many posts
             modelBuilder.Entity<TIRIRIT_USER>()
@@ -208,7 +216,12 @@ namespace Tiririt.Data.Internal
                     index.SetName(index.GetName().ToSnakeCase());
                 }
             }
-        }        
+        }
+
+        public Task<int> SaveChangesAsync()
+        {
+            throw new NotImplementedException();
+        }
 
         public DbSet<TIRIRIT_USER> TiriritUsers { get; set; }
 
@@ -227,6 +240,8 @@ namespace Tiririt.Data.Internal
         public DbSet<LIKE_DISLIKE_POST> LikeDislikePost { get; set; }
 
         public DbSet<HASH_TAG> HashTags { get; set; }
+        public DbSet<PersistedGrant> PersistedGrants { get; set; }
+        public DbSet<DeviceFlowCodes> DeviceFlowCodes { get; set; }
     }
 
     internal static class StringExtensions
@@ -239,7 +254,6 @@ namespace Tiririt.Data.Internal
             return startUnderscores + Regex.Replace(input, @"([a-z0-9])([A-Z])", "$1_$2").ToLower();
         }
     }
-
 
     internal class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<TiriritDbContext>
     {
@@ -256,7 +270,7 @@ namespace Tiririt.Data.Internal
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             builder.UseNpgsql(connectionString);
             
-            return new TiriritDbContext(builder.Options); 
+            return new TiriritDbContext(builder.Options, Options.Create(new OperationalStoreOptions())); 
         }
     }
 }

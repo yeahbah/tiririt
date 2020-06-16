@@ -1,4 +1,4 @@
-export const ApplicationName = 'Tiririt Finance';
+export const ApplicationName = 'Tiririt';
 
 export const ReturnUrlType = 'returnUrl';
 
@@ -23,7 +23,7 @@ export const LoginActions = {
 
 let applicationPaths: ApplicationPathsType = {
   DefaultLoginRedirectPath: '/',
-  ApiAuthorizationClientConfigurationUrl: `/_configuration/${ApplicationName}`,
+  ApiAuthorizationClientConfigurationUrl: `https://localhost/tiriritapi/_configuration/${ApplicationName}`,
   Login: `authentication/${LoginActions.Login}`,
   LoginFailed: `authentication/${LoginActions.LoginFailed}`,
   LoginCallback: `authentication/${LoginActions.LoginCallback}`,
@@ -40,8 +40,8 @@ let applicationPaths: ApplicationPathsType = {
   LogOutPathComponents: [],
   LoggedOutPathComponents: [],
   LogOutCallbackPathComponents: [],
-  IdentityRegisterPath: '/Identity/Account/Register',
-  IdentityManagePath: '/Identity/Account/Manage'
+  IdentityRegisterPath: 'https://localhost/tiriritapi/Identity/Account/Register',
+  IdentityManagePath: 'https://localhost/tiriritapi/Identity/Account/Manage'
 };
 
 applicationPaths = {

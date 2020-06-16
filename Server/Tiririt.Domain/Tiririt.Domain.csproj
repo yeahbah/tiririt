@@ -1,10 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.Identity.EntityFramework" Version="2.2.3" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Tiririt.Core\Tiririt.Core.csproj" />
   </ItemGroup>
 
