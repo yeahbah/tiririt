@@ -56,9 +56,9 @@ namespace Tiririt.Data
                 // SPA client using code flow + pkce
                 new Client
                 {
-                    ClientId = "spa",
-                    ClientName = "SPA Client",
-                    ClientUri = "http://identityserver.io",
+                    ClientId = "tiririt",
+                    ClientName = "Tiririt Client",
+                    ClientUri = "http://localhost:4200",
 
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
@@ -66,16 +66,17 @@ namespace Tiririt.Data
 
                     RedirectUris =
                     {
-                        "http://localhost:5002/index.html",
-                        "http://localhost:5002/callback.html",
-                        "http://localhost:5002/silent.html",
-                        "http://localhost:5002/popup.html",
+                        "http://localhost:4200/index.html",
+                        "http://localhost:4200/callback.html",
+                        "http://localhost:4200/silent.html",
+                        "http://localhost:4200/popup.html",
                     },
 
-                    PostLogoutRedirectUris = { "http://localhost:5002/index.html" },
-                    AllowedCorsOrigins = { "http://localhost:5002" },
+                    PostLogoutRedirectUris = { "http://localhost:4200/index.html" },
+                    AllowedCorsOrigins = { "http://localhost:4200" },
 
-                    AllowedScopes = { "openid", "profile", "api1" }
+                    AllowedScopes = { "openid", "profile", "api1" },
+                    //AllowAccessTokensViaBrowser = true
                 }
             };
     }

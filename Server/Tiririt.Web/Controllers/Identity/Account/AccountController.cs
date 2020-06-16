@@ -13,10 +13,14 @@ using IdentityServer4.Test;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Tiririt.Core.Identity;
+using Tiririt.Data.Entities;
+using Tiririt.Web.Models;
 
 namespace Tiririt.Web
 {
@@ -29,27 +33,57 @@ namespace Tiririt.Web
     [AllowAnonymous]
     public class AccountController : Controller
     {
-        private readonly TestUserStore _users;
+        //private readonly TestUserStore _users;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
+        private readonly SignInManager<TIRIRIT_USER> signInManager;
+        private readonly UserManager<TIRIRIT_USER> userManager;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
-            TestUserStore users = null)
+            SignInManager<TIRIRIT_USER> signInManager,
+            UserManager<TIRIRIT_USER> userManager)
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
             // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
-            _users = users ?? new TestUserStore(TestUsers.Users);
+            //_users = users ?? new TestUserStore(TestUsers.Users);
 
             _interaction = interaction;
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
+            this.signInManager = signInManager;
+            this.userManager = userManager;
+        }
+
+        [HttpPost]
+        [Route("api/[controller]")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequestViewModel model)
+        {
+            //var aVal = 0; var blowUp = 1 / aVal;
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = new TIRIRIT_USER { UserName = model.Email, FIRST_NAME = model.Name, Email = model.Email };
+
+            var result = await this.userManager.CreateAsync(user, model.Password);
+
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            await this.userManager.AddClaimAsync(user, new System.Security.Claims.Claim("userName", user.UserName));
+            await this.userManager.AddClaimAsync(user, new System.Security.Claims.Claim("name", user.FIRST_NAME));
+            await this.userManager.AddClaimAsync(user, new System.Security.Claims.Claim("email", user.Email));
+            await this.userManager.AddClaimAsync(user, new System.Security.Claims.Claim("role", Roles.StandardUser));
+
+            return Ok(new RegisterResponseViewModel(user));
         }
 
         /// <summary>
@@ -109,11 +143,11 @@ namespace Tiririt.Web
 
             if (ModelState.IsValid)
             {
-                // validate username/password against in-memory store
-                if (_users.ValidateCredentials(model.Username, model.Password))
+                var result = await this.signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberLogin, false);
+                if (result.Succeeded)
                 {
-                    var user = _users.FindByUsername(model.Username);
-                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.SubjectId, user.Username, clientId: context?.ClientId));
+                    var user = await this.userManager.FindByNameAsync(model.Username);
+                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id.ToString(), user.UserName, clientId: context?.ClientId));
 
                     // only set explicit expiration here if user chooses "remember me". 
                     // otherwise we rely upon expiration configured in cookie middleware.
@@ -128,12 +162,12 @@ namespace Tiririt.Web
                     };
 
                     // issue authentication cookie with subject ID and username
-                    var isuser = new IdentityServerUser(user.SubjectId)
+                    var issuer = new IdentityServerUser(user.Id.ToString())
                     {
-                        DisplayName = user.Username
+                        DisplayName = user.UserName
                     };
 
-                    await HttpContext.SignInAsync(isuser, props);
+                    await HttpContext.SignInAsync(issuer, props);
 
                     if (context != null)
                     {
@@ -163,7 +197,7 @@ namespace Tiririt.Web
                         throw new Exception("invalid return URL");
                     }
                 }
-
+                
                 await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId:context?.ClientId));
                 ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
             }

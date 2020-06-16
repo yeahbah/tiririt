@@ -21,8 +21,7 @@ import { StockComponent } from './stock/stock.component';
 import { UserComponent } from './user/user.component';
 import { TagComponent } from './tag/tag.component';
 import { StripHtmlPipe } from './pipes/stirp-html-pipe';
-import { ApiAuthorizationModule } from './api-authorization/api-authorization.module';
-import { AuthorizeInterceptor } from './api-authorization/authorize.interceptor';
+import { AccountModule } from './account/account.module';
 
 @NgModule({
   declarations: [
@@ -44,15 +43,14 @@ import { AuthorizeInterceptor } from './api-authorization/authorize.interceptor'
   imports: [
     BrowserModule,
     HttpClientModule,
-    ApiAuthorizationModule,    
     AppRoutingModule,
     BrowserAnimationsModule,
-    NgMaterialModule
+    NgMaterialModule,
+    AccountModule
   ],
   providers: [
     WatchlistService, 
-    MyFeedService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }],
+    MyFeedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
