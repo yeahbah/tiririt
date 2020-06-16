@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Tiririt.Data.Entities;
 using Tiririt.Data.Internal;
 using Tiririt.Data.Internal.Service;
@@ -10,13 +13,20 @@ namespace Tiririt.Data
 {
     public static class DataServiceCollection 
     {
-        public static IServiceCollection AddDataService(this IServiceCollection services) 
+        public static IServiceCollection AddDataService(this IServiceCollection services, IWebHostEnvironment env) 
         {
             // TODO move connection string to connectionStrings.json
+            var config = new ConfigurationBuilder()
+                //.SetBasePath(env.WebRootPath)
+                .AddJsonFile("connectionStrings.json", false)
+                .AddUserSecrets("8c724486-0e01-4d42-bfff-aeda2705bfc7")
+                .Build();
+
             services
                  .AddDbContext<TiriritDbContext>(options =>
                  {
-                     options.UseNpgsql("Host=localhost; Database=TiriritDb; Username=arnold;Password=1q2w3e4r");
+                     var connectionString = config.GetConnectionString("DefaultConnection");
+                     options.UseNpgsql(connectionString);
                  })
 
                  .AddScoped<IStockRepository, StockRepository>()
