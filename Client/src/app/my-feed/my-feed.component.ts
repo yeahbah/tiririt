@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MyFeedService } from './my-feed.service';
 import { PostModel } from './post-model';
 
@@ -10,6 +10,8 @@ import { PostModel } from './post-model';
 export class MyFeedComponent implements OnInit {
 
   myFeed: PostModel[];
+  
+  @Input() feedFilterVisible = true;
 
   constructor(private myFeedService: MyFeedService) { }
 

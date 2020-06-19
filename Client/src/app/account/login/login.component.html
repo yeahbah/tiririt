@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="login-section">
+    <!-- <div class="login-section">
         <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
             <div class="form-header">
                 <h1>Welcome!</h1>
@@ -11,7 +11,12 @@
                     formControlName="username" class="form-control" autofocus>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">Password
+                                    
+                </label>
+                <span style="float: right;">
+                    <a href="#">Forgot password?</a>
+                </span>
                 <input type="password" id="password" name="password" required
                     formControlName="password" class="form-control" >
             </div>
@@ -19,16 +24,16 @@
                 <input type="checkbox" id="rememberLogin" name="rememberLogin">                
                 <label for="rememberLogin">Remember me</label>                    
             </div>            
+            <button class="btn btn-lg btn-primary" [disabled]="!loginForm" type="submit">Sign In</button>
+            <br /><br />
+            <button class="btn btn-lg btn-secondary" (click)="register()">Sign Up</button>
+            <ngx-spinner></ngx-spinner>        
         </form>
 
-        <a href="#">Forgot password?</a>
-        <button class="btn btn-lg btn-primary" [disabled]="!loginForm">Sign In</button>
-        <br /><br />
-        <button class="btn btn-lg btn-secondary">Sign Up</button>
-        <ngx-spinner></ngx-spinner>        
-    </div>
+        
+    </div> -->
     <div class="welcome-section">
-        <app-my-feed></app-my-feed>
+        <app-my-feed [feedFilterVisible]="false"></app-my-feed>
     </div>
     
 </div>

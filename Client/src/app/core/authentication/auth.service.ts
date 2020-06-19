@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { UserManager, UserManagerSettings, User } from 'oidc-client';
-import { BehaviorSubject } from 'rxjs'; 
+import { BehaviorSubject, Observable } from 'rxjs'; 
 
 import { BaseService } from "../../shared/base.service";
 import { ConfigService } from '../../shared/config.service';
@@ -52,7 +52,7 @@ export class AuthService extends BaseService  {
   }
 
   get name(): string {
-    return this.user != null ? this.user.profile.name : '';
+    return this.user != null ? this.user.profile.preferred_username : '';
   }
 
   async signout() {

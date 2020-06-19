@@ -7,6 +7,7 @@ import { AuthService } from '../core/authentication/auth.service';
 import { AccountRoutingModule } from './account.routing-module';
 import { SharedModule } from '../shared/shared.module';
 import { MyFeedService } from '../my-feed/my-feed.service';
+import { ShellModule } from './shell/shell.module';
 
 @NgModule({
   declarations: [
@@ -16,8 +17,9 @@ import { MyFeedService } from '../my-feed/my-feed.service';
   imports: [
     CommonModule,    
     ReactiveFormsModule,
-    AccountRoutingModule,
-    SharedModule
+//    AccountRoutingModule,
+    SharedModule,
+    ShellModule
   ],
   providers: [AuthService, MyFeedService],
   schemas: [NO_ERRORS_SCHEMA]

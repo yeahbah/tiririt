@@ -1,18 +1,17 @@
 .container {
-    display: flex;
-    justify-content: space-between;        
+    display: block;
+    /* justify-content: space-between;         */
 }
 
-.login-section {
+/* .login-section {
     flex-shrink: 0;
     width: 275px;
     border: 0;      
     margin-top: 50px;
-}
+} */
 
 .welcome-section {
-    flex-grow: 1;
-    /* border: 1px solid #efefef; */
+    flex-grow: 1;    
     margin: 10px;
 }
 
@@ -20,6 +19,6 @@
     text-align: center;
 }
 
-.btn {
+/* .btn {
     width: 100%
-}
+} */

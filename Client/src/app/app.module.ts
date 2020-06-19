@@ -19,16 +19,14 @@ import { NewsFeedComponent } from './news-feed/news-feed.component';
 import { LinkifyPipe } from './pipes/linkify-pipe';
 import { PostDetailsComponent } from './post-details/post-details.component';
 import { StockComponent } from './stock/stock.component';
-import { UserComponent } from './user/user.component';
 import { TagComponent } from './tag/tag.component';
 import { StripHtmlPipe } from './pipes/stirp-html-pipe';
 import { AccountModule } from './account/account.module';
-import { ShellModule } from './shell/shell.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
-import { TopSecretModule } from './top-secret/top-secret.module';
 import { AuthService } from './core/authentication/auth.service';
 import { AuthGuard } from './core/authentication/auth.guard';
+import { HomeShellModule } from './home/home-shell/home-shell.module';
 
 @NgModule({
   declarations: [
@@ -43,7 +41,6 @@ import { AuthGuard } from './core/authentication/auth.guard';
     StripHtmlPipe,
     PostDetailsComponent,
     StockComponent,
-    UserComponent,
     TagComponent    
   ],
   imports: [
@@ -55,9 +52,8 @@ import { AuthGuard } from './core/authentication/auth.guard';
     AppRoutingModule,
     BrowserAnimationsModule,
     AccountModule,
-    TopSecretModule,
-    ShellModule,
-    SharedModule
+    SharedModule,
+    HomeShellModule
   ],
   providers: [    
     AuthGuard,

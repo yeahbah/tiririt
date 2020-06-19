@@ -8,6 +8,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatTabsModule,
     MatCardModule,
     MatDividerModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatMenuModule
   ],  
   exports: [
     // CommonModule,
@@ -32,7 +34,8 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatTabsModule,
     MatCardModule,
     MatDividerModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatMenuModule
   ]
 })
 export class NgMaterialModule { }

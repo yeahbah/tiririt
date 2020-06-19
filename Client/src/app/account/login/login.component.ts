@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from '../../core/authentication/auth.service';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService, 
+    private router: Router,
     private spinner: NgxSpinnerService) { }    
   
     title = "Login";
@@ -35,6 +37,11 @@ export class LoginComponent implements OnInit {
 
     onSubmit() {
       this.spinner.show();
-      //this.authService.login()      
+      console.log('submit');
+            
+    }
+
+    register() {
+      this.router.navigate(['/register']);
     }
 }
