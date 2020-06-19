@@ -8,14 +8,31 @@ import { CommonModule }       from '@angular/common';
  
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { AutofocusDirective } from './directives/auto-focus.directive';
+import { NgMaterialModule } from '../ngmaterial/ngmaterial.module';
+import { MyFeedComponent } from '../my-feed/my-feed.component';
+import { MyFeedService } from '../my-feed/my-feed.service';
+import { LinkifyPipe } from '../pipes/linkify-pipe';
 
 //https://stackoverflow.com/questions/41433766/directive-doesnt-work-in-a-sub-module
 //https://stackoverflow.com/questions/45032043/uncaught-error-unexpected-module-formsmodule-declared-by-the-module-appmodul/45032201
 
 @NgModule({
-  imports:      [CommonModule, NgxSpinnerModule],
-  declarations: [AutofocusDirective],
-  exports:      [NgxSpinnerModule, AutofocusDirective],
-  providers:    []
+  imports:      [
+    CommonModule, 
+    NgxSpinnerModule,
+    NgMaterialModule    
+  ],
+  declarations: [
+    AutofocusDirective,
+    LinkifyPipe,
+    MyFeedComponent
+  ],
+  exports:      [
+    NgxSpinnerModule, 
+    AutofocusDirective, 
+    MyFeedComponent, 
+    LinkifyPipe
+  ],
+  providers:    [MyFeedService]
 })
 export class SharedModule { }

@@ -1,4 +1,42 @@
-<div class="row justify-content-center">
+<div class="container">
+    <div class="login-section">
+        <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+            <div class="form-header">
+                <h1>Welcome!</h1>
+            </div>
+            <input type="hidden" id="returnUrl" name="returnUrl" value="{{ returnUrl }}">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required
+                    formControlName="username" class="form-control" autofocus>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required
+                    formControlName="password" class="form-control" >
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="rememberLogin" name="rememberLogin">                
+                <label for="rememberLogin">Remember me</label>                    
+            </div>            
+        </form>
+
+        <a href="#">Forgot password?</a>
+        <button class="btn btn-lg btn-primary" [disabled]="!loginForm">Sign In</button>
+        <br /><br />
+        <button class="btn btn-lg btn-secondary">Sign Up</button>
+        <ngx-spinner></ngx-spinner>        
+    </div>
+    <div class="welcome-section">
+        <app-my-feed></app-my-feed>
+    </div>
+    
+</div>
+
+
+
+
+<!-- <div class="row justify-content-center">
     <div class="col-md-8 text-center">
         <h1 class="mt-5">{{title}}</h1>
         <p class="lead">This step uses the <a href="http://docs.identityserver.io/en/latest/topics/grant_types.html#implicit" target="_blank">implicit flow type</a> and redirects to the IdentityServer instance to perform the authentication step.   Before you can login here, you must <a routerLink="/register">register a new account</a>.</p>
@@ -7,4 +45,4 @@
             <button class="btn btn-lg btn-primary" (click)="login()">Login with IdentityServer</button>
         </p>     
       </div>
-  </div>
+  </div> -->

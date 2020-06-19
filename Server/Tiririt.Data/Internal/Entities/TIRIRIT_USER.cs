@@ -9,21 +9,6 @@ namespace Tiririt.Data.Entities
 {
     public class TIRIRIT_USER : IdentityUser<int>
     {
-        //[Key]
-        //public int TIRIRIT_USER_ID { get; set; }
-
-        //[Required]
-        //public string IDENTITY_USER_ID { get; set; }
-
-        //[Required]
-        //public string USER_NAME { get; set; }
-
-        //[Required]
-        //public string EMAIL_ADDRESS { get; set; }
-
-        //[Required]
-        //public string PASSWORD { get; set; }
-
         [Required]
         [MaxLength(50)]
         public string FIRST_NAME { get; set; }

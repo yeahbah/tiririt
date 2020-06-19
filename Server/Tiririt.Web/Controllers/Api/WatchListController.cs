@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Tiririt.App.Service;
 using Tiririt.Web.Common;
@@ -24,8 +27,10 @@ namespace Tiririt.Web.Controllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(200)]                
+        //[Authorize]
         public async Task<ActionResult<WatchListViewModel>> Get()
         {
+            var identity = (ClaimsIdentity)User.Identity;
             var result = await watchListService
                 .GetWatchList()                ;           
             return Ok(result.FirstOrDefault()?.ToViewModel());
@@ -40,7 +45,7 @@ namespace Tiririt.Web.Controllers
                 .AddStock(id, symbol);
             return Ok(result.ToViewModel());
         }
-
+        
         [HttpPut(RouteConsts.WatchList.Rename)]
         [ProducesResponseType(200)]
         public async Task<ActionResult<WatchListViewModel>> RenameWatchList(int id, [FromBody]string newName) 
@@ -49,14 +54,22 @@ namespace Tiririt.Web.Controllers
             return Ok(result.ToViewModel());
         }
 
-        //[HttpPost]
-        //[ProducesResponseType(200)]
-        //public async Task<ActionResult<WatchListViewModel>> NewWatchList([FromBody]WatchListViewModel watchListModel)
-        //{
-        //    var result = await watchListServicer
-        //        .NewWatchList(watchListModel.ToDomainModel());
-        //    return Ok(result.ToViewModel());
-        //}
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        public async Task<ActionResult<WatchListViewModel>> NewWatchList([FromBody] NewWatchListViewModel watchListModel)
+        {
+            if (watchListModel == null) return new StatusCodeResult(StatusCodes.Status204NoContent);
+            var result = await watchListService
+                .NewWatchList(new Domain.Models.NewWatchListModel
+                {
+                    Name = watchListModel.Name,
+                    Stocks = watchListModel.Stocks
+                        .Distinct()
+                        .Select(stock => stock.ToUpper())
+                });
+            return Ok(result.ToViewModel());
+        }
 
         [HttpDelete(RouteConsts.WatchList.DeleteWatchList)]
         public async Task<IActionResult> DeleteWatchList(int id)

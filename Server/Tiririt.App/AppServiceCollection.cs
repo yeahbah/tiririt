@@ -1,18 +1,16 @@
-using Tiririt.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Tiririt.App.Internal.Service;
 using Tiririt.App.Service;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Tiririt.Data;
 
 namespace Tiririt.App
 {
     public static class AppServiceCollection
     {
-        public static IServiceCollection AddAppServiceCollection(this IServiceCollection services, IWebHostEnvironment env)
+        public static IServiceCollection AddAppServiceCollection(this IServiceCollection services)
         {
             return services                
-                .AddDataService(env)
+                .AddDataService()
                 .AddScoped<IStockService, StockService>()
                 .AddScoped<IWatchListService, WatchListService>()
                 .AddScoped<IStockSectorService, StockSectorService>()

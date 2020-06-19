@@ -34,12 +34,13 @@ export class AuthService extends BaseService  {
   }
 
   async completeAuthentication() {
-      this.user = await this.manager.signinRedirectCallback();
+      this.user = await this.manager.signinRedirectCallback();      
+      console.log(this.user);
       this._authNavStatusSource.next(this.isAuthenticated());      
   }  
 
   register(userRegistration: any) {    
-    return this.http.post(this.configService.authApiURI + '/account', userRegistration).pipe(catchError(this.handleError));
+    return this.http.post(this.configService.authApiURI + '/Account/Register', userRegistration).pipe(catchError(this.handleError));
   }
 
   isAuthenticated(): boolean {
@@ -65,11 +66,12 @@ export function getClientSettings(): UserManagerSettings {
       client_id: 'tiririt',
       redirect_uri: 'http://localhost:4200/auth-callback',
       post_logout_redirect_uri: 'http://localhost:4200/',
-      response_type:"id_token token",
+      response_type:"code",
       scope:"openid profile api1",
       filterProtocolClaims: true,
       loadUserInfo: true,
       automaticSilentRenew: true,
+      client_secret: "secret",
       silent_redirect_uri: 'http://localhost:4200/silent-refresh.html'
   };
 }

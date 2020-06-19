@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BatchSeedData": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\alvin\\Downloads\\Data"
+    }
+  }
+}

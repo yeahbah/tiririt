@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../core/authentication/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-nav-menu',
@@ -8,6 +10,30 @@ import { Component } from '@angular/core';
 export class NavMenuComponent 
 {
     isExpanded = false;
+    isAuthenticated = false;
+    subscription: Subscription;
+    name: string;
+
+    constructor(private authService: AuthService) {
+
+    }
+
+    ngOnInit() {
+        this.subscription = this.authService.authNavStatus$
+            .subscribe(status => { 
+                this.isAuthenticated = status;
+                console.log(`isAuthenticated: ${status}`);
+                this.name = this.authService.name;        
+            });        
+    }
+
+    async signOut() {
+        await this.authService.signout();
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
 
     collapse() {
         this.isExpanded = false;

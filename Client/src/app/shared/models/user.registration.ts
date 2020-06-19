@@ -1,7 +1,7 @@
-export class UserRegistration {
-    constructor(
-        public name: string,
-        public email: string,
-        public password: string            
-      ) {  }
+export interface UserRegistration {
+  userName: string,  
+  emailAddress: string,
+  firstName: string,
+  lastName: string,
+  password: string            
 }

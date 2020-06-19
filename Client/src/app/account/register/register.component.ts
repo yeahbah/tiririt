@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs/operators'
 import { AuthService } from '../../core/authentication/auth.service';
+import { FormBuilder, Validators } from '@angular/forms';
 import { UserRegistration }    from '../../shared/models/user.registration';
 
 @Component({
@@ -13,10 +14,21 @@ export class RegisterComponent implements OnInit {
 
   success: boolean;
   error: string;
-  userRegistration: UserRegistration = { name: '', email: '', password: ''};
+  // userRegistration: UserRegistration = { userName: '', first: '', email: '', password: ''};
   submitted: boolean = false;
 
-  constructor(private authService: AuthService, private spinner: NgxSpinnerService) {
+  registrationForm = this.formBuilder.group({
+    userName: ['', Validators.required],
+    emailAddress: ['', Validators.email],
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    password: ['', Validators.required]
+  });  
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService, 
+    private spinner: NgxSpinnerService) {
    
   }
 
@@ -27,17 +39,20 @@ export class RegisterComponent implements OnInit {
 
     this.spinner.show();
 
-    this.authService.register(this.userRegistration)
+    let formValue = this.registrationForm.value;
+
+    this.authService.register(formValue)
       .pipe(finalize(() => {
         this.spinner.hide();
       }))  
       .subscribe(
-      result => {         
-         if(result) {
-           this.success = true;
-         }
+        result => {         
+          if(result) {
+            this.success = true;
+          }
       },
       error => {
+        console.log(error);
         this.error = error;       
       });
   }

@@ -8,20 +8,25 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Tiririt.App;
 using Tiririt.Web.Models;
+using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
+using IdentityModel;
+using Tiririt.Core.Identity;
+using Tiririt.Web.Controllers.Identity;
+using Tiririt.Data.Internal;
+using Microsoft.AspNetCore.Identity;
+using Tiririt.Data.Entities;
 
 namespace Tiririt.Web
 {
     public class Startup
     {
 
-        private string corsSpecificOrigins = "_corsSpecificOrigins";
+        //private string corsSpecificOrigins = "_corsSpecificOrigins";
         //private readonly ILoggerFactory loggerFactory;
-        private readonly IWebHostEnvironment hostEnvironment;
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment hostEnvironment)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            this.hostEnvironment = hostEnvironment;
         }
 
         public IConfiguration Configuration { get; }
@@ -31,13 +36,14 @@ namespace Tiririt.Web
         {
             services.AddCors(options =>
             {
-                options.AddPolicy(name: corsSpecificOrigins,
+                options.AddDefaultPolicy(
                     builder =>
                     {
                         builder
+                            .WithOrigins("http://localhost:4200")
                             .AllowAnyMethod()
-                            .AllowCredentials()
-                            .AllowAnyHeader();
+                            .AllowAnyHeader()
+                            .AllowCredentials();
                     });
             });
             services.AddControllersWithViews()
@@ -46,8 +52,41 @@ namespace Tiririt.Web
                 });
             //services.AddRazorPages();            
 
-            services.AddAppServiceCollection(this.hostEnvironment);
-            
+            services.AddAppServiceCollection();
+
+            services.AddIdentity<TIRIRIT_USER, IdentityRole<int>>(config =>
+            {
+                config.Password.RequireNonAlphanumeric = false;
+                config.Password.RequiredLength = 4;
+                config.Password.RequireDigit = false;
+                config.Password.RequireLowercase = false;
+                config.Password.RequireUppercase = false;
+                config.SignIn.RequireConfirmedEmail = false;
+            })
+                .AddEntityFrameworkStores<TiriritDbContext>()
+                //.AddClaimsPrincipalFactory<ClaimsFactory>()
+                .AddDefaultTokenProviders();
+
+            var builder = services.AddIdentityServer(options =>
+            {
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseSuccessEvents = true;
+            })
+                .AddInMemoryIdentityResources(IdentityServerConfig.Ids)
+                .AddInMemoryApiResources(IdentityServerConfig.Apis)
+                .AddInMemoryClients(IdentityServerConfig.Clients)
+                .AddAspNetIdentity<TIRIRIT_USER>();
+
+            builder.AddDeveloperSigningCredential();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("User", policy => policy.RequireClaim(JwtClaimTypes.Role, Roles.StandardUser));
+                options.AddPolicy("Admin", policy => policy.RequireClaim(JwtClaimTypes.Role, Roles.Admin));                
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -66,11 +105,13 @@ namespace Tiririt.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseDatabaseErrorPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
                 // prod stuff
+                //app.UseExceptionHandler("/Error");
+                app.UseHsts();
             }
             
             app.UseHttpsRedirection();            
@@ -78,7 +119,7 @@ namespace Tiririt.Web
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseCors(corsSpecificOrigins);
+            app.UseCors();
 
             app.UseAuthentication();
             app.UseIdentityServer();

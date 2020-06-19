@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    justify-content: space-between;        
+}
+
+.login-section {
+    flex-shrink: 0;
+    width: 275px;
+    border: 0;      
+    margin-top: 50px;
+}
+
+.welcome-section {
+    flex-grow: 1;
+    /* border: 1px solid #efefef; */
+    margin: 10px;
+}
+
+.form-header {
+    text-align: center;
+}
+
+.btn {
+    width: 100%
+}

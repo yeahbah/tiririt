@@ -10,6 +10,6 @@ namespace Tiririt.App.Service
         Task<WatchListModel> AddStock(int id, string stockSymbol);
         Task<WatchListModel> RenameWatchList(int id, string newName);
         Task DeleteWatchList(int id);
-        Task<WatchListModel> NewWatchList(WatchListModel watchListModel);
+        Task<WatchListModel> NewWatchList(NewWatchListModel watchListModel);
     }
 }

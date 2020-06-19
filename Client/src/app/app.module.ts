@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,33 +23,45 @@ import { UserComponent } from './user/user.component';
 import { TagComponent } from './tag/tag.component';
 import { StripHtmlPipe } from './pipes/stirp-html-pipe';
 import { AccountModule } from './account/account.module';
+import { ShellModule } from './shell/shell.module';
+import { SharedModule } from './shared/shared.module';
+import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
+import { TopSecretModule } from './top-secret/top-secret.module';
+import { AuthService } from './core/authentication/auth.service';
+import { AuthGuard } from './core/authentication/auth.guard';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AuthCallbackComponent,
     NavMenuComponent,
     HomeComponent,
     WatchlistComponent,
     SubmitPostFormComponent,
     FeedContainerComponent,
-    MyFeedComponent,
     NewsFeedComponent,
-    LinkifyPipe,
     StripHtmlPipe,
     PostDetailsComponent,
     StockComponent,
     UserComponent,
-    TagComponent
+    TagComponent    
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,    
+    NgMaterialModule,
+    FormsModule,    
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    NgMaterialModule,
-    AccountModule
+    AccountModule,
+    TopSecretModule,
+    ShellModule,
+    SharedModule
   ],
-  providers: [
+  providers: [    
+    AuthGuard,
+    AuthService,
     WatchlistService, 
     MyFeedService],
   bootstrap: [AppComponent]

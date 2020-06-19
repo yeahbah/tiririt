@@ -9,7 +9,6 @@ using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
-using IdentityServer4.Test;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -17,10 +16,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Tiririt.Core.Identity;
 using Tiririt.Data.Entities;
 using Tiririt.Web.Models;
+
 
 namespace Tiririt.Web
 {
@@ -40,6 +41,7 @@ namespace Tiririt.Web
         private readonly IEventService _events;
         private readonly SignInManager<TIRIRIT_USER> signInManager;
         private readonly UserManager<TIRIRIT_USER> userManager;
+        private readonly RoleManager<IdentityRole<int>> roleManager;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
@@ -47,7 +49,8 @@ namespace Tiririt.Web
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
             SignInManager<TIRIRIT_USER> signInManager,
-            UserManager<TIRIRIT_USER> userManager)
+            UserManager<TIRIRIT_USER> userManager,
+            RoleManager<IdentityRole<int>> roleManager)
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
             // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
@@ -59,10 +62,11 @@ namespace Tiririt.Web
             _events = events;
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         [HttpPost]
-        [Route("api/[controller]")]
+        [Route("api/Account/Register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestViewModel model)
         {
             //var aVal = 0; var blowUp = 1 / aVal;
@@ -72,16 +76,23 @@ namespace Tiririt.Web
                 return BadRequest(ModelState);
             }
 
-            var user = new TIRIRIT_USER { UserName = model.Email, FIRST_NAME = model.Name, Email = model.Email };
+            var user = new TIRIRIT_USER 
+            { 
+                UserName = model.UserName, 
+                FIRST_NAME = model.FirstName, 
+                LAST_NAME = model.LastName,
+                Email = model.EmailAddress 
+            };
 
             var result = await this.userManager.CreateAsync(user, model.Password);
 
-            if (!result.Succeeded) return BadRequest(result.Errors);
+            if (!result.Succeeded) return BadRequest(result.Errors);                                    
 
-            await this.userManager.AddClaimAsync(user, new System.Security.Claims.Claim("userName", user.UserName));
-            await this.userManager.AddClaimAsync(user, new System.Security.Claims.Claim("name", user.FIRST_NAME));
-            await this.userManager.AddClaimAsync(user, new System.Security.Claims.Claim("email", user.Email));
-            await this.userManager.AddClaimAsync(user, new System.Security.Claims.Claim("role", Roles.StandardUser));
+            await this.userManager.AddClaimAsync(user, new Claim(JwtClaimTypes.PreferredUserName, user.UserName));
+            await this.userManager.AddClaimAsync(user, new Claim(JwtClaimTypes.GivenName, user.FIRST_NAME));
+            await this.userManager.AddClaimAsync(user, new Claim(JwtClaimTypes.FamilyName, user.FIRST_NAME));
+            await this.userManager.AddClaimAsync(user, new Claim(JwtClaimTypes.Email, user.Email));
+            await this.userManager.AddToRoleAsync(user, Roles.StandardUser);
 
             return Ok(new RegisterResponseViewModel(user));
         }
@@ -162,9 +173,11 @@ namespace Tiririt.Web
                     };
 
                     // issue authentication cookie with subject ID and username
+                    var roles = await this.userManager.GetRolesAsync(user);
                     var issuer = new IdentityServerUser(user.Id.ToString())
                     {
-                        DisplayName = user.UserName
+                        DisplayName = user.UserName,
+                        AdditionalClaims = roles.Select(role => new Claim(JwtClaimTypes.Role, role)).ToArray()
                     };
 
                     await HttpContext.SignInAsync(issuer, props);

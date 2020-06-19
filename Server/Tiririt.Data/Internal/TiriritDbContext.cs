@@ -1,6 +1,5 @@
 using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.EntityFramework.Extensions;
-using IdentityServer4.EntityFramework.Interfaces;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -13,14 +12,13 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Tiririt.Core.Enums;
 using Tiririt.Data.Entities;
 using Tiririt.Data.Internal.Entities;
 
 namespace Tiririt.Data.Internal
 {
-    public class TiriritDbContext : IdentityDbContext<TIRIRIT_USER, IdentityRole<int>, int>, IPersistedGrantDbContext
+    public class TiriritDbContext : IdentityDbContext<TIRIRIT_USER, IdentityRole<int>, int> //IPersistedGrantDbContext
     {
         public static readonly ILoggerFactory _loggerFactory  = LoggerFactory.Create(builder => { builder.AddConsole(); });
         private readonly IOptions<OperationalStoreOptions> operationalStoreOptions;
@@ -34,7 +32,7 @@ namespace Tiririt.Data.Internal
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             builder
-                .UseLoggerFactory(_loggerFactory);                
+                .UseLoggerFactory(_loggerFactory);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -75,8 +73,6 @@ namespace Tiririt.Data.Internal
                 .HasOne(ph => ph.Ref_TiriritPost)
                 .WithMany(ph => ph.Ref_HashTags)
                 .HasForeignKey(ph => ph.TIRIRIT_POST_ID);
-
-
             
             modelBuilder.Entity<TIRIRIT_POST>()
                 .ToTable("tiririt_post")
@@ -99,8 +95,6 @@ namespace Tiririt.Data.Internal
                 .HasOne(ps => ps.Ref_TiriritPost)
                 .WithMany(ps => ps.Ref_Stocks)
                 .HasForeignKey(ps => ps.TIRIRIT_POST_ID);
-
-            
 
             // many-to-many post-user-mentions
             modelBuilder.Entity<MENTION>()
@@ -155,8 +149,6 @@ namespace Tiririt.Data.Internal
             modelBuilder.Entity<WATCH_LIST_STOCK>()      
                 .ToTable("watch_list_stock")          
                 .HasOne(b => b.Ref_Stock);
-
-
             
             modelBuilder.Entity<BULL_BEAR_LEVEL_CODE>()
                 .ToTable("bull_bear_level_code")
@@ -216,12 +208,7 @@ namespace Tiririt.Data.Internal
                     index.SetName(index.GetName().ToSnakeCase());
                 }
             }
-        }
-
-        public Task<int> SaveChangesAsync()
-        {
-            throw new NotImplementedException();
-        }
+        }        
 
         public DbSet<TIRIRIT_USER> TiriritUsers { get; set; }
 

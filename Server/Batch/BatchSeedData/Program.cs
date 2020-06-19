@@ -20,18 +20,23 @@ namespace BatchSeedData
                 Console.WriteLine("Tell me where the CSV files are located.");
                 return;
             }
-            RegisterServices();            
+            RegisterServices();
 
-            var sourceFolder = args[0];
-            var dirs = Directory.GetDirectories(sourceFolder);                
+            ProcessFiles(args[0]).GetAwaiter().GetResult();
+        }
+
+        private static async Task ProcessFiles(string src)
+        {
+            var sourceFolder = src;
+            var dirs = Directory.GetDirectories(sourceFolder);
             var scope = _serviceProvider.CreateScope();
-            var seeder = scope.ServiceProvider.GetRequiredService<StockQuoteDataSeed>();                                
-            foreach(var dir in dirs)
-            {                
+            var seeder = scope.ServiceProvider.GetRequiredService<StockQuoteDataSeed>();
+            foreach (var dir in dirs)
+            {
                 var files = Directory.GetFiles(dir, "*.csv");
-                foreach(var file in files)
-                {                    
-                    seeder.ProcessFile(file);
+                foreach (var file in files)
+                {
+                    await seeder.ProcessFile(file);
                 }
             }
         }

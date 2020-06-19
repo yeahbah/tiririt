@@ -20,8 +20,7 @@ export class WatchlistComponent implements OnInit {
   ngOnInit(): void {
     this.watchListService.getWatchList()
       .subscribe(result => {
-        this.dataSource = new MatTableDataSource<StockViewModel>(result.stocks);
-        console.log(result);
+        this.dataSource = new MatTableDataSource<StockViewModel>(result?.stocks);
       }, error => console.error(error));
   }
 

@@ -31,7 +31,7 @@ namespace Tiririt.App.Internal.Service
             return await watchListRepository.GetWatchList();            
         }
 
-        public async Task<WatchListModel> NewWatchList(WatchListModel watchListModel)
+        public async Task<WatchListModel> NewWatchList(NewWatchListModel watchListModel)
         {
             return await watchListRepository.NewWatchList(watchListModel);
         }

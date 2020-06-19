@@ -68,7 +68,7 @@ namespace Tiririt.Data.Service
         public async Task<IEnumerable<WatchListModel>> GetWatchList()
         {
             // TODO use current principal
-            var currentPrincipal = 1;
+            var currentPrincipal = 3;
             var query = GetAll()
                 .Where(w => w.UserId == currentPrincipal);
             
@@ -84,24 +84,29 @@ namespace Tiririt.Data.Service
             return result;
         }
 
-        public async Task<WatchListModel> NewWatchList(WatchListModel watchListModel)
+        public async Task<WatchListModel> NewWatchList(NewWatchListModel watchListModel)
         {
-            var watchList = new WATCH_LIST 
+            var watchList = new WATCH_LIST
             {
-                WATCH_LIST_NAME = watchListModel.WatchListName,
-                TIRIRIT_USER_ID = watchListModel.UserId
+                WATCH_LIST_NAME = watchListModel.Name,
+                TIRIRIT_USER_ID = 3 // TODO actual user id
             };
             dbContext.WatchLists.Add(watchList);
-            
-            watchListModel.Stocks.ToList()
-                .ForEach(stock => {                    
-                    var stocks = new WATCH_LIST_STOCK
-                    {
-                        Ref_WatchList = watchList,
-                        STOCK_ID = stock.StockId                    
-                    };
-                    dbContext.WatchListStocks.Add(stocks);
-                });
+
+            var stocks = await dbContext.Stocks
+                .Where(stock => watchListModel.Stocks.Contains(stock.SYMBOL))
+                .ToListAsync();
+            if (!stocks.Any()) return null;
+
+            stocks.ForEach(stock =>
+            {
+                var stocks = new WATCH_LIST_STOCK
+                {
+                    Ref_WatchList = watchList,
+                    STOCK_ID = stock.STOCK_ID
+                };
+                dbContext.WatchListStocks.Add(stocks);
+            });            
             
             await dbContext.SaveChangesAsync();
             return await GetWatchList(watchList.WATCH_LIST_ID);

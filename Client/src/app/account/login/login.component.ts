@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from '../../core/authentication/auth.service';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,17 @@ import { AuthService } from '../../core/authentication/auth.service';
 })
 export class LoginComponent implements OnInit { 
 
-  constructor(private authService: AuthService, private spinner: NgxSpinnerService) { }    
+  returnUrl: string;  
+  loginForm = this.formBuilder.group({
+    username: ['', Validators.required],
+    password: ['', Validators.required],
+    rememberMe: [false]
+  });
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService, 
+    private spinner: NgxSpinnerService) { }    
   
     title = "Login";
     
@@ -19,5 +30,11 @@ export class LoginComponent implements OnInit {
     }   
 
     ngOnInit() {
+      this.returnUrl = "http://localhost:4200/home";
+    }
+
+    onSubmit() {
+      this.spinner.show();
+      //this.authService.login()      
     }
 }
