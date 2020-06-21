@@ -15,3 +15,14 @@
 table {
     width: 100%;
 }
+
+.deleteButton {
+    display: none;
+}
+.mat-row:hover .deleteButton{    
+    display: block;    
+}
+
+.stockSymbolInput {
+    text-transform: uppercase;
+}

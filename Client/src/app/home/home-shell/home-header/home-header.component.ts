@@ -14,6 +14,7 @@ export class HomeHeaderComponent implements OnInit {
 
   name: string;
   isAuthenticated: boolean;
+  isShown: boolean = false;
   subscription: Subscription;
 
   constructor(

@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+
 namespace Tiririt.Web.Common
 {
     public static class RouteConsts
@@ -29,9 +31,11 @@ namespace Tiririt.Web.Common
             public const string NewWatchList = "";
             public const string DeleteWatchList = "{id}";
 
-            public const string Rename = "{id}";
+            public const string Rename = "{id}/name";
 
-            public const string AddStock = "{id}/stock/{symbol}";
+            public const string Stocks = "{id}/stocks";
+
+            public const string DeleteStock = "{id}/stocks/{symbol}";
 
         }
     }

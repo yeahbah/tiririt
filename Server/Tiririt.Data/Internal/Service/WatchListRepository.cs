@@ -1,13 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Tiririt.Data.Internal;
-using Tiririt.Domain.Models;
-using Tiririt.Data.Internal.Mappings;
-using Tiririt.Data.Entities;
-using System;
 using Tiririt.Core.Identity;
+using Tiririt.Data.Entities;
+using Tiririt.Data.Internal;
+using Tiririt.Data.Internal.Mappings;
+using Tiririt.Domain.Models;
 
 namespace Tiririt.Data.Service
 {
@@ -22,18 +22,39 @@ namespace Tiririt.Data.Service
             this.currentPrincipal = currentPrincipal;
         }
 
-        public async Task<WatchListModel> AddStock(int watchlistId, string stockSymbol)
+        public async Task<WatchListModel> AddStocks(int watchlistId, IEnumerable<string> stockSymbols)
         {
-            var stock = await dbContext.Stocks                
-                .SingleOrDefaultAsync(s => s.SYMBOL == stockSymbol);
-            if (stock == null) throw new Exception($"Unable to find {stockSymbol}");
-            
-            var watchList = dbContext.WatchListStocks.Add(new WATCH_LIST_STOCK {
-                WATCH_LIST_ID = watchlistId,
-                STOCK_ID = stock.STOCK_ID
+            // must exist in Stock table
+            // must not exist in user watch list
+            var stocks = stockSymbols.Select(s => s.ToUpper());
+            var userId = this.currentPrincipal.GetUserId();
+            var stocksToAdd = await dbContext.Stocks                
+                .Where(s => stocks.ToArray().Contains(s.SYMBOL)
+                    && !s.Ref_StocksInWatchLists.Any(w => w.Ref_WatchList.TIRIRIT_USER_ID == userId && w.STOCK_ID == s.STOCK_ID))                
+                .ToListAsync();
+                           
+            stocksToAdd.ForEach(s =>
+            {
+                dbContext.WatchListStocks.Add(new WATCH_LIST_STOCK
+                {
+                    WATCH_LIST_ID = watchlistId,
+                    STOCK_ID = s.STOCK_ID
+                });
             });
             await dbContext.SaveChangesAsync();
             return await GetWatchList(watchlistId);        
+        }
+
+        public async Task<WatchListModel> DeleteStocks(int id, string symbol)
+        {
+            var userId = this.currentPrincipal.GetUserId();
+
+            var stocks = this.dbContext.WatchListStocks
+                .Where(w => w.Ref_WatchList.TIRIRIT_USER_ID == userId && w.Ref_Stock.SYMBOL == symbol.ToUpper());
+            dbContext.WatchListStocks.RemoveRange(stocks);
+            await dbContext.SaveChangesAsync();
+
+            return await GetWatchList(id);
         }
 
         public async Task DeleteWatchList(int id)

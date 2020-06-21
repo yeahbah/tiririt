@@ -20,7 +20,11 @@ namespace Tiririt.Data.Internal
 {
     public class TiriritDbContext : IdentityDbContext<TIRIRIT_USER, IdentityRole<int>, int> //IPersistedGrantDbContext
     {
-        public static readonly ILoggerFactory _loggerFactory  = LoggerFactory.Create(builder => { builder.AddConsole(); });
+        public static readonly ILoggerFactory _loggerFactory  = LoggerFactory.Create(
+            builder => { 
+                builder.AddConsole();
+                builder.AddDebug();
+            });
         private readonly IOptions<OperationalStoreOptions> operationalStoreOptions;
 
         public TiriritDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions)
@@ -31,6 +35,7 @@ namespace Tiririt.Data.Internal
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
+            base.OnConfiguring(builder);
             builder
                 .UseLoggerFactory(_loggerFactory);
         }

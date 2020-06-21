@@ -28,6 +28,7 @@ import { AuthService } from './core/authentication/auth.service';
 import { AuthGuard } from './core/authentication/auth.guard';
 import { HomeShellModule } from './home/home-shell/home-shell.module';
 import { AuthorizeInterceptor } from './core/authentication/authorize.interceptor';
+import { ApiCallInterceptor } from './core/api-call.interceptor';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { AuthorizeInterceptor } from './core/authentication/authorize.intercepto
     AuthService,
     WatchlistService, 
     MyFeedService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true},
+    { provide: HTTP_INTERCEPTORS, useClass: ApiCallInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

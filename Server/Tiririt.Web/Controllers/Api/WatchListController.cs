@@ -2,6 +2,8 @@ using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -11,7 +13,8 @@ using Tiririt.Web.Models;
 using Tiririt.Web.Models.Mappings;
 
 namespace Tiririt.Web.Controllers
-{    
+{
+    [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public class WatchListController : TiriritControllerBase
     {
         private readonly IWatchListService watchListService;
@@ -27,24 +30,23 @@ namespace Tiririt.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(200)]     
+        [ProducesResponseType(200)]
         [ProducesResponseType(401)]
-        [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
         public async Task<ActionResult<WatchListViewModel>> Get()
         {
             var identity = (ClaimsIdentity)User.Identity;
             var result = await watchListService
-                .GetWatchList()                ;           
+                .GetWatchList();
             return Ok(result.FirstOrDefault()?.ToViewModel());
         }
 
-        //PUT: WatchList/id/stock/{stockSymbol}
-        [HttpPut(RouteConsts.WatchList.AddStock)]
+        //PUT: WatchList/id
+        [HttpPut(RouteConsts.WatchList.Stocks)]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<WatchListViewModel>> PutStock(int id, string symbol)
+        public async Task<ActionResult<WatchListViewModel>> PutStock([FromRoute]int id, [FromBody]IEnumerable<string> stocks)
         {
             var result = await watchListService
-                .AddStock(id, symbol);
+                .AddStocks(id, stocks.Distinct());
             return Ok(result.ToViewModel());
         }
         
@@ -78,6 +80,15 @@ namespace Tiririt.Web.Controllers
         {
             await watchListService.DeleteWatchList(id);
             return Ok();
+        }
+
+        [HttpDelete]
+        [Route(RouteConsts.WatchList.DeleteStock)]
+        public async Task<ActionResult<WatchListViewModel>> DeleteStock([FromRoute]int id, string symbol)
+        {
+            var result = await this.watchListService
+                .DeleteStocks(id, symbol);
+            return Ok(result.ToViewModel());
         }
     }
 }

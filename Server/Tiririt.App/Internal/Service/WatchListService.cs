@@ -16,9 +16,14 @@ namespace Tiririt.App.Internal.Service
             this.watchListRepository = watchListRepository;
         }
 
-        public async Task<WatchListModel> AddStock(int id, string stockSymbol)
+        public async Task<WatchListModel> AddStocks(int id, IEnumerable<string> stocks)
         {
-            return await watchListRepository.AddStock(id, stockSymbol);
+            return await watchListRepository.AddStocks(id, stocks);
+        }
+
+        public async Task<WatchListModel> DeleteStocks(int id, string symbol)
+        {
+            return await watchListRepository.DeleteStocks(id, symbol);
         }
 
         public async Task DeleteWatchList(int id)

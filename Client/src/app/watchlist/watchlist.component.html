@@ -1,9 +1,10 @@
 <!-- <div class="watchlist-container"> -->
     
     <mat-form-field>
-        <input matInput placeholder="Enter symbol">        
+        <input matInput placeholder="Enter symbol" id="stockSymbol" name="stockSymbol" #stockSymbol
+            (keyup.enter)="onEnterKey($event)" class="stockSymbolInput">        
     </mat-form-field>
-    <button mat-raised-button color="primary">Add</button>    
+    <button mat-raised-button color="primary" (click)="addStock(stockSymbol.value)">Add</button>    
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="symbol">
             <th mat-header-cell *matHeaderCellDef>Symbol</th>
@@ -17,9 +18,17 @@
             <td mat-cell *matCellDef="let stock">{{ stock.price }}</td>
         </ng-container>
 
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let stock">
+                <button mat-icon-button class="deleteButton" (click)="deleteStock(stock.symbol)"><mat-icon>delete_forever</mat-icon></button>
+            </td>
+
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
     </table>
-
+    <ngx-spinner></ngx-spinner>
 <!-- </div> -->
