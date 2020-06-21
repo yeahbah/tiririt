@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Tiririt.Web.Controllers
 {
+    [ApiController]
     [Route("api/v1/[controller]")]
     public class TiriritControllerBase : ControllerBase
     {

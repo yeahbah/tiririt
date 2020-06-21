@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgMaterialModule } from './ngmaterial/ngmaterial.module';
+import { NgMaterialModule } from './ngmaterial.module';
 import { WatchlistComponent } from './watchlist/watchlist.component';
 import { WatchlistService } from './watchlist/watchlist.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -27,6 +27,7 @@ import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
 import { AuthService } from './core/authentication/auth.service';
 import { AuthGuard } from './core/authentication/auth.guard';
 import { HomeShellModule } from './home/home-shell/home-shell.module';
+import { AuthorizeInterceptor } from './core/authentication/authorize.interceptor';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,9 @@ import { HomeShellModule } from './home/home-shell/home-shell.module';
     AuthGuard,
     AuthService,
     WatchlistService, 
-    MyFeedService],
+    MyFeedService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

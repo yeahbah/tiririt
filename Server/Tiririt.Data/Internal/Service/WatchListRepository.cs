@@ -7,16 +7,19 @@ using Tiririt.Domain.Models;
 using Tiririt.Data.Internal.Mappings;
 using Tiririt.Data.Entities;
 using System;
+using Tiririt.Core.Identity;
 
 namespace Tiririt.Data.Service
 {
     internal class WatchListRepository : IWatchListRepository
     {
         private readonly TiriritDbContext dbContext;
+        private readonly ICurrentPrincipal currentPrincipal;
 
-        public WatchListRepository(TiriritDbContext dbContext)
+        public WatchListRepository(TiriritDbContext dbContext, ICurrentPrincipal currentPrincipal)
         {
             this.dbContext = dbContext;
+            this.currentPrincipal = currentPrincipal;
         }
 
         public async Task<WatchListModel> AddStock(int watchlistId, string stockSymbol)
@@ -67,10 +70,9 @@ namespace Tiririt.Data.Service
 
         public async Task<IEnumerable<WatchListModel>> GetWatchList()
         {
-            // TODO use current principal
-            var currentPrincipal = 3;
+            var userId = this.currentPrincipal.GetUserId();
             var query = GetAll()
-                .Where(w => w.UserId == currentPrincipal);
+                .Where(w => w.UserId == userId);
             
             return await query.ToListAsync();
         }

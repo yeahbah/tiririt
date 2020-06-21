@@ -161,3 +161,4 @@ yarn-error.log
 baseline.json
 Server/Tiririt.Data/connectionStrings.json
 Server/Tiririt.Web/wwwroot/*
+Deploy/

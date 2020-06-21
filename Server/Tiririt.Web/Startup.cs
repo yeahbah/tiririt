@@ -1,20 +1,22 @@
-using IdentityServer4.Hosting;
+using IdentityModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using System.Security.Principal;
 using Tiririt.App;
-using Tiririt.Web.Models;
-using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
-using IdentityModel;
+using Tiririt.Core;
 using Tiririt.Core.Identity;
-using Tiririt.Web.Controllers.Identity;
-using Tiririt.Data.Internal;
-using Microsoft.AspNetCore.Identity;
 using Tiririt.Data.Entities;
+using Tiririt.Data.Internal;
+using Tiririt.Web.Controllers.Identity;
+using Swashbuckle.AspNetCore;
+using System.Collections.Generic;
 
 namespace Tiririt.Web
 {
@@ -50,9 +52,11 @@ namespace Tiririt.Web
                 .AddJsonOptions(options => {
                     options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
                 });
-            //services.AddRazorPages();            
 
-            services.AddAppServiceCollection();
+            //services.AddRazorPages();                        
+            services
+                .AddCoreServices()
+                .AddAppServiceCollection();
 
             services.AddIdentity<TIRIRIT_USER, IdentityRole<int>>(config =>
             {
@@ -64,7 +68,7 @@ namespace Tiririt.Web
                 config.SignIn.RequireConfirmedEmail = false;
             })
                 .AddEntityFrameworkStores<TiriritDbContext>()
-                //.AddClaimsPrincipalFactory<ClaimsFactory>()
+                .AddClaimsPrincipalFactory<ClaimsFactory>()
                 .AddDefaultTokenProviders();
 
             var builder = services.AddIdentityServer(options =>
@@ -85,7 +89,11 @@ namespace Tiririt.Web
             {
                 options.AddPolicy("User", policy => policy.RequireClaim(JwtClaimTypes.Role, Roles.StandardUser));
                 options.AddPolicy("Admin", policy => policy.RequireClaim(JwtClaimTypes.Role, Roles.Admin));                
-            });
+            });                    
+
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IPrincipal>(
+                provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
 
             services.AddSwaggerGen(c =>
             {
@@ -94,7 +102,43 @@ namespace Tiririt.Web
                     Title = "Titos and Titas of Finance API",
                     Version = "v1"
                 });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                        Reference = new OpenApiReference
+                            {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
+                    }
+                });
+
+                //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                //c.IncludeXmlComments(xmlPath);
             });
+
+            services.AddLocalApiAuthentication();
 
             services.AddSwaggerGenNewtonsoftSupport();
         }
@@ -121,10 +165,10 @@ namespace Tiririt.Web
             app.UseRouting();
             app.UseCors();
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
             app.UseIdentityServer();
             app.UseAuthorization();
-            
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

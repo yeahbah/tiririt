@@ -28,7 +28,7 @@ namespace Tiririt.Web.Controllers.Identity
             var identity = await base.GenerateClaimsAsync(user);
             var roles = await this.userManager.GetRolesAsync(user);
 
-            identity.AddClaim(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            //identity.AddClaim(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             identity.AddClaims(roles.Select(role => new Claim(JwtClaimTypes.Role, role)));
 
             return identity;

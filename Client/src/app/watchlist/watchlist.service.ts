@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { WatchlistModel } from './watchlist-model';
 import { Observable } from 'rxjs';
 
@@ -10,12 +10,17 @@ export class WatchlistService {
 
   constructor(
     private http: HttpClient,
-    @Inject('BASE_URL') private baseUrl: string) { 
+    @Inject('API_URL') private apiUrl: string) { 
 
   }
 
   getWatchList(): Observable<WatchlistModel> {
-    const url = 'https://localhost/tiririt/api/v1/WatchList';    
-    return this.http.get<WatchlistModel>(url);
+    const url = `${this.apiUrl}/WatchList`; 
+    
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('X-Requested-With', 'XMLHttpRequest');
+    
+    return this.http.get<WatchlistModel>(url, {headers: headers});
   }
 }

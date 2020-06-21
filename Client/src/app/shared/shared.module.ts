@@ -8,7 +8,7 @@ import { CommonModule }       from '@angular/common';
  
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { AutofocusDirective } from './directives/auto-focus.directive';
-import { NgMaterialModule } from '../ngmaterial/ngmaterial.module';
+import { NgMaterialModule } from '../ngmaterial.module';
 import { MyFeedComponent } from '../my-feed/my-feed.component';
 import { MyFeedService } from '../my-feed/my-feed.service';
 import { LinkifyPipe } from '../pipes/linkify-pipe';

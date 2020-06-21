@@ -11,14 +11,15 @@ namespace Tiririt.Web.Controllers.Identity
             new IdentityResource[]
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
+                new IdentityResources.Profile(),
+                new IdentityResources.Email()
             };
-
 
         public static IEnumerable<ApiResource> Apis =>
             new ApiResource[]
             {
-                new ApiResource("api1", "My API #1")
+                //new ApiResource("api1", "My API #1")
+                new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
             };
 
 
@@ -26,34 +27,34 @@ namespace Tiririt.Web.Controllers.Identity
             new Client[]
             {
                 // client credentials flow client
-                new Client
-                {
-                    ClientId = "client",
-                    ClientName = "Client Credentials Client",
+                //new Client
+                //{
+                //    ClientId = "client",
+                //    ClientName = "Client Credentials Client",
 
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets = { new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256()) },
+                //    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                //    ClientSecrets = { new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256()) },
 
-                    AllowedScopes = { "api1" }
-                },
+                //    AllowedScopes = { "api1" }
+                //},
 
                 // MVC client using code flow + pkce
-                new Client
-                {
-                    ClientId = "mvc",
-                    ClientName = "MVC Client",
+                //new Client
+                //{
+                //    ClientId = "mvc",
+                //    ClientName = "MVC Client",
 
-                    AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
-                    RequirePkce = true,
-                    ClientSecrets = { new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256()) },
+                //    AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
+                //    RequirePkce = true,
+                //    ClientSecrets = { new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256()) },
 
-                    RedirectUris = { "http://localhost:5003/signin-oidc" },
-                    FrontChannelLogoutUri = "http://localhost:5003/signout-oidc",
-                    PostLogoutRedirectUris = { "http://localhost:5003/signout-callback-oidc" },
+                //    RedirectUris = { "http://localhost:5003/signin-oidc" },
+                //    FrontChannelLogoutUri = "http://localhost:5003/signout-oidc",
+                //    PostLogoutRedirectUris = { "http://localhost:5003/signout-callback-oidc" },
 
-                    AllowOfflineAccess = true,
-                    AllowedScopes = { "openid", "profile", "api1" }
-                },
+                //    AllowOfflineAccess = true,
+                //    AllowedScopes = { "openid", "profile", "api1" }
+                //},
 
                 // SPA client using code flow + pkce
                 new Client
@@ -67,10 +68,12 @@ namespace Tiririt.Web.Controllers.Identity
                     RequireClientSecret = true,
                     RequireConsent = false,
                     ClientSecrets = { new Secret("secret".Sha256()) },
+                    
 
                     RedirectUris =
                     {
-                        "http://localhost:4200/auth-callback",                        
+                        "http://localhost:4200/auth-callback",
+                        "http://localhost:4200/callback.html"
                     },
 
                         //"http://localhost:4200/callback.html",
@@ -84,7 +87,7 @@ namespace Tiririt.Web.Controllers.Identity
                         IdentityServerConstants.StandardScopes.OpenId, 
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        "api1"                        
+                        IdentityServerConstants.LocalApi.ScopeName                        
                     },
                     //AllowAccessTokensViaBrowser = true
                 }

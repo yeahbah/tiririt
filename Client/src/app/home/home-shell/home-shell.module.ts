@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HomeShellComponent } from './home-shell.component';
 import { HomeHeaderComponent } from './home-header/home-header.component';
-import { NgMaterialModule } from 'src/app/ngmaterial/ngmaterial.module';
+import { NgMaterialModule } from 'src/app/ngmaterial.module';
 
 @NgModule({
   declarations: [HomeShellComponent, HomeHeaderComponent],

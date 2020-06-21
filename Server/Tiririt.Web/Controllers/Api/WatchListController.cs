@@ -1,3 +1,4 @@
+using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,8 +27,9 @@ namespace Tiririt.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(200)]                
-        //[Authorize]
+        [ProducesResponseType(200)]     
+        [ProducesResponseType(401)]
+        [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
         public async Task<ActionResult<WatchListViewModel>> Get()
         {
             var identity = (ClaimsIdentity)User.Identity;

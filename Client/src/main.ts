@@ -3,13 +3,19 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import { getLocaleExtraDayPeriodRules } from '@angular/common';
 
 export function getBaseUrl() {
   return document.getElementsByTagName('base')[0].href;
 }
 
+export function getApiUrl() {
+  return 'https://localhost/tiririt/api/v1';
+}
+
 const providers = [
-  { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }
+  { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },
+  { provide: 'API_URL', useFactory: getApiUrl, deps: [] }
 ];
 
 if (environment.production) {

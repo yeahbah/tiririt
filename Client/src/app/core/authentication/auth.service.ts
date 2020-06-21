@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { UserManager, UserManagerSettings, User } from 'oidc-client';
@@ -17,10 +17,13 @@ export class AuthService extends BaseService  {
   // Observable navItem stream
   authNavStatus$ = this._authNavStatusSource.asObservable();
 
-  private manager = new UserManager(getClientSettings());
+  private manager = new UserManager(getClientSettings(this.baseUrl));
   private user: User | null;
 
-  constructor(private http: HttpClient, private configService: ConfigService) { 
+  constructor(
+    @Inject('BASE_URL') private baseUrl: string,
+    private http: HttpClient, 
+    private configService: ConfigService) { 
     super();     
     
     this.manager.getUser().then(user => { 
@@ -35,10 +38,14 @@ export class AuthService extends BaseService  {
 
   async completeAuthentication() {
       this.user = await this.manager.signinRedirectCallback();      
-      console.log(this.user);
+      console.log(`The user: ${this.user}`);
       this._authNavStatusSource.next(this.isAuthenticated());      
   }  
 
+  getAccessToken() {    
+    return this.user != null ? this.user.access_token : '';
+  }
+  
   register(userRegistration: any) {    
     return this.http.post(this.configService.authApiURI + '/Account/Register', userRegistration).pipe(catchError(this.handleError));
   }
@@ -52,6 +59,7 @@ export class AuthService extends BaseService  {
   }
 
   get name(): string {
+    console.log(this.user);
     return this.user != null ? this.user.profile.preferred_username : '';
   }
 
@@ -60,18 +68,18 @@ export class AuthService extends BaseService  {
   }
 }
 
-export function getClientSettings(): UserManagerSettings {
+export function getClientSettings(baseUrl: string): UserManagerSettings {
   return {
-      authority: 'https://localhost/tiririt',
+      authority: `https://localhost/tiririt`,
       client_id: 'tiririt',
-      redirect_uri: 'http://localhost:4200/auth-callback',
-      post_logout_redirect_uri: 'http://localhost:4200/',
+      redirect_uri: `${baseUrl}auth-callback`,
+      post_logout_redirect_uri: baseUrl,
       response_type:"code",
-      scope:"openid profile api1",
+      scope:"openid profile IdentityServerApi",
       filterProtocolClaims: true,
       loadUserInfo: true,
       automaticSilentRenew: true,
       client_secret: "secret",
-      silent_redirect_uri: 'http://localhost:4200/silent-refresh.html'
+      silent_redirect_uri: `${baseUrl}silent-refresh.html`
   };
 }
