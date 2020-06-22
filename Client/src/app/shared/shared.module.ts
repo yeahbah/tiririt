@@ -12,6 +12,8 @@ import { NgMaterialModule } from '../ngmaterial.module';
 import { MyFeedComponent } from '../my-feed/my-feed.component';
 import { MyFeedService } from '../my-feed/my-feed.service';
 import { LinkifyPipe } from '../pipes/linkify-pipe';
+import { PostItemComponent } from './post-item/post-item.component';
+import { TrendingFeedComponent } from './trending-feed/trending-feed.component';
 
 //https://stackoverflow.com/questions/41433766/directive-doesnt-work-in-a-sub-module
 //https://stackoverflow.com/questions/45032043/uncaught-error-unexpected-module-formsmodule-declared-by-the-module-appmodul/45032201
@@ -25,14 +27,18 @@ import { LinkifyPipe } from '../pipes/linkify-pipe';
   declarations: [
     AutofocusDirective,
     LinkifyPipe,
-    MyFeedComponent
+    MyFeedComponent,
+    PostItemComponent,
+    TrendingFeedComponent
   ],
   exports:      [
     NgxSpinnerModule, 
     AutofocusDirective, 
     MyFeedComponent, 
+    PostItemComponent,
+    TrendingFeedComponent,
     LinkifyPipe
   ],
-  providers:    [MyFeedService]
+  providers:  [MyFeedService]
 })
 export class SharedModule { }

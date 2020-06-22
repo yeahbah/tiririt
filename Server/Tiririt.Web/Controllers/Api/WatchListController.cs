@@ -34,7 +34,6 @@ namespace Tiririt.Web.Controllers
         [ProducesResponseType(401)]
         public async Task<ActionResult<WatchListViewModel>> Get()
         {
-            var identity = (ClaimsIdentity)User.Identity;
             var result = await watchListService
                 .GetWatchList();
             return Ok(result.FirstOrDefault()?.ToViewModel());

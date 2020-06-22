@@ -29,6 +29,5 @@ namespace Tiririt.Data.Entities
 
         public virtual ICollection<MENTION> Ref_MentionedInPosts { get; set; }
 
-        //public APP_IDENTITY_USER Ref_IdentityUser { get; set; }
     }
 }

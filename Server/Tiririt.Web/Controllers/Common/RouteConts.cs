@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.VisualBasic;
+using System.Security.Policy;
 
 namespace Tiririt.Web.Common
 {
@@ -37,6 +39,15 @@ namespace Tiririt.Web.Common
 
             public const string DeleteStock = "{id}/stocks/{symbol}";
 
+        }
+
+        public static class Feed
+        {
+            public const string UserFeed = "";
+            public const string WatchList = "watchlist";
+            public const string Mentions = "mentions";
+            public const string Subscription = "subscription";
+            public const string Trending = "trending";
         }
     }
 }

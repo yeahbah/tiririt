@@ -84,9 +84,6 @@ namespace Tiririt.Data.Internal
                 .HasOne(p => p.Ref_TiriritPost)
                 .WithMany(p => p.Ref_Responses)
                 .HasForeignKey(p => p.RESPONSE_TO_POST_ID);                        
-
-            //modelBuilder.Entity<TIRIRIT_POST>()                
-                
                 
             // many-to-many POST-STOCK
             modelBuilder.Entity<POST_STOCK>()
@@ -232,6 +229,8 @@ namespace Tiririt.Data.Internal
         public DbSet<LIKE_DISLIKE_POST> LikeDislikePost { get; set; }
 
         public DbSet<HASH_TAG> HashTags { get; set; }
+
+        public DbSet<MENTION> Mentions { get; set; }
         public DbSet<PersistedGrant> PersistedGrants { get; set; }
         public DbSet<DeviceFlowCodes> DeviceFlowCodes { get; set; }
     }

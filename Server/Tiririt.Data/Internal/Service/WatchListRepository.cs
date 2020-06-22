@@ -59,8 +59,9 @@ namespace Tiririt.Data.Service
 
         public async Task DeleteWatchList(int id)
         {
+            var userId = this.currentPrincipal.GetUserId();
             var watchList = await dbContext.WatchLists
-                .SingleOrDefaultAsync(w => w.WATCH_LIST_ID == id);
+                .SingleOrDefaultAsync(w => w.WATCH_LIST_ID == id && w.TIRIRIT_USER_ID == userId);
             if (watchList != null) 
             {
                 watchList.DELETED_IND = 1;
@@ -109,27 +110,30 @@ namespace Tiririt.Data.Service
 
         public async Task<WatchListModel> NewWatchList(NewWatchListModel watchListModel)
         {
+            var userId = this.currentPrincipal.GetUserId();
             var watchList = new WATCH_LIST
             {
                 WATCH_LIST_NAME = watchListModel.Name,
-                TIRIRIT_USER_ID = 3 // TODO actual user id
+                TIRIRIT_USER_ID = userId
             };
             dbContext.WatchLists.Add(watchList);
 
-            var stocks = await dbContext.Stocks
-                .Where(stock => watchListModel.Stocks.Contains(stock.SYMBOL))
-                .ToListAsync();
-            if (!stocks.Any()) return null;
-
-            stocks.ForEach(stock =>
+            if (watchListModel.Stocks.Any())
             {
-                var stocks = new WATCH_LIST_STOCK
+                var stocks = await dbContext.Stocks
+                    .Where(stock => watchListModel.Stocks.Contains(stock.SYMBOL))
+                    .ToListAsync();
+
+                stocks.ForEach(stock =>
                 {
-                    Ref_WatchList = watchList,
-                    STOCK_ID = stock.STOCK_ID
-                };
-                dbContext.WatchListStocks.Add(stocks);
-            });            
+                    var stocks = new WATCH_LIST_STOCK
+                    {
+                        Ref_WatchList = watchList,
+                        STOCK_ID = stock.STOCK_ID
+                    };
+                    dbContext.WatchListStocks.Add(stocks);
+                });
+            }
             
             await dbContext.SaveChangesAsync();
             return await GetWatchList(watchList.WATCH_LIST_ID);

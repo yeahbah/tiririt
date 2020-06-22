@@ -29,7 +29,9 @@ namespace Tiririt.Data
                  .AddScoped<IStockSectorRepository, StockSectorRepository>()
                  .AddScoped<IStockQuoteRepository, StockQuoteRepository>()
                  .AddScoped<ITiriritPostRepository, TiriritPostRepository>()
-                 .AddScoped<IHashTagRepository, HashTagRepository>();
+                 .AddScoped<IHashTagRepository, HashTagRepository>()
+                 .AddScoped<IFeedRepository, FeedRepository>()
+                 .AddScoped<IMentionRepository, MentionRepository>();
 
             return services;
         }

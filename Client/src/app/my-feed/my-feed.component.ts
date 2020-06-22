@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MyFeedService } from './my-feed.service';
 import { PostModel } from './post-model';
+import { IPagingResultEnvelope } from '../core/PagingResultEnvelope';
 
 @Component({
   selector: 'app-my-feed',
@@ -9,8 +10,8 @@ import { PostModel } from './post-model';
 })
 export class MyFeedComponent implements OnInit {
 
-  myFeed: PostModel[];
-  
+  myFeed: IPagingResultEnvelope<PostModel>;
+
   @Input() feedFilterVisible = true;
 
   constructor(private myFeedService: MyFeedService) { }
@@ -25,6 +26,39 @@ export class MyFeedComponent implements OnInit {
 
   goToPost() {
     console.log('hello');
+  }
+
+  filterFeed(filter: number) {
+    switch(filter) {      
+      case 1:
+        this.myFeedService.getMentionsFeed()
+          .subscribe(result => {
+            this.myFeed = result;
+          }, error => console.error(error));                
+        break;
+      
+      case 2: 
+        this.myFeedService.getWatchlistFeed()
+          .subscribe(result => {
+            this.myFeed = result;
+          }, error => console.error(error));              
+        break;
+      
+      case 3:
+        this.myFeedService.getSubscriptionFeed()
+          .subscribe(result => {
+            this.myFeed = result;
+          }, error => console.error(error));                
+        break;
+      
+      default:
+        this.myFeedService.getMyFeed()
+          .subscribe(result => {
+            this.myFeed = result;
+          }, error => console.error(error));        
+
+        break;
+    }
   }
 
 }

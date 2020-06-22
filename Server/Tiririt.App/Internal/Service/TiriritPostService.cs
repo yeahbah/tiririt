@@ -6,6 +6,7 @@ using Tiririt.Core.Extensions;
 using Tiririt.Data.Internal;
 using System.Threading.Tasks;
 using Tiririt.Core.Enums;
+using Tiririt.Data.Internal.Entities;
 
 namespace Tiririt.App.Internal.Service
 {
@@ -15,17 +16,20 @@ namespace Tiririt.App.Internal.Service
         private readonly ITiriritPostRepository postRepository;
         private readonly IHashTagRepository hashTagRepository;
         private readonly IStockRepository stockRepository;
+        private readonly IMentionRepository mentionRepository;
 
         public TiriritPostService(
             TiriritDbContext dbContext,            
             ITiriritPostRepository postRepository,
             IHashTagRepository hashTagRepository,
-            IStockRepository stockRepository)
+            IStockRepository stockRepository,
+            IMentionRepository mentionRepository)
         {
             this.dbContext = dbContext;
             this.postRepository = postRepository;
             this.hashTagRepository = hashTagRepository;
             this.stockRepository = stockRepository;
+            this.mentionRepository = mentionRepository;
         }
 
         public async Task DeletePost(int postId)
@@ -62,6 +66,7 @@ namespace Tiririt.App.Internal.Service
         {
             var tags = postText.ParseTags("#");
             var stocks = postText.ParseTags("$");
+            var mentions = postText.ParseTags("@");
 
             using var transaction = await dbContext.Database.BeginTransactionAsync();
             try
@@ -74,10 +79,12 @@ namespace Tiririt.App.Internal.Service
                 {
                     await hashTagRepository.RemoveTagsFromPost(postId.Value, true);
                     await stockRepository.RemoveStockLinksFromPost(postId.Value, true);
+                    await mentionRepository.RemoveMentions(postId.Value, true);
                     await postRepository.ModifyPost(postId.Value, postText);
                 }
                 await hashTagRepository.AddTagsToPost(postId.Value, tags);
                 await stockRepository.LinkPostToStocks(postId.Value, stocks);
+                await mentionRepository.AddPostMention(postId.Value, mentions);
                 await transaction.CommitAsync();
                 return await postRepository.GetPost(postId.Value);
             }

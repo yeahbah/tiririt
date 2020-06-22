@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Tiririt.App.Service;
@@ -33,7 +34,19 @@ namespace Tiririt.App.Internal.Service
 
         public async Task<IEnumerable<WatchListModel>> GetWatchList()
         {            
-            return await watchListRepository.GetWatchList();            
+            var result = await watchListRepository.GetWatchList();
+            if (!result.Any())
+            {
+                // create a default watch list if there aren't any
+                var newWatchList = await NewWatchList(new NewWatchListModel
+                {
+                    Name = "Default",
+                    Stocks = new List<string>()
+                });                
+                result = new List<WatchListModel> { newWatchList };
+            }
+
+            return result;
         }
 
         public async Task<WatchListModel> NewWatchList(NewWatchListModel watchListModel)

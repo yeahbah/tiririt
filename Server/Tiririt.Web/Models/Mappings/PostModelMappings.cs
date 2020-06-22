@@ -19,7 +19,8 @@ namespace Tiririt.Web.Models.Mappings
                 PostDate = value.PostDate,
                 PostId = value.PostId,
                 PostText = value.PostText,
-                UserId = value.UserId                
+                UserId = value.UserId,
+                UserName = value.UserName
             };
         }                
     }

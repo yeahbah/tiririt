@@ -1,20 +1,22 @@
 <mat-tab-group mat-align-tabs="center" backgroundColor="primary" color="accent">
     <mat-tab>
         <ng-template mat-tab-label>
-            <mat-icon>chat_bubble_outline</mat-icon>
+            <!-- <span matBadge="5" matBadgePosition="before" matBadgeColor="accent" matBadgeSize="small"></span> -->
+            <mat-icon matBadge="5" matBadgePosition="above before" matBadgeColor="accent">chat_bubble_outline</mat-icon>
             My Feed
         </ng-template>
         <app-my-feed></app-my-feed>
     </mat-tab>
     <mat-tab label="Trending">
         <ng-template mat-tab-label>
-            <mat-icon>trending_up</mat-icon>
+            <mat-icon matBadge="10" matBadgePosition="above before" matBadgeColor="accent">trending_up</mat-icon>
             Trending
         </ng-template>
-        Content 3</mat-tab>
+        <app-trending-feed></app-trending-feed>
+    </mat-tab>
     <mat-tab label="News">
         <ng-template mat-tab-label>
-            <mat-icon>rss_feed</mat-icon>
+            <mat-icon matBadge="2" matBadgePosition="above before" matBadgeColor="accent">rss_feed</mat-icon>
             News
         </ng-template>
         <app-news-feed></app-news-feed>

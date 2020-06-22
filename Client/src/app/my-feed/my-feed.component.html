@@ -1,60 +1,12 @@
 <div class="feed-filter" *ngIf="feedFilterVisible">
-<mat-button-toggle-group appearance="legacy">
-    <mat-button-toggle checked>All</mat-button-toggle>
-    <mat-button-toggle>Mentions</mat-button-toggle>
-    <mat-button-toggle>Watch List</mat-button-toggle>
-    <mat-button-toggle>Subscription</mat-button-toggle>
-</mat-button-toggle-group>
+    <mat-button-toggle-group appearance="legacy" #group="matButtonToggleGroup">
+        <mat-button-toggle checked value="all" (click)="filterFeed(0)">All</mat-button-toggle>
+        <mat-button-toggle value="mentions" (click)="filterFeed(1)">Mentions</mat-button-toggle>
+        <mat-button-toggle value="watchlist" (click)="filterFeed(2)">Watch List</mat-button-toggle>
+        <mat-button-toggle value="subscription" (click)="filterFeed(3)">Subscription</mat-button-toggle>
+    </mat-button-toggle-group>    
 </div>
 
-<div *ngFor="let post of myFeed">    
-<mat-card>
-    <mat-card-header>     
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-subtitle>
-            <div>
-            {{ post.userName }}   <br>
-            Posted {{ post.postDate }}
-            </div>            
-            
-        </mat-card-subtitle>
-        <!-- <div class="bearbullindicator">            
-            <mat-icon svgIcon="bullish" *ngIf="post.bullBearLevel == 'VeryBullish'"></mat-icon>
-            <mat-icon svgIcon="bearish" *ngIf="post.bullBearLevel == 'VeryBearish'"></mat-icon>
-        </div> -->
-        <div class="bearbullindicator">
-            <div class="bearbullindicator1 bullish"  *ngIf="post.bullBearLevel == 'VeryBullish'">Bullish</div>
-            <div class="bearbullindicator1 bearish"  *ngIf="post.bullBearLevel == 'VeryBearish'">Bearish</div>
-        </div>
-    </mat-card-header>
-    
-    <mat-card-content>
-        <p [innerHTML]="post.postText | linkify"></p>
-    </mat-card-content>
-
-    <mat-card-actions>
-        <button mat-icon-button >
-            <mat-icon class="icon-display">reply</mat-icon>
-        </button>
-        <button mat-icon-button >
-            <mat-icon class="icon-display">format_quote</mat-icon>
-        </button>
-        <button mat-icon-button>
-            <!-- <span matBadge="" matBadgePosition="before" matBadgeColor="accent" matBadgeSize="small" *ngIf="post.responseCount > 0"></span> -->
-                <mat-icon class="icon-display">mode_comment</mat-icon>
-                <span *ngIf="post.responseCount > 0">{{ post.responseCount }}</span>
-        </button>
-        <button mat-icon-button>
-            <!-- <span matBadge="{{ post.likeCount }}" matBadgePosition="before" matBadgeColor="accent" matBadgeSize="small" *ngIf="post.likeCount > 0"></span> -->
-                <!-- <img src="https://img.icons8.com/material-sharp/24/000000/thumb-up.png"/>                 -->
-                <mat-icon svgIcon="like" class="icon-display"></mat-icon>
-                <span *ngIf="post.likeCount > 0">{{ post.likeCount }}</span>
-        </button>
-        <!-- <button mat-stroked-button matBadge="{{ post.dislikeCount }}" matBadgePosition="before" matBadgeColor="accent">
-                <img src="https://img.icons8.com/material-rounded/24/000000/thumbs-down.png"/>
-        </button> -->
-        
-    </mat-card-actions>
-</mat-card>
-<mat-divider></mat-divider>
+<div *ngFor="let post of myFeed?.data">    
+    <app-post-item [post]="post"></app-post-item>
 </div>

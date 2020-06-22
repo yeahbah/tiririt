@@ -1,0 +1,49 @@
+/* .mat-card {
+    cursor: pointer;
+}
+
+.mat-card:hover {
+    background-color: #efefef;
+} */
+
+.mat-card-header {
+    display: flex;
+}
+
+.mat-card-subtitle {
+    flex-shrink: 0;
+}
+
+.mat-card-actions {
+    height: fit-content;
+}
+
+.example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+}
+
+button {
+    color: grey;
+}
+
+.bearbullindicator {    
+    color: white;
+    width: 50px;    
+    text-align: center;
+    height: 25px;
+    font-size: 9pt;
+    float: right;
+}
+
+.bullish {
+    background-color: green;
+}
+
+.bearish {
+    background-color: red;
+}
+
+.icon-display {
+    transform: scale(0.7);
+}

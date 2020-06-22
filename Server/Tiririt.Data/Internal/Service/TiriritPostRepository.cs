@@ -48,6 +48,7 @@ namespace Tiririt.Data.Internal.Service
                     PostDate = data.POST_DATE,
                     PostText = data.POST_TEXT,
                     UserId = data.TIRIRIT_USER_ID,                    
+                    UserName = data.Ref_PostedBy.UserName,
                     ResponseToPostId = data.RESPONSE_TO_POST_ID,
 
                     BullBearLevel = data.Ref_BullBearLevel.BULL_BEAR_LEVEL_CD,
