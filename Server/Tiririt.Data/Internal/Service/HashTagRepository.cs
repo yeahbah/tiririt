@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Tiririt.Data.Entities;
@@ -48,11 +49,11 @@ namespace Tiririt.Data.Internal.Service
         }
 
         public async Task AddTagsToPost(int postId, string[] hashTags)
-        {                    
+        {            
             foreach(var tag in hashTags)
             {
                 var hashTag = GetAll()
-                    .SingleOrDefault(t => t.HashTagText == tag);
+                    .SingleOrDefault(t => t.HashTagText.ToUpper() == tag.ToUpper());
                 if (hashTag == null) 
                 {
                     var newHashTag = new HASH_TAG 

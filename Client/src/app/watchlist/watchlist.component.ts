@@ -5,6 +5,7 @@ import { StockViewModel } from '../models/stock-view-model';
 import { WatchlistModel } from './watchlist-model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs/operators';
+import { InteractionService } from '../core/InteractionService';
 
 @Component({
   selector: 'app-watchlist',
@@ -19,7 +20,8 @@ export class WatchlistComponent implements OnInit {
 
   constructor(
     private watchListService: WatchlistService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private interactionService: InteractionService
   ) { }
 
   ngOnInit(): void {
@@ -35,6 +37,7 @@ export class WatchlistComponent implements OnInit {
     this.spinner.show();
     this.watchListService.addStockToWatchList(this.watchListModel.watchListId, [stockSymbol])
       .pipe(finalize(() => {
+        this.interactionService.sendMessage('RELOAD');
         this.spinner.hide();
       }))
       .subscribe(result => {
@@ -46,6 +49,7 @@ export class WatchlistComponent implements OnInit {
     this.spinner.show();
     this.watchListService.deleteStock(this.watchListModel.watchListId, stockSymbol)
       .pipe(finalize(() => {
+        this.interactionService.sendMessage('RELOAD');
         this.spinner.hide();
       }))
       .subscribe(result => {

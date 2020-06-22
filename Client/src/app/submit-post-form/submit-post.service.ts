@@ -21,7 +21,7 @@ export class SubmitPostService extends BaseService {
         const url = `${this.apiUrl}/Post`;
         return this.http.post<PostModel>(url, JSON.stringify(postModel))
             .pipe(
-                retry(3),
+                //retry(3),
                 catchError(this.handleError)
             );
     }

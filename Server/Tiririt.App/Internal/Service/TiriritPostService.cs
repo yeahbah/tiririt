@@ -7,6 +7,7 @@ using Tiririt.Data.Internal;
 using System.Threading.Tasks;
 using Tiririt.Core.Enums;
 using Tiririt.Data.Internal.Entities;
+using System.Linq;
 
 namespace Tiririt.App.Internal.Service
 {

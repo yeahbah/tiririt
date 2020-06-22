@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SubmitPostService, NewOrUpdatePostModel } from './submit-post.service';
 import { BullBearLevel } from '../models/bull-bear-level';
 import { finalize } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { InteractionService } from '../core/InteractionService';
 
 @Component({
   selector: 'app-submit-post-form',
@@ -21,12 +22,12 @@ export class SubmitPostFormComponent implements OnInit {
     postText: ['', Validators.required],    
   });
   
-
   constructor(
     private formBuilder: FormBuilder, 
     private postService: SubmitPostService,
     private spinner: NgxSpinnerService,
-    private snackBar: MatSnackBar) { 
+    private snackBar: MatSnackBar,
+    private intreactionService: InteractionService) { 
 
   }
 
@@ -51,10 +52,10 @@ export class SubmitPostFormComponent implements OnInit {
       postText: value,
       bullBearLevel: bullBearLevel
     };
-    console.log(newPost);
     this.postService.submitPost(newPost)
       .pipe(finalize(() => {
-        this.reset();
+        this.reset();  
+        this.intreactionService.sendMessage('RELOAD');
         this.spinner.hide();       
         this.openSnackBar() ;
       }))

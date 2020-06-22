@@ -18,8 +18,9 @@ namespace Tiririt.Data.Internal.Service
 
         public async Task AddPostMention(int postId, string[] userNames)
         {
+            userNames = userNames.Select(user => user.ToLower()).ToArray();
             var users = await dbContext.Users
-                .Where(user => userNames.Contains(user.UserName))
+                .Where(user => userNames.Contains(user.UserName.ToLower()))
                 .ToListAsync();
             if (!users.Any()) return;
 

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { MyFeedService } from './my-feed.service';
 import { PostModel } from './post-model';
 import { IPagingResultEnvelope } from '../core/PagingResultEnvelope';
+import { InteractionService } from '../core/InteractionService';
 
 @Component({
   selector: 'app-my-feed',
@@ -13,8 +14,9 @@ export class MyFeedComponent implements OnInit {
   myFeed: IPagingResultEnvelope<PostModel>;
 
   @Input() feedFilterVisible = true;
+  activeFilter = 0;
 
-  constructor(private myFeedService: MyFeedService) { }
+  constructor(private myFeedService: MyFeedService, private interactionService: InteractionService) { }
 
   ngOnInit(): void {
     this.myFeedService.getMyFeed()
@@ -22,6 +24,13 @@ export class MyFeedComponent implements OnInit {
         this.myFeed = result;
         console.log(this.myFeed);
       }, error => console.error(error));
+    
+    this.interactionService.reloadMessage$.subscribe(message => {
+      if (message == 'RELOAD') {
+        this.filterFeed(this.activeFilter);        
+      }
+    });
+    
   }
 
   goToPost() {
@@ -29,6 +38,7 @@ export class MyFeedComponent implements OnInit {
   }
 
   filterFeed(filter: number) {
+    this.activeFilter = filter;    
     switch(filter) {      
       case 1:
         this.myFeedService.getMentionsFeed()
