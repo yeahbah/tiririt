@@ -9,7 +9,7 @@ namespace Tiririt.Web.Common
             public const string UserPostings = "user/{userId}";
             public const string Reply = "{postId}/reply";
             public const string ModifyPost = "{postId}";
-            public const string NewPost = "";
+            public const string Post = "";
             public const string DeletePost = "";
             public const string Responses = "{postId}/responses";
             public const string LikeDislike = "{postId}/like/{like}";            

@@ -11,16 +11,19 @@ using Tiririt.Data.Service;
 using Tiririt.Domain.Models;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
+using Tiririt.Core.Identity;
 
 namespace Tiririt.Data.Internal.Service
 {
     internal class TiriritPostRepository : ITiriritPostRepository
     {
         private readonly TiriritDbContext dbContext;
+        private readonly ICurrentPrincipal currentPrincipal;
 
-        public TiriritPostRepository(TiriritDbContext dbContext)
+        public TiriritPostRepository(TiriritDbContext dbContext, ICurrentPrincipal currentPrincipal)
         {
             this.dbContext = dbContext;
+            this.currentPrincipal = currentPrincipal;
         }
 
         public async Task DeletePost(int postId)
@@ -157,13 +160,12 @@ namespace Tiririt.Data.Internal.Service
             }
         }
 
-        public async Task<int> NewPost(string postText, int? responseToPostId = null)
-        {
-            // TODO current user 
-            var userId = 1;
+        public async Task<int> NewPost(string postText, BullBearLevel bullBearLevel, int? responseToPostId = null)
+        {            
+            var userId = this.currentPrincipal.GetUserId();
             var post = new TIRIRIT_POST 
             {
-                BULL_BEAR_LEVEL_CODE_ID = (int)BullBearLevel.Neutral,
+                BULL_BEAR_LEVEL_CODE_ID = (int)bullBearLevel,
                 POST_DATE = DateTime.Now,
                 POST_TEXT = postText,
                 TIRIRIT_USER_ID = userId,

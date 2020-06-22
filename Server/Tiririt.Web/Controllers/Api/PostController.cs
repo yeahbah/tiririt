@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tiririt.App.Service;
@@ -11,6 +12,7 @@ using Tiririt.Web.Models.Mappings;
 
 namespace Tiririt.Web.Controllers
 {
+    [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public class PostController : TiriritControllerBase
     {
         private readonly ITiriritPostService tiriritPostService;
@@ -24,7 +26,6 @@ namespace Tiririt.Web.Controllers
         /// Get all postings of a user
         /// </summary>
         /// <returns></returns>
-        [Authorize]
         [HttpGet(RouteConsts.TiriritPost.UserPostings)]
         public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetPosts(int userId, PagingParam pagingParam)
         {
@@ -42,10 +43,11 @@ namespace Tiririt.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<PostViewModel>> NewPost([FromBody]string postText, BullBearLevel? bullBearLevel)
+        [Route(RouteConsts.TiriritPost.Post)]
+        public async Task<ActionResult<PostViewModel>> NewPost([FromBody]NewPostViewModel newPostViewModel)
         {
             var result = await tiriritPostService
-                .AddOrModifyPost(postText);
+                .AddOrModifyPost(newPostViewModel.PostText, newPostViewModel.BullBearLevel);
                 
             return Ok(result.ToViewModel());
         }
@@ -54,8 +56,9 @@ namespace Tiririt.Web.Controllers
         [HttpPost(RouteConsts.TiriritPost.Reply)]
         public async Task<ActionResult<PostViewModel>> NewResponse(int postId, [FromBody]string postText)
         {
+            // TODO fix this
             var result = await tiriritPostService
-                .AddOrModifyPost(postText, null, postId);
+                .AddOrModifyPost(postText, BullBearLevel.Neutral, postId);
             return Ok(result.ToViewModel());
         }
 
@@ -65,10 +68,10 @@ namespace Tiririt.Web.Controllers
         /// <param name="postId"></param>
         /// <returns></returns>
         [HttpPut(RouteConsts.TiriritPost.ModifyPost)]
-        public async Task<ActionResult<PostViewModel>> ModifyPost(int postId, [FromBody]string postText)
+        public async Task<ActionResult<PostViewModel>> ModifyPost(int postId, [FromBody]NewPostViewModel newPostViewModel)
         {
             var result = await tiriritPostService
-                .AddOrModifyPost(postText, postId);
+                .AddOrModifyPost(newPostViewModel.PostText, newPostViewModel.BullBearLevel, postId);
             return Ok(result.ToViewModel());
         }
 

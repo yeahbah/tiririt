@@ -29,4 +29,10 @@
     color: white;
 }
 
+.charCount {
+    margin-top: 5px;
+    font-size: 9pt;
+    color: grey;
+    float: right;
+}
 

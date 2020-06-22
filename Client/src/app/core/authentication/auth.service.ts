@@ -59,7 +59,6 @@ export class AuthService extends BaseService  {
   }
 
   get name(): string {
-    console.log(this.user);
     return this.user != null ? this.user.profile.preferred_username : '';
   }
 

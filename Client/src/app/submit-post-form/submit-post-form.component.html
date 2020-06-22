@@ -1,11 +1,13 @@
 <mat-card>
 
     <mat-card-content>
-    <form class="tiririt-form">
+    <form class="tiririt-form" [formGroup]="newPostForm" (ngSubmit)="submit()">
         <mat-form-field class="form-field">
             <mat-label>Say something about your favorite stock</mat-label>
             <textarea matInput placeholder="Ex. @supertrader @bulltactics $GLO did very well last quarter. #panalo" 
-                maxlength="300"></textarea>
+                id="postText" name="postText" formControlName="postText"
+                maxlength="300" rows="3" (keyup)="onKeyUp($event)"></textarea>
+            <span class="charCount">characters remain: {{ charCount }}</span>
         </mat-form-field>
     </form>    
 <!-- <mat-card-actions> -->
@@ -18,9 +20,10 @@
 
         </div>
         <div class="post-buttons">
-            <button mat-raised-button color="primary" (click)="submit()">Post</button>
+            <button mat-raised-button color="primary" (click)="submit()" [disabled]="!newPostForm.valid">Post</button>
         </div>
     </div>
+    <ngx-spinner></ngx-spinner>
 </mat-card-content>
 
 <!-- </mat-card-actions>     -->

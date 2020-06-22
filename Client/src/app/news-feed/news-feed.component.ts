@@ -29,7 +29,6 @@ export class NewsFeedComponent implements OnInit {
         //     this.rssData.rss.channel.item[i].description = this.rssData.rss.channel.item[i].description.replace(/(<([^>]+)>|&#\d+;)/ig, "");
         //   }
         // }
-        console.log(this.rssData.rss.channel);
       });
   }
 

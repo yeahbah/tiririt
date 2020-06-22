@@ -5,6 +5,7 @@ using Tiririt.Domain.Models;
 using Tiririt.Core.Extensions;
 using Tiririt.Data.Internal;
 using System.Threading.Tasks;
+using Tiririt.Core.Enums;
 
 namespace Tiririt.App.Internal.Service
 {
@@ -57,7 +58,7 @@ namespace Tiririt.App.Internal.Service
             return await postRepository.GetResponses(postId, pagingParam);
         }   
 
-        public async Task<PostModel> AddOrModifyPost(string postText, int? postId = null, int? responseToPostId = null)
+        public async Task<PostModel> AddOrModifyPost(string postText, BullBearLevel bullBearLevel, int? postId = null, int? responseToPostId = null)
         {
             var tags = postText.ParseTags("#");
             var stocks = postText.ParseTags("$");
@@ -67,7 +68,7 @@ namespace Tiririt.App.Internal.Service
             {
                 if (postId == null) 
                 {
-                    postId = await postRepository.NewPost(postText, responseToPostId);
+                    postId = await postRepository.NewPost(postText, bullBearLevel, responseToPostId);
                 }
                 else
                 {

@@ -4,7 +4,6 @@ export interface PostModel {
     postId: number;
     postText: string;
     likeCount: number;
-    // dislikeCount: number;
     userId: number;
     userName: string;
     responseToPostId?: number;
