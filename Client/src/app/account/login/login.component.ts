@@ -11,37 +11,13 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit { 
 
-  returnUrl: string;  
-  loginForm = this.formBuilder.group({
-    username: ['', Validators.required],
-    password: ['', Validators.required],
-    rememberMe: [false]
-  });
-
   constructor(
-    private formBuilder: FormBuilder,
-    private authService: AuthService, 
     private router: Router,
-    private spinner: NgxSpinnerService) { }    
-  
-    title = "Login";
-    
-    login() {     
-      this.spinner.show();
-      this.authService.login();
-    }   
+    private authService: AuthService) {}
 
     ngOnInit() {
-      this.returnUrl = "http://localhost:4200/home";
-    }
-
-    onSubmit() {
-      this.spinner.show();
-      console.log('submit');
-            
-    }
-
-    register() {
-      this.router.navigate(['/register']);
+      if (this.authService.isAuthenticated()) {
+        this.router.navigate(['/home'])
+      }
     }
 }

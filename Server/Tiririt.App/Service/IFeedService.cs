@@ -48,6 +48,21 @@ namespace Tiririt.App.Service
         /// <param name="pagingParam"></param>
         /// <returns></returns>
         Task<PagingResultEnvelope<PostModel>> Search(string searchText, PagingParam pagingParam);
-        
+
+        /// <summary>
+        /// Returns posts by tag
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="pagingParam"></param>
+        /// <returns></returns>
+        Task<PagingResultEnvelope<PostModel>> GetPostsByTag(string tag, PagingParam pagingParam);
+
+        /// <summary>
+        /// Returns post by stock symbol
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <param name="pagingParam"></param>
+        /// <returns></returns>
+        Task<PagingResultEnvelope<PostModel>> GetPostsByStock(string symbol, PagingParam pagingParam);
     }
 }

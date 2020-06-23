@@ -4,8 +4,8 @@ namespace Tiririt.Data.Entities
 {
     public class POST_STOCK : ENTITY_BASE
     {
-        [Key]
-        public int POST_STOCK_ID { get; set; }
+        //[Key]
+        //public int POST_STOCK_ID { get; set; }
 
         [Required]
         public int TIRIRIT_POST_ID { get; set; }

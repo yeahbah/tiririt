@@ -22,7 +22,6 @@ export class MyFeedComponent implements OnInit {
     this.myFeedService.getMyFeed()
       .subscribe(result => {
         this.myFeed = result;
-        console.log(this.myFeed);
       }, error => console.error(error));
     
     this.interactionService.reloadMessage$.subscribe(message => {

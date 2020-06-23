@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/authentication/auth.service';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-header',
@@ -17,18 +18,29 @@ export class HomeHeaderComponent implements OnInit {
   isShown: boolean = false;
   subscription: Subscription;
 
-  constructor(
+  constructor(        
+    private router: Router,
     private authService: AuthService) { }
 
   ngOnInit(): void {
     this.subscription = this.authService.authNavStatus$
-      .subscribe(status => this.isAuthenticated = status);
-    this.name = this.authService.name; 
+      .subscribe(status => { 
+        this.isAuthenticated = status,
+        this.name = this.authService.name; 
+      });            
   }
 
   async signout() {
     await this.authService.signout();
   }
+
+  register() {
+    this.router.navigate(['/register']);
+  }
+
+  login() {
+    this.authService.login();
+  }  
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -36,6 +48,10 @@ export class HomeHeaderComponent implements OnInit {
 
   openMenu() {
     this.trigger.openMenu();
+  }
+
+  search(searchText: string) {
+    this.router.navigate(['/search', searchText])
   }
 
 }

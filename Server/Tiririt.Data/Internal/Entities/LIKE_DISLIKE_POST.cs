@@ -4,8 +4,8 @@ namespace Tiririt.Data.Entities
 {
     public class LIKE_DISLIKE_POST 
     {
-        [Key]
-        public int LIKE_DISLIKE_POST_ID { get; set; }
+        //[Key]
+        //public int LIKE_DISLIKE_POST_ID { get; set; }
 
         [Required]
         public int TIRIRIT_USER_ID { get; set; }

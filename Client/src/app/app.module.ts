@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgMaterialModule } from './ngmaterial.module';
+import { NgMaterialModule } from './ngmaterial/ngmaterial.module';
 import { WatchlistComponent } from './watchlist/watchlist.component';
 import { WatchlistService } from './watchlist/watchlist.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -21,15 +21,17 @@ import { PostDetailsComponent } from './post-details/post-details.component';
 import { StockComponent } from './stock/stock.component';
 import { TagComponent } from './tag/tag.component';
 import { StripHtmlPipe } from './pipes/stirp-html-pipe';
-import { AccountModule } from './account/account.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
 import { AuthService } from './core/authentication/auth.service';
 import { AuthGuard } from './core/authentication/auth.guard';
-import { HomeShellModule } from './home/home-shell/home-shell.module';
 import { AuthorizeInterceptor } from './core/authentication/authorize.interceptor';
 import { ApiCallInterceptor } from './core/api-call.interceptor';
 import { SubmitPostService } from './submit-post-form/submit-post.service';
+import { SearchComponent } from './search/search.component';
+import { HomeHeaderComponent } from './page-headers/home-header/home-header.component';
+import { RegisterComponent } from './account/register/register.component';
+import { LoginComponent } from './account/login/login.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,11 @@ import { SubmitPostService } from './submit-post-form/submit-post.service';
     StripHtmlPipe,
     PostDetailsComponent,
     StockComponent,
-    TagComponent    
+    TagComponent,
+    SearchComponent,
+    HomeHeaderComponent,
+    RegisterComponent,
+    LoginComponent    
   ],
   imports: [
     BrowserModule,
@@ -54,9 +60,8 @@ import { SubmitPostService } from './submit-post-form/submit-post.service';
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    AccountModule,
     SharedModule,
-    HomeShellModule
+    // HomeShellModule
   ],
   providers: [    
     AuthGuard,

@@ -5,8 +5,8 @@ namespace Tiririt.Data.Entities
 {
     public class POST_HASH_TAG : ENTITY_BASE
     {
-        [Key]
-        public int POST_HASH_TAG_ID { get; set; }
+        //[Key]
+        //public int POST_HASH_TAG_ID { get; set; }
 
         [Required]
         public int HASH_TAG_ID { get; set; }

@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tiririt.Data.Entities;
 
 namespace Tiririt.Data.Internal.Entities
 {
     public class MENTION
     {
-        [Key]
-        public int MENTION_ID { get; set; }
+        //[Key]
+        //public int MENTION_ID { get; set; }
 
         [Required]
         public int TIRIRIT_POST_ID { get; set; }

@@ -140,5 +140,23 @@ namespace Tiririt.Data.Internal.Service
             var query = GetAll();
             return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam);
         }
+
+        public async Task<PagingResultEnvelope<PostModel>> GetPostsByStock(string symbol, PagingParam pagingParam)
+        {
+            var query = GetAll()
+                .Where(post => post.Ref_Stocks.Any(stock => stock.Ref_Stock.SYMBOL == symbol))
+                .OrderByDescending(o => o.POST_DATE);
+
+            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam);
+        }
+
+        public async Task<PagingResultEnvelope<PostModel>> GetPostsByTag(string tag, PagingParam pagingParam)
+        {
+            var query = GetAll()
+                .Where(post => post.Ref_HashTags.Any(hashTag => hashTag.Ref_HashTag.HASH_TAG_TEXT == tag))
+                .OrderByDescending(o => o.POST_DATE);
+
+            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam);
+        }
     }
 }

@@ -68,6 +68,15 @@ namespace Tiririt.Data.Internal.Service
                     };
                     dbContext.PostHashTags.Add(link);                    
                 }
+                else
+                {
+                    var link = new POST_HASH_TAG
+                    {
+                        HASH_TAG_ID = hashTag.HashTagId,
+                        TIRIRIT_POST_ID = postId
+                    };
+                    dbContext.PostHashTags.Add(link);
+                }
             }
             await dbContext.SaveChangesAsync();
         }

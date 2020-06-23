@@ -1,13 +1,11 @@
+using System.Threading.Tasks;
 using Tiririt.App.Service;
 using Tiririt.Core.Collection;
-using Tiririt.Data.Service;
-using Tiririt.Domain.Models;
+using Tiririt.Core.Enums;
 using Tiririt.Core.Extensions;
 using Tiririt.Data.Internal;
-using System.Threading.Tasks;
-using Tiririt.Core.Enums;
-using Tiririt.Data.Internal.Entities;
-using System.Linq;
+using Tiririt.Data.Service;
+using Tiririt.Domain.Models;
 
 namespace Tiririt.App.Internal.Service
 {

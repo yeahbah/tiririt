@@ -18,7 +18,6 @@ export class TrendingFeedComponent implements OnInit {
     this.feedService.getTrendingFeed()
       .subscribe(result => {
         this.trendingFeed = result;
-        console.log(this.trendingFeed);
       })
   }
 

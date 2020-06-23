@@ -14,8 +14,10 @@ namespace Tiririt.Web.Common
             public const string Post = "";
             public const string DeletePost = "";
             public const string Responses = "{postId}/responses";
-            public const string LikeDislike = "{postId}/like/{like}";            
-
+            public const string LikeDislike = "{postId}/like/{like}";
+            //public const string Search = "search";
+            //public const string Tag = "tag/{tag}";
+            //public const string Stock = "stock/{symbol}";
         }
 
         public static class Stock
@@ -48,6 +50,13 @@ namespace Tiririt.Web.Common
             public const string Mentions = "mentions";
             public const string Subscription = "subscription";
             public const string Trending = "trending";
+        }
+
+        public static class Public
+        {
+            public const string Search = "search";
+            public const string Tag = "tag/{tag}";
+            public const string Stock = "stock/{symbol}";
         }
     }
 }

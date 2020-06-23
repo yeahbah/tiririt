@@ -20,6 +20,16 @@ namespace Tiririt.App.Internal.Service
             return await this.feedRepository.GetMentionFeed(pagingParam);
         }
 
+        public async Task<PagingResultEnvelope<PostModel>> GetPostsByStock(string symbol, PagingParam pagingParam)
+        {
+            return await this.feedRepository.GetPostsByStock(symbol, pagingParam);
+        }
+
+        public async Task<PagingResultEnvelope<PostModel>> GetPostsByTag(string tag, PagingParam pagingParam)
+        {
+            return await this.feedRepository.GetPostsByTag(tag, pagingParam);
+        }
+
         public async Task<PagingResultEnvelope<PostModel>> GetSubscriptionFeed(PagingParam pagingParam)
         {
             return await this.feedRepository.GetSubscriptionFeed(pagingParam);

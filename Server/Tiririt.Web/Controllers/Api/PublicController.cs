@@ -29,5 +29,29 @@ namespace Tiririt.Web.Controllers.Api
             return Ok(new PagingResultEnvelope<PostViewModel>(result, pagedResult.TotalCount, pagingParam));
         }
 
+
+        [HttpGet(RouteConsts.Public.Search)]
+        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> Search([FromRoute]string searchText, [FromRoute]PagingParam pagingParam)
+        {
+            var pagedResult = await this.feedService.Search(searchText, pagingParam);
+            var result = pagedResult.Data.Select(post => post.ToViewModel());
+            return Ok(new PagingResultEnvelope<PostViewModel>(result, pagedResult.TotalCount, pagingParam));
+        }
+
+        [HttpGet(RouteConsts.Public.Tag)]
+        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetPostsByTag(string tag, [FromRoute]PagingParam pagingParam)
+        {
+            var pagedResult = await this.feedService.GetPostsByTag(tag, pagingParam);
+            var result = pagedResult.Data.Select(post => post.ToViewModel());
+            return Ok(new PagingResultEnvelope<PostViewModel>(result, pagedResult.TotalCount, pagingParam));
+        }
+
+        [HttpGet(RouteConsts.Public.Stock)]
+        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetPostsByStock(string symbol, [FromRoute] PagingParam pagingParam)
+        {
+            var pagedResult = await this.feedService.GetPostsByStock(symbol, pagingParam);            
+            var result = pagedResult.Data.Select(post => post.ToViewModel());
+            return Ok(new PagingResultEnvelope<PostViewModel>(result, pagedResult.TotalCount, pagingParam));
+        }
     }
 }

@@ -23,7 +23,7 @@ export class AuthCallbackComponent implements OnInit {
       }
     }
     
-    await this.authService.completeAuthentication();      
-    this.router.navigate(['/user/home']);    
+    await this.authService.completeAuthentication();          
+    this.router.navigate(['/home']);    
   }
 }

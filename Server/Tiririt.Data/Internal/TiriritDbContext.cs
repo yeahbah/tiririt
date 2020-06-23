@@ -66,7 +66,7 @@ namespace Tiririt.Data.Internal
             modelBuilder.Entity<HASH_TAG>()
                 .ToTable("hash_tag");
                 
-            // many-to-many POST-HASH-TAG
+            // many-to-many POST-HASH-TAG            
             modelBuilder.Entity<POST_HASH_TAG>()
                 .ToTable("post_hash_tag")
                 .HasKey(ph => new { ph.TIRIRIT_POST_ID, ph.HASH_TAG_ID});

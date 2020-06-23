@@ -21,6 +21,22 @@ namespace Tiririt.Data.Service
         Task<PagingResultEnvelope<PostModel>> GetTrendingPosts(PagingParam pagingParam);
 
         /// <summary>
+        /// Returns posts by stock
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <param name="pagingParam"></param>
+        /// <returns></returns>
+        Task<PagingResultEnvelope<PostModel>> GetPostsByStock(string symbol, PagingParam pagingParam);
+
+        /// <summary>
+        /// Returns posts by tag
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="pagingParam"></param>
+        /// <returns></returns>
+        Task<PagingResultEnvelope<PostModel>> GetPostsByTag(string tag, PagingParam pagingParam);
+
+        /// <summary>
         /// Returns posts that are in the user's watch list
         /// </summary>
         /// <param name="pagingParam"></param>
