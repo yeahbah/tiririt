@@ -23,16 +23,18 @@
           <button mat-menu-item (click)="signout()">Signout</button>
         </mat-menu>
       </li>      
-    </ul>
-    
-    <div class="form-inline my-2 my-lg-0">      
+    </ul>    
 
-      <input #searchText class="form-control mr-sm-2" type="search" 
-        placeholder="Search" aria-label="Search" (keyup.enter)="search(searchText.value)">
-        
-      <button mat-icon-button class="btn btn-outline-success my-2 my-sm-0" (click)="search(searchText.value)">        
-        <mat-icon matSuffix>search</mat-icon>            
-      </button>
-    </div>
+
+  <div class="form-inline my-2 my-lg-0 mb-4">      
+
+    <input #searchText class="form-control mr-sm-2" type="search" 
+      placeholder="Search stock, #tag or @username" aria-label="Search" (keyup.enter)="search(searchText.value)">
+    <button mat-icon-button class="btn btn-outline-success my-2 my-sm-0" (click)="search(searchText.value)">     
+         
+      <mat-icon matSuffix>search</mat-icon>            
+    </button>
+  </div>
+    
   </div>
 </nav>

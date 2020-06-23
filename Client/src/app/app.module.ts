@@ -32,6 +32,7 @@ import { SearchComponent } from './search/search.component';
 import { HomeHeaderComponent } from './page-headers/home-header/home-header.component';
 import { RegisterComponent } from './account/register/register.component';
 import { LoginComponent } from './account/login/login.component';
+import { TagFeedService } from './tag/tag-feed.service';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { LoginComponent } from './account/login/login.component';
     WatchlistService, 
     MyFeedService,
     SubmitPostService,
+    TagFeedService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true},
     { provide: HTTP_INTERCEPTORS, useClass: ApiCallInterceptor, multi: true }
   ],

@@ -1,1 +1,28 @@
-<p>tag works!</p>
+
+    <div class="flexbox-container">
+        <div class="flexbox-item side-navigation" >
+            <app-watchlist *ngIf="isAuthenticated"></app-watchlist>
+            <div *ngIf="!isAuthenticated">
+                Activate your watch list by signing up!
+            </div>
+        </div>
+
+        <div class="flexbox-item main-content">
+            <div class="flex-main-content">      
+                <div class="row">
+                    <div class="col-1">
+                        <button mat-icon-button (click)="goBack()">
+                            <mat-icon>keyboard_arrow_left</mat-icon>
+                            Back</button>
+                    </div>
+                    <div class="col-11"><h1 style="text-align: center;">#{{ tag }}</h1></div>
+                </div>          
+                <div *ngFor="let post of tagFeed?.data">    
+                    <app-post-item [post]="post"></app-post-item>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    

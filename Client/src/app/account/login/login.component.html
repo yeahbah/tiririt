@@ -1,54 +1,27 @@
-<div class="container">
-    <!-- <div class="login-section">
-        <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
-            <div class="form-header">
-                <h1>Welcome!</h1>
-            </div>
-            <input type="hidden" id="returnUrl" name="returnUrl" value="{{ returnUrl }}">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required
-                    formControlName="username" class="form-control" autofocus>
-            </div>
-            <div class="form-group">
-                <label for="password">Password
-                                    
-                </label>
-                <span style="float: right;">
-                    <a href="#">Forgot password?</a>
-                </span>
-                <input type="password" id="password" name="password" required
-                    formControlName="password" class="form-control" >
-            </div>
-            <div class="form-group">
-                <input type="checkbox" id="rememberLogin" name="rememberLogin">                
-                <label for="rememberLogin">Remember me</label>                    
-            </div>            
-            <button class="btn btn-lg btn-primary" [disabled]="!loginForm" type="submit">Sign In</button>
-            <br /><br />
-            <button class="btn btn-lg btn-secondary" (click)="register()">Sign Up</button>
-            <ngx-spinner></ngx-spinner>        
-        </form>
-
-        
-    </div> -->
+<!-- <div class="container">
+    
     <div class="welcome-section">        
         <h1>Trending Posts</h1>        
         <app-trending-feed></app-trending-feed>
     </div>
     
+</div> -->
+
+
+<div class="flexbox-container">
+    <div class="flexbox-item side-navigation" >        
+        <div>
+            Activate your watch list by signing up!
+        </div>
+    </div>
+
+    <div class="flexbox-item main-content">
+        <div class="flex-main-content">
+            <h1>Trending Posts</h1>        
+            <app-trending-feed></app-trending-feed>
+        </div>
+    </div>
+
 </div>
 
 
-
-
-<!-- <div class="row justify-content-center">
-    <div class="col-md-8 text-center">
-        <h1 class="mt-5">{{title}}</h1>
-        <p class="lead">This step uses the <a href="http://docs.identityserver.io/en/latest/topics/grant_types.html#implicit" target="_blank">implicit flow type</a> and redirects to the IdentityServer instance to perform the authentication step.   Before you can login here, you must <a routerLink="/register">register a new account</a>.</p>
-        <img src="assets/images/open-identity.png" width="175" class="mb-4" />
-        <p>
-            <button class="btn btn-lg btn-primary" (click)="login()">Login with IdentityServer</button>
-        </p>     
-      </div>
-  </div> -->
