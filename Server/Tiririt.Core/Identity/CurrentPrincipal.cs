@@ -1,4 +1,5 @@
 ﻿using IdentityServer4.Extensions;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 
@@ -14,10 +15,13 @@ namespace Tiririt.Core.Identity
             this.principal = principal as ClaimsPrincipal;
         }
 
-        public int GetUserId()
+        public int? GetUserId()
         {
             var identity = (ClaimsIdentity)this.principal.Identity;
-            return int.Parse(identity.GetSubjectId());            
+            if (identity.Claims.Count() == 0) return null;
+            var result = identity.GetSubjectId();
+            
+            return int.Parse(result);            
         }
     }
 }

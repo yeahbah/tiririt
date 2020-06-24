@@ -33,7 +33,7 @@
 
         .flex-stock-stats-item1 {
             /* border: 1px solid #efefef; */
-            width: 250px;
+            width: 350px;
         }
 
         .flex-stock-stats-item2 {
@@ -70,6 +70,13 @@ dt {
     font-size: 16pt;
 }
 
+.sentiment {    
+    border:solid; /* no info for size nor color yet */
+    /* box-shadow: 0 0 0 8px #f7f7f7; */
+    border-radius:3px; /* prefix not needed anymore */
+    padding: 2px;
+}
+
 .up {
     color: green;
 }
@@ -78,6 +85,26 @@ dt {
     color: red;
 }
 
+.bearish-td {
+    background-color: red;
+    color: white;
+    text-align: center;
+}
+
+.bullish-td {
+    background-color: green;
+    color: white;
+    text-align: center;
+}
+
 .stock-intraday {
     font-size: 9pt;
+}
+
+.watchers {
+    font-size: 9pt;
+}
+
+.sentiment-container {
+    height: 300px;
 }

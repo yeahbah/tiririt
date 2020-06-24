@@ -169,7 +169,7 @@ namespace Tiririt.Data.Internal.Service
                 BULL_BEAR_LEVEL_CODE_ID = (int)bullBearLevel,
                 POST_DATE = DateTime.Now,
                 POST_TEXT = postText,
-                TIRIRIT_USER_ID = userId,
+                TIRIRIT_USER_ID = userId.Value,
                 RESPONSE_TO_POST_ID = responseToPostId,
                 DELETED_IND = 0
             };

@@ -1,7 +1,11 @@
-.watchlist-container {
-    margin: 5px;
-    width: 100%;
-}
+/* .watchlist-container {
+    max-height: 500px;
+    overflow: auto;
+} */
+
+/* table  {
+    height: 300px;
+} */
 
 .toolbar {
     width: 100%;

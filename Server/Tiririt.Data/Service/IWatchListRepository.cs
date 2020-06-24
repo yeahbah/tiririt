@@ -14,5 +14,6 @@ namespace Tiririt.Data.Service
         Task<WatchListModel> NewWatchList(NewWatchListModel watchListModel);
         Task<WatchListModel> RenameWatchList(int id, string newName);
         Task<WatchListModel> DeleteStocks(int id, string symbol);
+        Task<bool> IsWatchedByUser(string symbol, int userId);
     }
 }

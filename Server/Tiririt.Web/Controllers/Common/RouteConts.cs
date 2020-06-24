@@ -22,7 +22,7 @@ namespace Tiririt.Web.Common
 
         public static class Stock
         {
-            public const string GetStock = "{symbol}";
+            public const string GetStock = "{symbol}";            
         }
 
         public static class StockQuote
@@ -38,9 +38,9 @@ namespace Tiririt.Web.Common
 
             public const string Rename = "{id}/name";
 
-            public const string Stocks = "{id}/stocks";
+            public const string Stocks = "{id}/stocks";            
 
-            public const string DeleteStock = "{id}/stocks/{symbol}";
+            public const string DeleteStock = "{id}/stocks/{symbol}";            
 
         }
 

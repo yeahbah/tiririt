@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WatchlistService } from './watchlist.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { StockViewModel } from '../models/stock-view-model';
 import { WatchlistModel } from './watchlist-model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs/operators';
@@ -32,6 +31,12 @@ export class WatchlistComponent implements OnInit {
       .subscribe(result => {
         this.refreshList(result);
       }, error => console.error(error));
+
+    this.interactionService.reloadWatchListMessage$
+      .subscribe(newWatchList => {
+        console.log('hello');
+        this.refreshList(newWatchList);
+      });
   }
 
   addStock(stockSymbol: string) {    

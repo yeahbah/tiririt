@@ -5,6 +5,7 @@ using Tiririt.Data.Internal.Mappings;
 using Tiririt.Domain.Models;
 using System.Threading.Tasks;
 using Tiririt.Data.Entities;
+using Tiririt.Core.Identity;
 
 namespace Tiririt.Data.Internal.Service
 {
@@ -12,11 +13,15 @@ namespace Tiririt.Data.Internal.Service
     {
         private readonly TiriritDbContext dbContext;
         private readonly ITiriritPostRepository postRepository;
+        private readonly ICurrentPrincipal currentPrincipal;
 
-        public StockRepository(TiriritDbContext dbContext, ITiriritPostRepository postRepository)
+        public StockRepository(TiriritDbContext dbContext, 
+            ITiriritPostRepository postRepository,
+            ICurrentPrincipal currentPrincipal)
         {
             this.dbContext = dbContext;
             this.postRepository = postRepository;
+            this.currentPrincipal = currentPrincipal;
         }
         
         public IQueryable<StockModel> GetAll()
@@ -30,6 +35,7 @@ namespace Tiririt.Data.Internal.Service
                     StockId = stock.STOCK_ID,
                     Symbol = stock.SYMBOL,
                     StockQuotes = stock.Ref_StockQuotes.Select(q => q.ToDomainModel()),
+                    Wacthers = stock.Ref_StocksInWatchLists.Select(w => w.Ref_WatchList.Ref_TiriritUser.ToDomainModel())
                 });
             return result;
         }

@@ -8,6 +8,8 @@ import { PublicFeedService } from '../public/public-feed.service';
 import { ActivatedRoute } from '@angular/router';
 import { IStockModel } from '../public/models/stock-model';
 import { IStockQuoteModel } from '../public/models/stock-quote-model';
+import { WatchlistService } from '../watchlist/watchlist.service';
+import { InteractionService } from '../core/InteractionService';
 
 @Component({
   selector: 'app-stock',
@@ -22,6 +24,7 @@ export class StockComponent implements OnInit {
   stockSymbol: string;
   stock: IStockModel;
   lastTrade: IStockQuoteModel;
+  isWatched = false;
 
   multi: any[] = [];
   view: any[] = [750, 300];
@@ -44,10 +47,11 @@ export class StockComponent implements OnInit {
 
   constructor(
     private publicFeedService: PublicFeedService,
+    private watchListService: WatchlistService,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private location: Location) { 
-      //Object.assign(this, { multi });
+    private location: Location,
+    private interactionService: InteractionService) { 
   }
 
   ngOnInit(): void {
@@ -71,14 +75,39 @@ export class StockComponent implements OnInit {
   
   this.publicFeedService.getStockInfo(this.stockSymbol)
     .subscribe(result => {
-      this.stock = result;
+      this.stock = result;      
     });
 
   this.publicFeedService.getStockEodChart(this.stockSymbol)
     .subscribe(result => {
-      //console.log(result);
       this.multi = result;
     })
+  }
+ 
+  watchStock(symbol: string) {  
+    if (!this.isAuthenticated) {
+      this.authService.login();
+    }
+    else {
+      this.watchListService.addStockToWatchList(0, [ symbol ])
+        .subscribe(result => {
+          this.reload();
+          this.interactionService.reloadWatchList(result);
+        });      
+    }
+  }
+
+  unwatch(symbol: string) {
+    if (!this.isAuthenticated) {
+      this.authService.login();
+    }
+    else {
+      this.watchListService.deleteStock(0, symbol)
+        .subscribe(result => {
+          this.reload();
+          this.interactionService.reloadWatchList(result);
+        });      
+    }
   }
 
   goBack() {

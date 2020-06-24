@@ -11,5 +11,6 @@ namespace Tiririt.Domain.Models
         public int? SectorId { get; set; }               
 
         public IEnumerable<StockQuoteModel> StockQuotes { get; set; }
+        public IEnumerable<UserModel> Wacthers { get; set; }
     }
 }

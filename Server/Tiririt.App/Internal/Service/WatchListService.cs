@@ -49,6 +49,11 @@ namespace Tiririt.App.Internal.Service
             return result;
         }
 
+        public async Task<bool> IsWatchedByUser(string symbol, int userId)
+        {
+            return await watchListRepository.IsWatchedByUser(symbol, userId);
+        }
+
         public async Task<WatchListModel> NewWatchList(NewWatchListModel watchListModel)
         {
             return await watchListRepository.NewWatchList(watchListModel);

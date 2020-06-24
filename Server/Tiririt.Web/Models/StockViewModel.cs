@@ -11,9 +11,16 @@ namespace Tiririt.Web.Models
 
         public DateTime? LastTradeDate { get; set; }
         public decimal? LastTradePrice { get; set; }
+        public decimal? PreviousClose { get; set; }
         public decimal? Open { get; set; }
         public decimal? High { get; set; }
         public decimal? Low { get; set; }
+        public long? Volume { get; set; }
         public decimal? NetForeignBuy { get; set; }
+
+        public bool IsWatchedByUser { get; set; }
+        public int WatchersCount { get; set; }
+        public decimal PointsChange { get; set; }
+        public decimal PercentChange { get; set; }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface ICurrentPrincipal
     {
-        int GetUserId();
+        int? GetUserId();
     }
 }
