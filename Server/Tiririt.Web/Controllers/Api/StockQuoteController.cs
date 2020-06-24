@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -18,16 +20,48 @@ namespace Tiririt.Web.Controllers
             this.stockQuoteService = stockQuoteService;
         }
 
-        [HttpGet(RouteConsts.StockQuote.EndOfDay)]
-        public async Task<ActionResult<PagingResultEnvelope<StockQuoteViewModel>>> GetStockQuotes(string symbol, PagingParam pagingParam)
-        {
-            var pagedResult = await stockQuoteService
-                .GetStockQuotes(symbol, pagingParam);
-            var data = pagedResult
-                .Data.Select(q => q.ToViewModel())
-                .ToList();
+        //[HttpGet(RouteConsts.StockQuote.EndOfDay)]
+        //public async Task<ActionResult<PagingResultEnvelope<StockQuoteViewModel>>> GetStockQuotes(string symbol, PagingParam pagingParam)
+        //{
+        //    var pagedResult = await stockQuoteService
+        //        .GetStockQuotes(symbol, pagingParam);
+        //    var data = pagedResult
+        //        .Data.Select(q => q.ToViewModel())
+        //        .ToList();
 
-            return OkOrNotFoundOf(new PagingResultEnvelope<StockQuoteViewModel>(data, pagedResult.TotalCount, pagingParam));
+        //    return OkOrNotFoundOf(new PagingResultEnvelope<StockQuoteViewModel>(data, pagedResult.TotalCount, pagingParam));
+        //}
+
+        [HttpGet(RouteConsts.StockQuote.EndOfDay)]
+        public async Task<ActionResult<IEnumerable<StockQuoteViewModel>>> GetStockQuotes(string symbol)
+        {
+            var result = await stockQuoteService
+                .GetStockQuotes(symbol);
+
+            return Ok(result.Select(q => q.ToViewModel()));
+        }
+
+        [HttpGet(RouteConsts.StockQuote.EndOfDayChart)]
+        public async Task<ActionResult<StockChartDataModel>> GetChartData(string symbol)
+        {
+            var quotes = await stockQuoteService
+                .GetStockQuotes(symbol);
+            if (!quotes.Any()) return NotFound();
+
+            var result = new List<StockChartDataModel> {
+                new StockChartDataModel
+                {
+                    Name = quotes.First().Symbol,
+                    Series = quotes.Select(q => new ChartSeriesModel
+                    {
+                        Name = q.TradeDate.ToString("MM/dd/yyyy"),
+                        Value = q.Close
+                    })
+                }
+            };
+            
+
+            return Ok(result);
         }
     }
 }

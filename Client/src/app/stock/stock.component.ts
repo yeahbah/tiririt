@@ -1,4 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { Subscription } from 'rxjs';
+import { IPagingResultEnvelope } from '../core/PagingResultEnvelope';
+import { PostModel } from '../my-feed/post-model';
+import { AuthService } from '../core/authentication/auth.service';
+import { PublicFeedService } from '../public/public-feed.service';
+import { ActivatedRoute } from '@angular/router';
+import { IStockModel } from '../public/models/stock-model';
+import { IStockQuoteModel } from '../public/models/stock-quote-model';
 
 @Component({
   selector: 'app-stock',
@@ -7,9 +16,85 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StockComponent implements OnInit {
 
-  constructor() { }
+  stockFeed: IPagingResultEnvelope<PostModel>;
+  isAuthenticated: boolean = false;
+  subscription: Subscription;
+  stockSymbol: string;
+  stock: IStockModel;
+  lastTrade: IStockQuoteModel;
+
+  multi: any[] = [];
+  view: any[] = [750, 300];
+
+  // options
+  legend: boolean = false;
+  showLabels: boolean = false;
+  animations: boolean = true;
+  xAxis: boolean = true;
+  yAxis: boolean = true;
+  showYAxisLabel: boolean = false;
+  showXAxisLabel: boolean = false;
+  xAxisLabel: string = 'Date';
+  yAxisLabel: string = 'Price';
+  timeline: boolean = true;
+
+  colorScheme = {
+    domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
+  };
+
+  constructor(
+    private publicFeedService: PublicFeedService,
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private location: Location) { 
+      //Object.assign(this, { multi });
+  }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.stockSymbol = params['symbol'];
+      this.reload();
+    });
+  }
+
+  reload() {
+    this.subscription = this.authService.authNavStatus$
+    .subscribe(status => { 
+      this.isAuthenticated = status
+    });            
+
+  this.stockSymbol = this.route.snapshot.paramMap.get('symbol');
+  this.publicFeedService.getPostsByStock(this.stockSymbol)
+    .subscribe(result => {
+      this.stockFeed = result;
+    });
+  
+  this.publicFeedService.getStockInfo(this.stockSymbol)
+    .subscribe(result => {
+      this.stock = result;
+    });
+
+  this.publicFeedService.getStockEodChart(this.stockSymbol)
+    .subscribe(result => {
+      //console.log(result);
+      this.multi = result;
+    })
+  }
+
+  goBack() {
+    this.location.back();
+  }
+
+  onSelect(data): void {
+    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  }
+
+  onActivate(data): void {
+    console.log('Activate', JSON.parse(JSON.stringify(data)));
+  }
+
+  onDeactivate(data): void {
+    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 
 }

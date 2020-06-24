@@ -29,7 +29,7 @@ namespace Tiririt.Data.Service
             var stocks = stockSymbols.Select(s => s.ToUpper());
             var userId = this.currentPrincipal.GetUserId();
             var stocksToAdd = await dbContext.Stocks                
-                .Where(s => stocks.ToArray().Contains(s.SYMBOL)
+                .Where(s => stocks.ToArray().Contains(s.SYMBOL.ToUpper())
                     && !s.Ref_StocksInWatchLists.Any(w => w.Ref_WatchList.TIRIRIT_USER_ID == userId && w.STOCK_ID == s.STOCK_ID))                
                 .ToListAsync();
                            

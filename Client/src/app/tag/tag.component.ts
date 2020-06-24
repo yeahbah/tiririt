@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { IPagingResultEnvelope } from '../core/PagingResultEnvelope';
 import { PostModel } from '../my-feed/post-model';
-import { TagFeedService } from './tag-feed.service';
+import { PublicFeedService } from '../public/public-feed.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../core/authentication/auth.service';
 import { Subscription } from 'rxjs';
@@ -21,19 +21,19 @@ export class TagComponent implements OnInit {
   
   constructor(
     private authService: AuthService,
-    private tagFeedService: TagFeedService, 
+    private tagFeedService: PublicFeedService, 
     private route: ActivatedRoute,
     private location: Location) { }
 
   ngOnInit(): void {
+    this.tag = this.route.snapshot.paramMap.get('tag');
     this.subscription = this.authService.authNavStatus$
       .subscribe(status => { 
         this.isAuthenticated = status
       });            
-
-    this.tag = this.route.snapshot.paramMap.get('tag');
+    
     this.tagFeedService.getPostsByTag(this.tag)
-      .subscribe(result => {
+      .subscribe(result => {        
         this.tagFeed = result;
       });
   }

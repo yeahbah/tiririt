@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Tiririt.App.Service;
 using Tiririt.Web.Common;
+using Tiririt.Web.Models.Mappings;
 
 namespace Tiririt.Web.Controllers
 {
+    [AllowAnonymous]
     public class StockController : TiriritControllerBase
     {
         private readonly IStockService stockService;
@@ -29,8 +32,9 @@ namespace Tiririt.Web.Controllers
         [ProducesResponseType(200)]
         public async Task<IActionResult> GetStock(string symbol)
         {
-            var result = await stockService.GetStock(symbol.ToUpper());
-            return OkOrNotFound(result);
+            var result = await stockService
+                .GetStock(symbol);
+            return OkOrNotFound(result.ToViewModel());
         }        
     }
 }

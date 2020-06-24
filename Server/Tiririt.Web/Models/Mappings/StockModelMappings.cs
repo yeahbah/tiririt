@@ -9,15 +9,20 @@ namespace Tiririt.Web.Models.Mappings
         {
             if (value == null) return null;
 
+            var lastTrade = value.StockQuotes.OrderByDescending(o => o.TradeDate).FirstOrDefault();
             return new StockViewModel
             {
                 Name = value.Name,
                 SectorId = value.SectorId,
                 StockId = value.StockId,
                 Symbol = value.Symbol,
-                Price = value.StockQuotes.OrderByDescending(o => o.TradeDate).FirstOrDefault()?.Close                
+                LastTradePrice = lastTrade?.Close,
+                High = lastTrade?.High,
+                LastTradeDate = lastTrade?.TradeDate,
+                Low = lastTrade?.Low,
+                NetForeignBuy = lastTrade?.NetForeignBuy,
+                Open = lastTrade?.Open
             };
-            
         }
 
         //public static StockModel ToDomainModel(this StockViewModel value)

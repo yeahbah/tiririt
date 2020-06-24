@@ -1,0 +1,83 @@
+.flexbox-container {
+    display: flex;    
+}
+
+.flexbox-item {
+    width: 200px;
+    margin: 10px;
+    min-height: 200px;
+    /* border: 3px solid #333;
+    background-color: #dfdfdf; */
+}
+
+.side-navigation {    
+    flex-shrink: 0;
+    width: 250px;
+}
+
+.main-content {
+    flex-grow: 1;
+}
+
+ /* column flex direction content */
+
+.flex-main-content {
+    display: flex;
+    flex-direction: column;
+}    
+    .flex-stock-stats {
+        flex-shrink: 0;
+        /* border: 1px solid #efefef; */
+        display: flex;                
+    }    
+
+        .flex-stock-stats-item1 {
+            /* border: 1px solid #efefef; */
+            width: 250px;
+        }
+
+        .flex-stock-stats-item2 {
+            /* border: 1px solid #efefef; */
+            margin-left: 5px;
+            width: 300px;
+        }
+
+    .flex-main-content-item2 {
+        flex-grow: 1;
+    }
+
+    
+
+dt {
+    font-size: 9pt;
+    font-weight: normal;
+}
+
+.stock-name {
+    /* font-size: 12pt; */
+}
+
+.stock-price {
+    font-size: 16pt;
+}
+
+.stock-trade-date {
+    font-size: 9pt;
+    text-align: center;
+}
+
+.stock-symbol {
+    font-size: 16pt;
+}
+
+.up {
+    color: green;
+}
+
+.down {
+    color: red;
+}
+
+.stock-intraday {
+    font-size: 9pt;
+}

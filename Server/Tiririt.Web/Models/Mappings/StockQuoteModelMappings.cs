@@ -15,10 +15,13 @@ namespace Tiririt.Web.Models.Mappings
                 NetForeignBuy = value.NetForeignBuy,
                 Open = value.Open,
                 StockId = value.StockId,
+                Symbol = value.Symbol,
                 StockQuoteId = value.StockQuoteId,
                 TradeDate = value.TradeDate,
                 Volume = value.Volume
             };
         }
+
+        
     }
 }

@@ -50,7 +50,7 @@ namespace Tiririt.Data.Internal.Service
         public async Task<StockModel> GetStock(string stockSymbol)
         {
             return await GetAll()                
-                .SingleOrDefaultAsync(stock => stock.Symbol == stockSymbol);
+                .SingleOrDefaultAsync(stock => stock.Symbol.ToUpper() == stockSymbol.ToUpper());
         }
 
         public async Task LinkPostToStocks(int postId, string[] symbols)

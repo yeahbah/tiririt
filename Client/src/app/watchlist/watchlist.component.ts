@@ -6,6 +6,8 @@ import { WatchlistModel } from './watchlist-model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs/operators';
 import { InteractionService } from '../core/InteractionService';
+import { Router } from '@angular/router';
+import { IStockModel } from '../public/models/stock-model';
 
 @Component({
   selector: 'app-watchlist',
@@ -15,13 +17,14 @@ import { InteractionService } from '../core/InteractionService';
 export class WatchlistComponent implements OnInit {
 
   watchListModel: WatchlistModel | null;
-  dataSource = new MatTableDataSource<StockViewModel>();
+  dataSource = new MatTableDataSource<IStockModel>();
   displayedColumns: string[] = ['symbol', 'price', 'actions'];
 
   constructor(
     private watchListService: WatchlistService,
     private spinner: NgxSpinnerService,
-    private interactionService: InteractionService
+    private interactionService: InteractionService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -58,7 +61,7 @@ export class WatchlistComponent implements OnInit {
   }
 
   refreshList(watchList: WatchlistModel) {
-    this.dataSource = new MatTableDataSource<StockViewModel>(watchList?.stocks) 
+    this.dataSource = new MatTableDataSource<IStockModel>(watchList?.stocks) 
     this.watchListModel = watchList;
   }
 
@@ -67,6 +70,6 @@ export class WatchlistComponent implements OnInit {
     if (value == "") return;
 
     this.addStock(value);
-  }
+  }  
 
 }

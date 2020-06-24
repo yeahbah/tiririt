@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,7 @@ namespace Tiririt.Data.Internal.Service
                     NetForeignBuy = data.NET_FOREIGN_BUY,
                     Open = data.OPEN,
                     StockId = data.Ref_Stock.STOCK_ID,
+                    Symbol = data.Ref_Stock.SYMBOL,
                     StockQuoteId = data.STOCK_QUOTE_ID,
                     TradeDate = data.TRADE_DATE,
                     Volume = data.VOLUMNE                    
@@ -72,6 +74,29 @@ namespace Tiririt.Data.Internal.Service
                     Volume = data.VOLUMNE
                 });                
             return await PagingResultEnvelope<StockQuoteModel>.ToPagingEnvelope(result, pagingParam);
+        }
+
+        public async Task<IEnumerable<StockQuoteModel>> GetStockQuotes(string symbol)
+        {
+            var result = await dbContext.StockQuotes
+                .AsNoTracking()
+                .Where(quote => quote.Ref_Stock.SYMBOL == symbol)
+                .Select(data => new StockQuoteModel
+                {
+                    Close = data.CLOSE,
+                    High = data.HIGH,
+                    Low = data.LOW,
+                    NetForeignBuy = data.NET_FOREIGN_BUY,
+                    Open = data.OPEN,
+                    StockId = data.Ref_Stock.STOCK_ID,
+                    Symbol = data.Ref_Stock.SYMBOL,
+                    StockQuoteId = data.STOCK_QUOTE_ID,
+                    TradeDate = data.TRADE_DATE,
+                    Volume = data.VOLUMNE
+                })
+                .OrderBy(o => o.TradeDate)
+                .ToListAsync();
+            return result;
         }
     }
 }

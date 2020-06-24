@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tiririt.App.Service;
 using Tiririt.Core.Collection;
@@ -22,6 +23,11 @@ namespace Tiririt.App.Internal.Service
         public async Task<PagingResultEnvelope<StockQuoteModel>> GetStockQuotes(string symbol, PagingParam pagingParam)
         {
             return await stockQuoteRepository.GetStockQuotes(symbol, pagingParam);
+        }
+
+        public async Task<IEnumerable<StockQuoteModel>> GetStockQuotes(string symbol)
+        {
+            return await stockQuoteRepository.GetStockQuotes(symbol);
         }
     }
 }

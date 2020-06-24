@@ -27,7 +27,8 @@ namespace Tiririt.Web.Common
 
         public static class StockQuote
         {
-            public const string EndOfDay = "stock/{symbol}/eod";
+            public const string EndOfDay = "{symbol}/eod";
+            public const string EndOfDayChart = "{symbol}/eod/chart";
         }
 
         public static class WatchList

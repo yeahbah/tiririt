@@ -1,1 +1,128 @@
-<p>stock works!</p>
+
+<div class="flexbox-container">
+    <div class="flexbox-item side-navigation" >
+        <app-watchlist *ngIf="isAuthenticated"></app-watchlist>
+        <div *ngIf="!isAuthenticated">
+            Activate your watch list by signing up!
+        </div>
+    </div>
+
+    <div class="flexbox-item main-content">
+        <div class="flex-main-content">      
+            <div>
+                <span class="stock-name">{{ stock?.name }}</span> <br>
+                <span class="stock-symbol">{{ stock?.symbol }}</span>
+            </div>
+            <div class="flex-stock-stats">
+                <div class="flex-stock-stats-item1">
+                    <table style="width: 100%">                    
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <dl>
+                                        <dt>Last Trade</dt>
+                                        <dd class="stock-price">{{ stock?.lastTradePrice | currency: '&#8369;' }}</dd>
+                                    </dl>
+                                </td>     
+                                <td>
+                                    <dl>
+                                        <dt>Change</dt>
+                                        <dd class="stock-price up">+6.5 (5%)</dd>
+                                    </dl>
+                                </td>     
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="stock-trade-date">As of {{ stock?.lastTradeDate | date: "MM/dd/yyyy"}}</div>                                                        
+                </div>
+                <mat-divider [vertical]="true"></mat-divider>
+                <div class="flex-stock-stats-item2">
+                    <table style="width: 100%;">                    
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <dl>
+                                        <dt>Open</dt>
+                                        <dd>{{ stock?.open | number }}</dd>
+                                    </dl>
+                                </td>     
+                                <td>
+                                    <dl>
+                                        <dt>High</dt>
+                                        <dd>{{ stock?.high }}</dd>
+                                    </dl>
+                                </td>     
+                                <td>
+                                    <dl>
+                                        <dt>Low</dt>
+                                        <dd>{{ stock?.low }}</dd>
+                                    </dl>
+                                </td>     
+                                <td>
+                                    <dl>
+                                        <dt>NFB</dt>
+                                        <dd>{{ stock?.netForeignBuy | number }}</dd>
+                                    </dl>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <button mat-raised-button color="primary">Watch</button>
+                </div>
+            </div>
+
+            <!-- <div class="row">
+                <div class="col-4">
+                    <div>
+                        <span class="stock-symbol">{{ stockSymbol }}</span>
+                        <br>                                        
+                        <span class="stock-price">
+                            {{ stock?.lastTradePrice | currency: '&#8369;'}} 
+                        </span>
+                        <span class="up">+6.5 (5%)</span>                        
+                        <br>
+                        <span class="stock-trade-date">As of {{ stock?.lastTradeDate | date: "MM/dd/yyyy"}}</span>                                    
+                    </div>
+                
+                </div>
+                <div>
+                    <span class="stock-intraday">
+                        open: {{ stock?.open | number }} <br>
+                        high: {{ stock?.high | number }} <br>
+                        low: {{ stock?.low | number }} <br>
+                        NFB: {{ stock?.netForeignBuy | currency:'&#8369;'}}
+                    </span>
+                </div>
+                <div style="text-align: right;">
+                    <button mat-raised-button color="primary">Watch</button>
+                </div>
+                
+            </div>        -->
+            <ngx-charts-line-chart
+            [view]="view"
+            [scheme]="colorScheme"
+            [legend]="legend"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxis]="xAxis"
+            [yAxis]="yAxis"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel"
+            [timeline]="timeline"
+            [results]="multi"
+            (select)="onSelect($event)"
+            (activate)="onActivate($event)"
+            (deactivate)="onDeactivate($event)"
+            >
+          </ngx-charts-line-chart>     
+            <div *ngFor="let post of stockFeed?.data" class="flex-main-content-item2">    
+                <app-post-item [post]="post"></app-post-item>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

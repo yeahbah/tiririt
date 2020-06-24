@@ -13,10 +13,8 @@ import { WatchlistService } from './watchlist/watchlist.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SubmitPostFormComponent } from './submit-post-form/submit-post-form.component';
 import { FeedContainerComponent } from './feed-container/feed-container.component';
-import { MyFeedComponent } from './my-feed/my-feed.component';
 import { MyFeedService } from './my-feed/my-feed.service';
 import { NewsFeedComponent } from './news-feed/news-feed.component';
-import { LinkifyPipe } from './pipes/linkify-pipe';
 import { PostDetailsComponent } from './post-details/post-details.component';
 import { StockComponent } from './stock/stock.component';
 import { TagComponent } from './tag/tag.component';
@@ -32,7 +30,8 @@ import { SearchComponent } from './search/search.component';
 import { HomeHeaderComponent } from './page-headers/home-header/home-header.component';
 import { RegisterComponent } from './account/register/register.component';
 import { LoginComponent } from './account/login/login.component';
-import { TagFeedService } from './tag/tag-feed.service';
+import { PublicFeedService } from './public/public-feed.service';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -62,7 +61,7 @@ import { TagFeedService } from './tag/tag-feed.service';
     AppRoutingModule,
     BrowserAnimationsModule,
     SharedModule,
-    // HomeShellModule
+    NgxChartsModule
   ],
   providers: [    
     AuthGuard,
@@ -70,7 +69,7 @@ import { TagFeedService } from './tag/tag-feed.service';
     WatchlistService, 
     MyFeedService,
     SubmitPostService,
-    TagFeedService,
+    PublicFeedService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true},
     { provide: HTTP_INTERCEPTORS, useClass: ApiCallInterceptor, multi: true }
   ],

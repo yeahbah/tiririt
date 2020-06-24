@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TagFeedService } from './tag-feed.service';
+import { PublicFeedService } from './public-feed.service';
 
 describe('TagFeedService', () => {
-  let service: TagFeedService;
+  let service: PublicFeedService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(TagFeedService);
+    service = TestBed.inject(PublicFeedService);
   });
 
   it('should be created', () => {
