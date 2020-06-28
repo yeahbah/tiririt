@@ -6,6 +6,11 @@
     background-color: #efefef;
 } */
 
+pre { 
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 12pt;
+}
+
 .mat-card-header {
     display: flex;
 }
@@ -44,6 +49,7 @@ button {
     background-color: red;
 }
 
-.icon-display {
+.mat-icon {
     transform: scale(0.7);
 }
+

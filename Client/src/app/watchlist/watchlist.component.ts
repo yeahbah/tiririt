@@ -39,7 +39,8 @@ export class WatchlistComponent implements OnInit {
       });
   }
 
-  addStock(stockSymbol: string) {    
+  addStock(stockSymbol: string) {   
+    if (stockSymbol.trim() == '') return; 
     if (this.watchListModel == null) return;    
 
     this.spinner.show();

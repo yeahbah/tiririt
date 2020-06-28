@@ -80,7 +80,7 @@ namespace Tiririt.App.Internal.Service
                     await stockRepository.RemoveStockLinksFromPost(postId.Value, true);
                     await mentionRepository.RemoveMentions(postId.Value, true);
                     await postRepository.ModifyPost(postId.Value, postText);
-                }
+                }                
                 await hashTagRepository.AddTagsToPost(postId.Value, tags);
                 await stockRepository.LinkPostToStocks(postId.Value, stocks);
                 await mentionRepository.AddPostMention(postId.Value, mentions);
@@ -97,6 +97,11 @@ namespace Tiririt.App.Internal.Service
         public async Task<PostModel> LikeOrDislikePost(int postId, bool like)
         {
             return await postRepository.LikeOrDislikePost(postId, like);
+        }
+
+        public async Task<PostModel> GetPost(int postId)
+        {
+            return await postRepository.GetPost(postId);
         }
     }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { InteractionService } from 'src/app/core/InteractionService';
 
 @Component({
   selector: 'app-submit-post-dialog',
@@ -10,6 +11,7 @@ export class SubmitPostDialogComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
 }

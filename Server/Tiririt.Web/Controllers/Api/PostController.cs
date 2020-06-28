@@ -38,6 +38,16 @@ namespace Tiririt.Web.Controllers
             return Ok(new PagingResultEnvelope<PostViewModel>(data, pagedResult.TotalCount, pagingParam));
         }
 
+        [AllowAnonymous]
+        [HttpGet(RouteConsts.TiriritPost.PostDetails)]
+        public async Task<IActionResult> GetPost(int postId)
+        {
+            var result = await tiriritPostService
+                .GetPost(postId);
+
+            return OkOrNotFound(result.ToViewModel());
+        }
+
         /// <summary>
         /// New post
         /// </summary>
@@ -54,11 +64,11 @@ namespace Tiririt.Web.Controllers
 
                 
         [HttpPost(RouteConsts.TiriritPost.Reply)]
-        public async Task<ActionResult<PostViewModel>> NewResponse(int postId, [FromBody]string postText)
+        public async Task<ActionResult<PostViewModel>> PostComment(int postId, [FromBody]string postText)
         {
             // TODO fix this
             var result = await tiriritPostService
-                .AddOrModifyPost(postText, BullBearLevel.Neutral, postId);
+                .AddOrModifyPost(postText, BullBearLevel.Neutral, null, postId);
             return Ok(result.ToViewModel());
         }
 
@@ -87,8 +97,10 @@ namespace Tiririt.Web.Controllers
         /// </summary>
         /// <param name="postId"></param>
         /// <returns></returns>
+        [AllowAnonymous]
         [HttpGet(RouteConsts.TiriritPost.Responses)]
-        public async Task<ActionResult<PagingResultEnvelope<ResponseViewModel>>> GetResponses(int postId, PagingParam pagingParam)
+        public async Task<ActionResult<PagingResultEnvelope<ResponseViewModel>>> GetResponses(
+            int postId, [FromQuery]PagingParam pagingParam)
         {
             var pagedResult = await tiriritPostService
                 .GetResponses(postId, pagingParam);

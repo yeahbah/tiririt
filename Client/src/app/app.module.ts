@@ -25,13 +25,16 @@ import { AuthService } from './core/authentication/auth.service';
 import { AuthGuard } from './core/authentication/auth.guard';
 import { AuthorizeInterceptor } from './core/authentication/authorize.interceptor';
 import { ApiCallInterceptor } from './core/api-call.interceptor';
-import { SubmitPostService } from './submit-post-form/submit-post.service';
+import { TiriritPostService } from './core/tiririt-post.service';
 import { SearchComponent } from './search/search.component';
 import { HomeHeaderComponent } from './page-headers/home-header/home-header.component';
 import { RegisterComponent } from './account/register/register.component';
 import { LoginComponent } from './account/login/login.component';
 import { PublicFeedService } from './public/public-feed.service';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { SubmitPostDialogComponent } from './dialogs/submit-post-dialog/submit-post-dialog.component';
+import { PostDetailsDialogComponent } from './dialogs/post-details-dialog/post-details-dialog.component';
+import { StockChartComponent } from './shared/stock-chart/stock-chart.component';
+import { PostResponseComponent } from './post-response/post-response.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +53,10 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     SearchComponent,
     HomeHeaderComponent,
     RegisterComponent,
-    LoginComponent    
+    LoginComponent,
+    SubmitPostDialogComponent,
+    PostDetailsDialogComponent,
+    PostResponseComponent
   ],
   imports: [
     BrowserModule,
@@ -61,14 +67,13 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     AppRoutingModule,
     BrowserAnimationsModule,
     SharedModule,
-    NgxChartsModule
   ],
   providers: [    
     AuthGuard,
     AuthService,
     WatchlistService, 
     MyFeedService,
-    SubmitPostService,
+    TiriritPostService,
     PublicFeedService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true},
     { provide: HTTP_INTERCEPTORS, useClass: ApiCallInterceptor, multi: true }

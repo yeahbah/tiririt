@@ -12,5 +12,6 @@ namespace Tiririt.App.Service
         Task DeletePost(int postId);
         Task<PagingResultEnvelope<PostModel>> GetResponses(int postId, PagingParam pagingParam);
         Task<PostModel> LikeOrDislikePost(int postId, bool like);
+        Task<PostModel> GetPost(int postId);
     }
 }

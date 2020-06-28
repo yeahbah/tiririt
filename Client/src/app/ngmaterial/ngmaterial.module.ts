@@ -10,6 +10,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -25,6 +28,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatBadgeModule,
     MatMenuModule,
     MatSnackBarModule,
+    MatDialogModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule
   ],  
   exports: [
     // CommonModule,
@@ -38,7 +44,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatDividerModule,
     MatBadgeModule,
     MatMenuModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule
   ]
 })
 export class NgMaterialModule { }

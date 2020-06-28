@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PostModel } from 'src/app/my-feed/post-model';
+import { MatDialog } from '@angular/material/dialog';
+import { PostDetailsDialogComponent } from 'src/app/dialogs/post-details-dialog/post-details-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-post-item',
@@ -10,7 +13,7 @@ export class PostItemComponent implements OnInit {
 
   @Input() post: PostModel;
 
-  constructor() { }
+  constructor(private dialog: MatDialog, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -23,4 +26,15 @@ export class PostItemComponent implements OnInit {
     return bullBearLevel == 'VeryBearish';
   }
 
+  showReplyDialog(post: PostModel) {
+    this.dialog.open(PostDetailsDialogComponent, {
+      data: post
+    });
+  }
+
+  goToPostDetails(postId: number) {
+    this.router.navigate(['/post/', postId]);
+  }
+
 }
+

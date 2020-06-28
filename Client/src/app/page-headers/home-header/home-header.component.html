@@ -16,14 +16,17 @@
 
     <ul class="navbar-nav mr-auto" *ngIf="isAuthenticated">
       <li>
-        <button mat-button [matMenuTriggerFor]="userMenu">Hello, {{ name }}</button>
+        <!-- <button mat-button > -->
+          <!-- //Hello, {{ name }} -->
+          <div mat-card-avatar class="profile-avatar mr-2" [matMenuTriggerFor]="userMenu"></div>
+        <!-- </button> -->
         <mat-menu #userMenu="matMenu">
           <button mat-menu-item>Profile</button>
           <button mat-menu-item (click)="signout()">Signout</button>
         </mat-menu>
       </li>  
       <li>
-        <button mat-flat-button color="primary">New Post</button>
+        <button mat-flat-button color="primary" (click)="newPost()">New Post</button>
       </li>    
     </ul>    
 

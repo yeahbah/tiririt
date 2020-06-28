@@ -40,7 +40,9 @@
                                 <td>
                                     <dl>
                                         <dt>Change</dt>
-                                        <dd [ngClass]="stock?.pointsChange > 0 ? 'stock-price up' : 'stock-price down'">{{ stock?.pointsChange}} ({{ stock?.percentChange }}%)</dd>
+                                        <dd [ngClass]="stock?.pointsChange > 0 ? 'stock-price up' : 'stock-price down'">
+                                            <span *ngIf="stock?.pointsChange > 0">+</span>{{ stock?.pointsChange}} (<span *ngIf="stock?.pointsChange > 0">+</span>{{ stock?.percentChange }}%)
+                                        </dd>
                                     </dl>
                                 </td>
                                 <td>
@@ -95,31 +97,8 @@
                 </div>
                 
             </div>
-        
-
-        <!-- <mat-tab-group animationDuration="0ms">
-            
-            <mat-tab label="Price">                 -->
-                <ngx-charts-line-chart
-                [view]="view"
-                [scheme]="colorScheme"
-                [legend]="legend"
-                [showXAxisLabel]="showXAxisLabel"
-                [showYAxisLabel]="showYAxisLabel"
-                [xAxis]="xAxis"
-                [yAxis]="yAxis"
-                [xAxisLabel]="xAxisLabel"
-                [yAxisLabel]="yAxisLabel"
-                [timeline]="timeline"
-                [results]="multi"
-                (select)="onSelect($event)"
-                (activate)="onActivate($event)"
-                (deactivate)="onDeactivate($event)"
-                >            
-          </ngx-charts-line-chart>     
-          <!-- </mat-tab>
-          
-        </mat-tab-group>       -->
+    
+        <app-stock-chart></app-stock-chart>
         <div class="row mb-2">
             <table width="100%">
                 <tr>
@@ -134,9 +113,16 @@
             </table>
             
         </div>
+            <div *ngIf="stockFeed?.data.length > 0">
+                <div *ngFor="let post of stockFeed?.data" class="flex-main-content-item2">    
+                    <app-post-item [post]="post"></app-post-item>
+                </div>
+            </div>
 
-            <div *ngFor="let post of stockFeed?.data" class="flex-main-content-item2">    
-                <app-post-item [post]="post"></app-post-item>
+            <div *ngIf="stockFeed?.data.length == 0" class="first-post">
+                <h2>What!? Nobody posted anything yet on this stock?</h2>
+
+                <button mat-raised-button color="primary">Click me to be the first!</button>
             </div>
         </div>
     </div>

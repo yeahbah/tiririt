@@ -7,11 +7,7 @@
             Posted {{ post.postDate | date: 'medium' }}
             </div>            
             
-        </mat-card-subtitle>
-        <!-- <div class="bearbullindicator">            
-            <mat-icon svgIcon="bullish" *ngIf="post.bullBearLevel == 'VeryBullish'"></mat-icon>
-            <mat-icon svgIcon="bearish" *ngIf="post.bullBearLevel == 'VeryBearish'"></mat-icon>
-        </div> -->
+        </mat-card-subtitle>        
         <div class="bearbullindicator">
             <div class="bearbullindicator1 bullish"  *ngIf="isBullish(post.bullBearLevel)">Bullish</div>
             <div class="bearbullindicator1 bearish"  *ngIf="isBearish(post.bullBearLevel)">Bearish</div>
@@ -19,30 +15,45 @@
     </mat-card-header>
     
     <mat-card-content>
-        <p [innerHTML]="post.postText | linkify"></p>
+        <!-- <pre> -->
+            <pre [innerHTML]="post.postText | linkify"></pre>
+        <!-- </pre> -->
     </mat-card-content>
 
     <mat-card-actions>
-        <button mat-icon-button >
-            <mat-icon class="icon-display">reply</mat-icon>
-        </button>
-        <button mat-icon-button >
-            <mat-icon class="icon-display">format_quote</mat-icon>
-        </button>
-        <button mat-icon-button>
-            <!-- <span matBadge="" matBadgePosition="before" matBadgeColor="accent" matBadgeSize="small" *ngIf="post.responseCount > 0"></span> -->
-                <mat-icon class="icon-display">mode_comment</mat-icon>
-                <span *ngIf="post.responseCount > 0">{{ post.responseCount }}</span>
-        </button>
-        <button mat-icon-button>
+        <button mat-icon-button
+            matTooltip="Like this post" matTooltipPosition="above">
             <!-- <span matBadge="{{ post.likeCount }}" matBadgePosition="before" matBadgeColor="accent" matBadgeSize="small" *ngIf="post.likeCount > 0"></span> -->
                 <!-- <img src="https://img.icons8.com/material-sharp/24/000000/thumb-up.png"/>                 -->
-                <mat-icon svgIcon="like" class="icon-display"></mat-icon>
+                <mat-icon >thumb_up</mat-icon>
                 <span *ngIf="post.likeCount > 0">{{ post.likeCount }}</span>
         </button>
-        <!-- <button mat-stroked-button matBadge="{{ post.dislikeCount }}" matBadgePosition="before" matBadgeColor="accent">
-                <img src="https://img.icons8.com/material-rounded/24/000000/thumbs-down.png"/>
-        </button> -->
+        <button mat-icon-button (click)="showReplyDialog(post)"
+            matTooltip="Reply to this post" matTooltipPosition="above" >
+            <mat-icon>reply</mat-icon>
+        </button>
+        <button mat-icon-button 
+            matTooltip="Quote this post" matTooltipPosition="above">
+            <mat-icon>format_quote</mat-icon>
+        </button>
+        <button mat-icon-button (click)="goToPostDetails(post.postId)" 
+            matTooltip="Show comments" matTooltipPosition="above">
+            <!-- <span matBadge="" matBadgePosition="before" matBadgeColor="accent" matBadgeSize="small" *ngIf="post.responseCount > 0"></span> -->
+                <mat-icon>mode_comment</mat-icon>
+                <span *ngIf="post.responseCount > 0">{{ post.responseCount }}</span>
+        </button>
+        
+        <mat-menu #postMenu="matMenu">
+            <button mat-menu-item>Follow this post</button>
+            <button mat-menu-item>Follow {{ post.userName }} </button>
+            <button mat-menu-item>Mute</button>
+            <button mat-menu-item>Block</button>
+            <button mat-menu-item>Report</button>            
+        </mat-menu>
+        <button mat-icon-button [matMenuTriggerFor]="postMenu"
+            matTooltip="More" matTooltipPosition="above">
+            <mat-icon>more_horiz</mat-icon>
+        </button>
         
     </mat-card-actions>
 </mat-card>

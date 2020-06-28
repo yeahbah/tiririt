@@ -26,25 +26,6 @@ export class StockComponent implements OnInit {
   lastTrade: IStockQuoteModel;
   isWatched = false;
 
-  multi: any[] = [];
-  view: any[] = [750, 300];
-
-  // options
-  legend: boolean = false;
-  showLabels: boolean = false;
-  animations: boolean = true;
-  xAxis: boolean = true;
-  yAxis: boolean = true;
-  showYAxisLabel: boolean = false;
-  showXAxisLabel: boolean = false;
-  xAxisLabel: string = 'Date';
-  yAxisLabel: string = 'Price';
-  timeline: boolean = true;
-
-  colorScheme = {
-    domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
-  };
-
   constructor(
     private publicFeedService: PublicFeedService,
     private watchListService: WatchlistService,
@@ -68,20 +49,18 @@ export class StockComponent implements OnInit {
     });            
 
   this.stockSymbol = this.route.snapshot.paramMap.get('symbol');
+  this.publicFeedService.getStockInfo(this.stockSymbol)
+    .subscribe(result => {
+      console.log(result);
+      this.stock = result;      
+      this.interactionService.loadedStock(result);
+    });
+
   this.publicFeedService.getPostsByStock(this.stockSymbol)
     .subscribe(result => {
       this.stockFeed = result;
     });
-  
-  this.publicFeedService.getStockInfo(this.stockSymbol)
-    .subscribe(result => {
-      this.stock = result;      
-    });
 
-  this.publicFeedService.getStockEodChart(this.stockSymbol)
-    .subscribe(result => {
-      this.multi = result;
-    })
   }
  
   watchStock(symbol: string) {  
@@ -112,18 +91,6 @@ export class StockComponent implements OnInit {
 
   goBack() {
     this.location.back();
-  }
-
-  onSelect(data): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-  }
-
-  onActivate(data): void {
-    console.log('Activate', JSON.parse(JSON.stringify(data)));
-  }
-
-  onDeactivate(data): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 
 }

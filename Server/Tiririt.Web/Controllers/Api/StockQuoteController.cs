@@ -42,24 +42,17 @@ namespace Tiririt.Web.Controllers
         }
 
         [HttpGet(RouteConsts.StockQuote.EndOfDayChart)]
-        public async Task<ActionResult<StockChartDataModel>> GetChartData(string symbol)
+        public async Task<ActionResult<IEnumerable<ChartSeriesModel>>> GetChartData(string symbol)
         {
             var quotes = await stockQuoteService
                 .GetStockQuotes(symbol);
             if (!quotes.Any()) return NotFound();
 
-            var result = new List<StockChartDataModel> {
-                new StockChartDataModel
-                {
-                    Name = quotes.First().Symbol,
-                    Series = quotes.Select(q => new ChartSeriesModel
-                    {
-                        Name = q.TradeDate.ToString("MM/dd/yyyy"),
-                        Value = q.Close
-                    })
-                }
-            };
-            
+            var result = quotes.Select(q => new ChartSeriesModel
+            {
+                Time = q.TradeDate,
+                Value = q.Close
+            });
 
             return Ok(result);
         }

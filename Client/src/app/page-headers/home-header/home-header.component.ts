@@ -3,6 +3,9 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/authentication/auth.service';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { SubmitPostFormComponent } from 'src/app/submit-post-form/submit-post-form.component';
+import { SubmitPostDialogComponent } from 'src/app/dialogs/submit-post-dialog/submit-post-dialog.component';
 
 @Component({
   selector: 'app-home-header',
@@ -20,7 +23,8 @@ export class HomeHeaderComponent implements OnInit {
 
   constructor(        
     private router: Router,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.subscription = this.authService.authNavStatus$
@@ -54,4 +58,7 @@ export class HomeHeaderComponent implements OnInit {
     this.router.navigate(['/search', searchText])
   }
 
+  newPost() {
+    this.dialog.open(SubmitPostDialogComponent);
+  }
 }

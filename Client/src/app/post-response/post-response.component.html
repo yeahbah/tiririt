@@ -1,0 +1,61 @@
+<div *ngIf="postResponses">    
+    <h2>{{ postResponses?.data.length}} Comments</h2>
+    <div *ngFor="let post of postResponses?.data" class="comment">    
+        <!-- <mat-card> -->
+            <div class="comment-header mb-4 my-2">     
+                <div mat-card-avatar class="avatar"></div>
+                <div class="comment-subtitle ml-3">
+                    <div>
+                    {{ post.userName }}   <br>
+                    Posted {{ post.postDate | date: 'medium' }}
+                    </div>            
+                    
+                </div>        
+            </div>
+            
+            <div>
+                <pre [innerHTML]="post.postText | linkify"></pre>
+            </div>
+        
+            <div class="actions ">
+                <button mat-icon-button
+                    matTooltip="Like this post" matTooltipPosition="above">
+                        <mat-icon >thumb_up</mat-icon>
+                        <span *ngIf="post.likeCount > 0">{{ post.likeCount }}</span>
+                </button>
+                <button mat-icon-button (click)="showReplyForm()"
+                    matTooltip="Reply to this post" matTooltipPosition="above" >
+                    <mat-icon>reply</mat-icon>
+                </button>
+                <button mat-icon-button 
+                    matTooltip="Quote this post" matTooltipPosition="above">
+                    <mat-icon>format_quote</mat-icon>
+                </button>
+                <button mat-icon-button 
+                    matTooltip="Show comments" matTooltipPosition="above">
+                    <!-- <span matBadge="" matBadgePosition="before" matBadgeColor="accent" matBadgeSize="small" *ngIf="post.responseCount > 0"></span> -->
+                        <mat-icon>mode_comment</mat-icon>
+                        <span *ngIf="post.responseCount > 0">{{ post.responseCount }}</span>
+                </button>
+                
+                <mat-menu #postMenu="matMenu">
+                    <button mat-menu-item>Follow this post</button>
+                    <button mat-menu-item>Follow {{ post.userName }} </button>
+                    <button mat-menu-item>Mute</button>
+                    <button mat-menu-item>Block</button>
+                    <button mat-menu-item>Report</button>            
+                </mat-menu>
+                <button mat-icon-button [matMenuTriggerFor]="postMenu"
+                    matTooltip="More" matTooltipPosition="above">
+                    <mat-icon>more_horiz</mat-icon>
+                </button>                
+            </div>
+            <app-reply-form 
+                [post]="post" 
+                [formVisible]="false"
+                class="reply-form mb-2" 
+                [cancelButtonVisible]="true"
+                #replyFormComponent></app-reply-form>
+        <mat-divider></mat-divider>        
+    </div>
+</div>

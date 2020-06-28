@@ -9,15 +9,13 @@ namespace Tiririt.Web.Common
         public static class TiriritPost
         {
             public const string UserPostings = "user/{userId}";
-            public const string Reply = "{postId}/reply";
+            public const string Reply = "{postId}/comment";
             public const string ModifyPost = "{postId}";
             public const string Post = "";
             public const string DeletePost = "";
             public const string Responses = "{postId}/responses";
             public const string LikeDislike = "{postId}/like/{like}";
-            //public const string Search = "search";
-            //public const string Tag = "tag/{tag}";
-            //public const string Stock = "stock/{symbol}";
+            public const string PostDetails = "{postId}";
         }
 
         public static class Stock

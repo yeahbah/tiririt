@@ -14,6 +14,9 @@ import { MyFeedService } from '../my-feed/my-feed.service';
 import { LinkifyPipe } from '../pipes/linkify-pipe';
 import { PostItemComponent } from './post-item/post-item.component';
 import { TrendingFeedComponent } from './trending-feed/trending-feed.component';
+import { StockChartComponent } from './stock-chart/stock-chart.component';
+import { ReplyFormComponent } from './reply-form/reply-form.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 //https://stackoverflow.com/questions/41433766/directive-doesnt-work-in-a-sub-module
 //https://stackoverflow.com/questions/45032043/uncaught-error-unexpected-module-formsmodule-declared-by-the-module-appmodul/45032201
@@ -22,14 +25,18 @@ import { TrendingFeedComponent } from './trending-feed/trending-feed.component';
   imports:      [
     CommonModule, 
     NgxSpinnerModule,
-    NgMaterialModule    
+    NgMaterialModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   declarations: [
     AutofocusDirective,
     LinkifyPipe,
     MyFeedComponent,
     PostItemComponent,
-    TrendingFeedComponent
+    TrendingFeedComponent,
+    StockChartComponent,
+    ReplyFormComponent
   ],
   exports:      [
     NgxSpinnerModule, 
@@ -37,7 +44,9 @@ import { TrendingFeedComponent } from './trending-feed/trending-feed.component';
     MyFeedComponent, 
     PostItemComponent,
     TrendingFeedComponent,
-    LinkifyPipe
+    LinkifyPipe,
+    StockChartComponent,
+    ReplyFormComponent
   ],
   providers:  [MyFeedService]
 })

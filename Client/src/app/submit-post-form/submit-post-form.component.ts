@@ -1,6 +1,6 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { SubmitPostService, NewOrUpdatePostModel } from './submit-post.service';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { TiriritPostService, NewOrUpdatePostModel } from '../core/tiririt-post.service';
 import { BullBearLevel } from '../models/bull-bear-level';
 import { finalize } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -18,21 +18,29 @@ export class SubmitPostFormComponent implements OnInit {
   isBullish: boolean = false;
   charCount: number;
   maxPostLength = 1000;
-  newPostForm = this.formBuilder.group({
-    postText: ['', Validators.required],    
-  });
+  newPostForm: FormGroup;
+
+  @Input() dialogMode = false;
+  @Input() defaultValue: string = '';
   
   constructor(
     private formBuilder: FormBuilder, 
-    private postService: SubmitPostService,
+    private postService: TiriritPostService,
     private spinner: NgxSpinnerService,
     private snackBar: MatSnackBar,
-    private intreactionService: InteractionService) { 
-
+    private interactionService: InteractionService) { 
   }
 
-  ngOnInit(): void {
-    this.reset();
+  initializeForm() {
+    const postTextControl = new FormControl(this.defaultValue, Validators.required);
+    this.charCount = this.maxPostLength - this.defaultValue.length;
+    this.newPostForm = this.formBuilder.group({
+      postText: postTextControl,    
+    });
+  }
+
+  ngOnInit(): void {    
+    this.initializeForm();    
   }
 
   submit() {
@@ -55,15 +63,15 @@ export class SubmitPostFormComponent implements OnInit {
     this.postService.submitPost(newPost)
       .pipe(finalize(() => {
         this.reset();  
-        this.intreactionService.sendMessage('RELOAD');
+        this.interactionService.sendMessage('RELOAD');
         this.spinner.hide();       
         this.openSnackBar() ;
       }))
       .subscribe();
   }
 
-  reset() {
-    this.newPostForm.reset();        
+  reset() {    
+    this.newPostForm.reset();            
     this.isBullish = false;
     this.isBearish = false;
     this.charCount = this.maxPostLength;    

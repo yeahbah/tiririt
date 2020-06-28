@@ -1,0 +1,17 @@
+<div class="flex-container" *ngIf="formVisible">
+    <div mat-card-avatar class="example-header-image"></div>
+    <div class="reply-form mr-5">
+        <form class="tiririt-form" [formGroup]="replyForm" (ngSubmit)="submit()">
+            <mat-form-field class="form-field ml-2">
+                <textarea matInput  placeholder="Comment..."
+                    id="postText-{{ post.postId }}" name="postText-{{ post.postId }}" formControlName="postText"
+                    maxlength="{{ maxReplyLength }}" rows="2" (keyup)="onKeyUp($event)"></textarea>
+                <!-- <span class="charCount">characters remain: {{ charCount }}</span> -->
+            </mat-form-field>
+        </form>    
+        <div style="float: right">
+            <button mat-button (click)="submit()" [disabled]="!replyForm.valid">REPLY</button>
+            <button mat-button [hidden]="!cancelButtonVisible" (click)="hideForm()">CANCEL</button>
+        </div>
+    </div>    
+</div>

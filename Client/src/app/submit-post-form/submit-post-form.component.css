@@ -1,3 +1,7 @@
+.mat-card {
+    min-width: 500px;
+}
+
 .tiririt-form {
     width: 100%;
 }
