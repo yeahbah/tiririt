@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Tiririt.App.Service;
+using Tiririt.Core.Collection;
 using Tiririt.Web.Common;
 using Tiririt.Web.Models;
 using Tiririt.Web.Models.Mappings;
@@ -32,11 +33,13 @@ namespace Tiririt.Web.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
-        public async Task<ActionResult<WatchListViewModel>> Get()
+        public async Task<ActionResult<PagingResultEnvelope<StockViewModel>>> GetDefaultWatchList([FromQuery]PagingParam pagingParam)
         {
-            var result = await watchListService
-                .GetWatchList();
-            return Ok(result.FirstOrDefault()?.ToViewModel());
+            var pagedResult = await watchListService
+                .GetStocksFromWatchList(0, pagingParam);
+            var result = pagedResult.Data.Select(stock => stock.ToViewModel());
+
+            return Ok(new PagingResultEnvelope<StockViewModel>(result, pagedResult.TotalCount, pagingParam));
         }
 
         //PUT: WatchList/id

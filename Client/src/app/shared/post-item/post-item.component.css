@@ -53,6 +53,11 @@ button {
     transform: scale(0.7);
 }
 
+.mat-card-actions {
+    display: flex;
+    flex-direction: column;
+}
+
 .actions {
     display: flex;
     color: grey;

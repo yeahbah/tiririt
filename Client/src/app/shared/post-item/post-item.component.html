@@ -57,14 +57,15 @@
                 matTooltip="More" matTooltipPosition="above">
                 <mat-icon>more_horiz</mat-icon>
             </div>
-            <app-reply-form 
+            
+        </div>
+        <app-reply-form 
                     [post]="post" 
                     [formVisible]="false"
                     [hideAfterPost]="true"
                     class="reply-form mb-2" 
                     [cancelButtonVisible]="true"
                     #replyFormComponent></app-reply-form>
-        </div>
         <app-response-comments [post]="post" *ngIf="post.commentCount > 0"></app-response-comments>                
     </mat-card-actions>
 </mat-card>

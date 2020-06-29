@@ -30,3 +30,11 @@ table {
 .stockSymbolInput {
     text-transform: uppercase;
 }
+
+.up {
+    color: green;
+}
+
+.down {
+    color: red;
+}

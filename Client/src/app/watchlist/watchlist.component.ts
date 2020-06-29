@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { WatchlistService } from './watchlist.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { WatchlistModel } from './watchlist-model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs/operators';
 import { InteractionService } from '../core/InteractionService';
 import { Router } from '@angular/router';
 import { IStockModel } from '../public/models/stock-model';
+import { MatSort } from '@angular/material/sort';
+import { PagingParam } from '../core/paging-params';
+import { IPagingResultEnvelope } from '../core/PagingResultEnvelope';
 
 @Component({
   selector: 'app-watchlist',
@@ -15,9 +17,11 @@ import { IStockModel } from '../public/models/stock-model';
 })
 export class WatchlistComponent implements OnInit {
 
-  watchListModel: WatchlistModel | null;
+  @ViewChild(MatSort) sort: MatSort;
+  watchListModel: IPagingResultEnvelope<IStockModel> | null;
   dataSource = new MatTableDataSource<IStockModel>();
-  displayedColumns: string[] = ['symbol', 'price', 'actions'];
+  displayedColumns: string[] = ['symbol', 'lastTradePrice', 'percentChange', 'actions'];
+  currentSort: { active, direction };
 
   constructor(
     private watchListService: WatchlistService,
@@ -27,16 +31,32 @@ export class WatchlistComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.watchListService.getWatchList()
-      .subscribe(result => {
-        this.refreshList(result);
-      }, error => console.error(error));
+    const defaultSort = { active: 'symbol', direction: 'asc'};
+    this.reload(defaultSort);
 
     this.interactionService.reloadWatchListMessage$
+      .pipe(finalize(() => {
+        this.reload(defaultSort)
+      }))
       .subscribe(newWatchList => {
-        console.log('hello');
-        this.refreshList(newWatchList);
+        
       });
+  }
+
+  reload(sort: { active, direction }) {
+    this.currentSort = sort;
+    
+    const paging = new PagingParam();
+    if (sort.direction !== '') {
+      paging.sortColumn = sort.active;
+      paging.sortOrder = sort.direction;  
+    }
+    paging.pageSize = 500;
+    this.watchListService.getWatchList(paging)
+      .subscribe(result => {
+        this.dataSource = new MatTableDataSource<IStockModel>(result.data);
+        this.watchListModel = result;
+      }, error => console.error(error));
   }
 
   addStock(stockSymbol: string) {   
@@ -44,31 +64,29 @@ export class WatchlistComponent implements OnInit {
     if (this.watchListModel == null) return;    
 
     this.spinner.show();
-    this.watchListService.addStockToWatchList(this.watchListModel.watchListId, [stockSymbol])
+    this.watchListService.addStockToWatchList(0, [stockSymbol])
       .pipe(finalize(() => {
         this.interactionService.sendMessage('RELOAD');
+        this.reload(this.currentSort);
         this.spinner.hide();
       }))
       .subscribe(result => {
-        this.refreshList(result)
+        // this.dataSource = new MatTableDataSource<IStockModel>(result?.stocks);
+        // this.refreshList(result)
       });
   }
 
   deleteStock(stockSymbol: string) {
     this.spinner.show();
-    this.watchListService.deleteStock(this.watchListModel.watchListId, stockSymbol)
+    this.watchListService.deleteStock(0, stockSymbol)
       .pipe(finalize(() => {
         this.interactionService.sendMessage('RELOAD');
+        this.reload(this.currentSort);
         this.spinner.hide();
       }))
       .subscribe(result => {
-        this.refreshList(result);
+        // this.dataSource = new MatTableDataSource<IStockModel>(result?.stocks);
       })      
-  }
-
-  refreshList(watchList: WatchlistModel) {
-    this.dataSource = new MatTableDataSource<IStockModel>(watchList?.stocks) 
-    this.watchListModel = watchList;
   }
 
   onEnterKey(event: any) {
@@ -76,6 +94,36 @@ export class WatchlistComponent implements OnInit {
     if (value == "") return;
 
     this.addStock(value);
+  }  
+
+  sortData(event: any) {
+    console.log(event);
+    if (event.active == 'symbol') {
+      this.reload(event);
+      return;
+    } 
+    
+    if (event.active == 'percentChange') {
+      this.watchListModel.data.sort((a, b) => {
+        if (event.direction == 'asc') {
+          return a.percentChange - b.percentChange;
+        } else if (event.direction == 'desc') {
+          return b.percentChange - a.percentChange;
+        }
+      });
+      this.dataSource = new MatTableDataSource<IStockModel>(this.watchListModel.data);
+    }
+
+    if (event.active == 'lastTradePrice') {
+      this.watchListModel.data.sort((a, b) => {
+        if (event.direction == 'asc') {
+          return a.lastTradePrice - b.lastTradePrice;
+        } else if (event.direction == 'desc') {
+          return b.lastTradePrice - a.lastTradePrice;
+        }
+      });
+      this.dataSource = new MatTableDataSource<IStockModel>(this.watchListModel.data);
+    }
   }  
 
 }

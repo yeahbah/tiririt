@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Tiririt.Core.Collection;
 using Tiririt.Core.Identity;
 using Tiririt.Data.Entities;
 using Tiririt.Data.Internal;
@@ -178,6 +179,26 @@ namespace Tiririt.Data.Service
                 return await GetWatchList(watchList.WATCH_LIST_ID);
             }
             return null;
+        }
+
+        public async Task<PagingResultEnvelope<StockModel>> GetStocksFromWatchlist(int watchListId, PagingParam pagingParam)
+        {
+            var userId = this.currentPrincipal.GetUserId();
+            var result = dbContext.WatchListStocks
+                .AsNoTracking()
+                .Where(w => w.Ref_WatchList.DELETED_IND == 0 && w.Ref_WatchList.TIRIRIT_USER_ID == userId)
+                .Select(stock => new StockModel
+                {
+                        Name = stock.Ref_Stock.NAME,
+                        StockQuotes = stock.Ref_Stock.Ref_StockQuotes
+                            .Select(q => q.ToDomainModel()),
+                        SectorId = stock.Ref_Stock.SECTOR_ID,
+                        StockId = stock.Ref_Stock.STOCK_ID,
+                        Symbol = stock.Ref_Stock.SYMBOL,
+                        Wacthers = stock.Ref_Stock.Ref_StocksInWatchLists.Select(w => w.Ref_WatchList.Ref_TiriritUser.ToDomainModel())
+                });
+
+            return await PagingResultEnvelope<StockModel>.ToPagingEnvelope(result, pagingParam);
         }
     }
 }

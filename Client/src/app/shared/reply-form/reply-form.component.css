@@ -1,6 +1,7 @@
 .flex-container {
     display: flex;
     align-items: baseline;
+    background: white;
 }
 
 .example-header-image {

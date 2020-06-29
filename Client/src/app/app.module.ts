@@ -33,7 +33,6 @@ import { LoginComponent } from './account/login/login.component';
 import { PublicFeedService } from './public/public-feed.service';
 import { SubmitPostDialogComponent } from './dialogs/submit-post-dialog/submit-post-dialog.component';
 import { PostDetailsDialogComponent } from './dialogs/post-details-dialog/post-details-dialog.component';
-import { StockChartComponent } from './shared/stock-chart/stock-chart.component';
 import { PostResponseComponent } from './post-response/post-response.component';
 
 @NgModule({
