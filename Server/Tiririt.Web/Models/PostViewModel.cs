@@ -13,6 +13,7 @@ namespace Tiririt.Web.Models
         public int UserId { get; set; }
         public string UserName { get; set; }
         public DateTime PostDate { get; set; }
-        public BullBearLevel? BullBearLevel { get; set; }           
+        public BullBearLevel? BullBearLevel { get; set; }
+        public int CommentCount { get; set; }
     }
 }

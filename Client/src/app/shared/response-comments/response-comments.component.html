@@ -1,0 +1,69 @@
+<mat-accordion [togglePosition]="'before'" >
+  
+    <mat-expansion-panel class="mat-elevation-z0" (opened)="panelOpenState = true"
+                         (closed)="panelOpenState = false" (afterExpand)="afterExpand()">
+      <mat-expansion-panel-header [collapsedHeight]="headerHeight" [expandedHeight]="headerHeight">
+        <mat-panel-title>
+           <span class="link" *ngIf="panelOpenState"> 
+               Hide replies
+           </span>
+           <span class="link" *ngIf="!panelOpenState"> 
+                Show {{ post.commentCount }} {{ post.commentCount == 1 ? 'reply' : 'replies'}}
+            </span>
+        </mat-panel-title>        
+      </mat-expansion-panel-header>
+  
+      <mat-spinner [diameter]="25" [hidden]="spinnerHidden"></mat-spinner>
+      
+      <div *ngFor="let comment of replies?.data">
+        <div class="comment-header mb-2 my-2">     
+            <div mat-card-avatar class="avatar"></div>
+            <div class="comment-subtitle ml-3">
+                <div>
+                {{ comment.userName }} on {{ comment.postDate | date: 'medium' }}
+                </div>                            
+            </div>        
+        </div>
+        
+        <div>
+            <pre [innerHTML]="comment.postText | linkify"></pre>
+        </div>
+        <div class="actions">
+            <div class="action-item"
+                matTooltip="Like this post" matTooltipPosition="above">
+                    <mat-icon >thumb_up</mat-icon>
+                    <span *ngIf="comment.likeCount > 0">{{ comment.likeCount }}</span>
+            </div>
+            <div class="action-item" mat-icon-button (click)="showReplyForm()"
+                matTooltip="Reply to this post" matTooltipPosition="above" >
+                <mat-icon>reply</mat-icon>
+            </div>
+            <div class="action-item"
+                matTooltip="Quote this post" matTooltipPosition="above">
+                <mat-icon>format_quote</mat-icon>
+            </div>        
+    
+            <mat-menu #postMenu="matMenu">
+                <button mat-menu-item>Follow this post</button>
+                <button mat-menu-item>Follow {{ comment.userName }} </button>
+                <button mat-menu-item>Mute</button>
+                <button mat-menu-item>Block</button>
+                <button mat-menu-item>Report</button>            
+            </mat-menu>
+            <div class="action-item" mat-icon-button [matMenuTriggerFor]="postMenu"
+                matTooltip="More" matTooltipPosition="above">
+                <mat-icon>more_horiz</mat-icon>
+            </div>                
+        </div>
+
+      </div>
+      <app-reply-form 
+      [post]="post" 
+      [formVisible]="false"
+      [hideAfterPost]="true"
+      class="reply-form mb-2" 
+      [cancelButtonVisible]="true"
+      #replyFormComponent></app-reply-form>
+    </mat-expansion-panel>
+    
+  </mat-accordion>

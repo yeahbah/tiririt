@@ -28,7 +28,7 @@
                 <mat-icon >thumb_up</mat-icon>
                 <span *ngIf="post.likeCount > 0">{{ post.likeCount }}</span>
         </button>
-        <button mat-icon-button (click)="showReplyDialog(post)"
+        <button mat-icon-button (click)="showReplyForm()"
             matTooltip="Reply to this post" matTooltipPosition="above" >
             <mat-icon>reply</mat-icon>
         </button>
@@ -38,9 +38,8 @@
         </button>
         <button mat-icon-button (click)="goToPostDetails(post.postId)" 
             matTooltip="Show comments" matTooltipPosition="above">
-            <!-- <span matBadge="" matBadgePosition="before" matBadgeColor="accent" matBadgeSize="small" *ngIf="post.responseCount > 0"></span> -->
                 <mat-icon>mode_comment</mat-icon>
-                <span *ngIf="post.responseCount > 0">{{ post.responseCount }}</span>
+                <span *ngIf="post.commentCount > 0">{{ post.commentCount }}</span>
         </button>
         
         <mat-menu #postMenu="matMenu">
@@ -54,7 +53,14 @@
             matTooltip="More" matTooltipPosition="above">
             <mat-icon>more_horiz</mat-icon>
         </button>
-        
+        <app-reply-form 
+                [post]="post" 
+                [formVisible]="false"
+                [hideAfterPost]="true"
+                class="reply-form mb-2" 
+                [cancelButtonVisible]="true"
+                #replyFormComponent></app-reply-form>
+                <app-response-comments [post]="post" *ngIf="post.commentCount > 0"></app-response-comments>                
     </mat-card-actions>
 </mat-card>
 <mat-divider></mat-divider>

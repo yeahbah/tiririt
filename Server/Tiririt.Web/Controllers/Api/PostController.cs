@@ -99,14 +99,14 @@ namespace Tiririt.Web.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet(RouteConsts.TiriritPost.Responses)]
-        public async Task<ActionResult<PagingResultEnvelope<ResponseViewModel>>> GetResponses(
+        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetResponses(
             int postId, [FromQuery]PagingParam pagingParam)
         {
             var pagedResult = await tiriritPostService
                 .GetResponses(postId, pagingParam);
-            var data = pagedResult.Data.Select(post => post.ToResponseViewModel());                
+            var data = pagedResult.Data.Select(post => post.ToViewModel());                
 
-            return Ok(new PagingResultEnvelope<ResponseViewModel>(data, pagedResult.TotalCount, pagingParam));
+            return Ok(new PagingResultEnvelope<PostViewModel>(data, pagedResult.TotalCount, pagingParam));
         }
 
         /// <summary>

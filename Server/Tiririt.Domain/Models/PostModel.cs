@@ -18,5 +18,6 @@ namespace Tiririt.Domain.Models
         public IEnumerable<UserModel> DislikedBy { get; set; }
         public IEnumerable<StockModel> RelatedStocks { get; set;}
         public IEnumerable<HashTagModel> Tags { get; set; }
+        public IEnumerable<PostModel> Comments { get; set; }
     }
 }

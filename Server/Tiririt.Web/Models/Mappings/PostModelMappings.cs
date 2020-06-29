@@ -20,7 +20,8 @@ namespace Tiririt.Web.Models.Mappings
                 PostId = value.PostId,
                 PostText = value.PostText,
                 UserId = value.UserId,
-                UserName = value.UserName
+                UserName = value.UserName,
+                CommentCount = value.Comments == null ? 0 : value.Comments.Count()
             };
         }                
     }

@@ -1,16 +1,22 @@
-.comment {    
-    display: flex;
-    flex-direction: column;
+.mat-expansion-panel:not(.mat-expanded) 
+
+.mat-expansion-panel-header:not([aria-disabled='true']):hover {   background: white; }
+
+.mat-expansion-panel-header {
+    /* height: 25px; */
+    padding-top: 0;
+    margin-bottom: 5px;
 }
 
-pre {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    font-size: 12pt;
+.mat-expansion-panel-body {
+    padding: 0;
 }
 
 .avatar {
     background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
     background-size: cover;
+    height: 25px;
+    width: 25px;    
 }
 
 .comment-header {

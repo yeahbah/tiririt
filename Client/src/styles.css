@@ -3,3 +3,12 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.link {
+    color: #2587ff;
+}
+
+pre {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 12pt;
+}

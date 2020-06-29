@@ -16,6 +16,8 @@ export class ReplyFormComponent implements OnInit {
   @Input() post: PostModel;
   @Input() cancelButtonVisible = false;
   @Input() formVisible = true;
+  @Input() attachToPostId: number;
+  @Input() hideAfterPost: false;
 
   maxReplyLength = 1000;
   replyForm: FormGroup;
@@ -39,7 +41,10 @@ export class ReplyFormComponent implements OnInit {
     this.postService.postComment(this.post.postId, value)
       .pipe(
         finalize(() => {
-          this.openSnackBar()      
+          this.openSnackBar();
+          if (this.hideAfterPost) {
+            this.formVisible = false;
+          }   
         })
       )
       .subscribe(result => {
@@ -57,7 +62,6 @@ export class ReplyFormComponent implements OnInit {
   }
 
   openSnackBar() {
-    //TODO random message
     this.snackBar.open('Your message was posted!', '', {
       duration: 2000,
       horizontalPosition: 'center',

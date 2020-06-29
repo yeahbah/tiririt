@@ -60,7 +60,45 @@ namespace Tiririt.Data.Internal.Service
 
                 Tags = data.Ref_HashTags
                         .Where(tag => tag.DELETED_IND == 0)
-                        .Select(tag => tag.Ref_HashTag.ToDomainModel())
+                        .Select(tag => tag.Ref_HashTag.ToDomainModel()),
+
+                Comments = data.Ref_Responses
+                        .Select(comment => new PostModel
+                        {
+                            PostId = comment.TIRIRIT_POST_ID,
+                            ModifiedDate = comment.MODIFIED_DATE,
+                            PostDate = comment.POST_DATE,
+                            PostText = comment.POST_TEXT,
+                            UserId = comment.TIRIRIT_USER_ID,
+                            UserName = comment.Ref_PostedBy.UserName,
+                            ResponseToPostId = comment.RESPONSE_TO_POST_ID,
+
+                            BullBearLevel = comment.Ref_BullBearLevel.BULL_BEAR_LEVEL_CD,
+
+                            DislikedBy = comment.Ref_LikeDislikeByUsers
+                                .Where(like => like.USER_LIKE_IND == 0)
+                                .Select(l => l.Ref_TiriritUser.ToDomainModel()),
+
+                            LikedBy = comment.Ref_LikeDislikeByUsers
+                                .Where(like => like.USER_LIKE_IND == 1)
+                                .Select(l => l.Ref_TiriritUser.ToDomainModel()),
+
+                            RelatedStocks = comment.Ref_Stocks
+                                .Where(stock => stock.DELETED_IND == 0)
+                                .Select(stock => new StockModel
+                                {
+                                    Name = stock.Ref_Stock.NAME,
+                                    SectorId = stock.Ref_Stock.SECTOR_ID,
+                                    StockId = stock.Ref_Stock.STOCK_ID,
+                                    StockQuotes = stock.Ref_Stock.Ref_StockQuotes
+                                        .Select(q => q.ToDomainModel()),
+                                    Symbol = stock.Ref_Stock.SYMBOL
+                                }),
+
+                            Tags = comment.Ref_HashTags
+                                .Where(tag => tag.DELETED_IND == 0)
+                                .Select(tag => tag.Ref_HashTag.ToDomainModel()),
+                        })
             });
         }
 

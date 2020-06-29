@@ -1,8 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { PostModel } from 'src/app/my-feed/post-model';
 import { MatDialog } from '@angular/material/dialog';
 import { PostDetailsDialogComponent } from 'src/app/dialogs/post-details-dialog/post-details-dialog.component';
 import { Router } from '@angular/router';
+import { ReplyFormComponent } from '../reply-form/reply-form.component';
+import { IPagingResultEnvelope } from 'src/app/core/PagingResultEnvelope';
 
 @Component({
   selector: 'app-post-item',
@@ -12,6 +14,10 @@ import { Router } from '@angular/router';
 export class PostItemComponent implements OnInit {
 
   @Input() post: PostModel;
+  replies: IPagingResultEnvelope<PostModel>;
+
+  @ViewChild(ReplyFormComponent)
+  replyFormComponent: ReplyFormComponent;
 
   constructor(private dialog: MatDialog, private router: Router) { }
 
@@ -34,6 +40,10 @@ export class PostItemComponent implements OnInit {
 
   goToPostDetails(postId: number) {
     this.router.navigate(['/post/', postId]);
+  }
+
+  showReplyForm() {
+    this.replyFormComponent.formVisible = true;
   }
 
 }

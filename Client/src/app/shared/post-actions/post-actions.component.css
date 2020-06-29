@@ -1,0 +1,29 @@
+.mat-icon {
+    transform: scale(0.7);
+}
+
+button {
+    color: grey;
+}
+
+.reply-form {
+    margin-left: 50px;
+    display: block;
+}
+
+.actions {
+    display: flex;
+    color: grey;
+    /* align-items: stretch; */
+    /* border: 1px solid #efefef; */
+    height: 25px;
+}
+
+.action-item {
+    width: 24px;
+    margin-right: 10px;
+}
+
+.action-item:hover {
+    cursor: pointer;
+}

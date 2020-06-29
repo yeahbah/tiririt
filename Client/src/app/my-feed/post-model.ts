@@ -9,5 +9,5 @@ export interface PostModel {
     responseToPostId?: number;
     postDate: Date;
     bullBearLevel: BullBearLevel,
-    responseCount: number;
+    commentCount: number;
 }
