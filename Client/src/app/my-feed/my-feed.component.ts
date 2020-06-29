@@ -3,6 +3,7 @@ import { MyFeedService } from './my-feed.service';
 import { PostModel } from './post-model';
 import { IPagingResultEnvelope } from '../core/PagingResultEnvelope';
 import { InteractionService } from '../core/InteractionService';
+import { PagingParam } from '../core/paging-params';
 
 @Component({
   selector: 'app-my-feed',
@@ -19,7 +20,10 @@ export class MyFeedComponent implements OnInit {
   constructor(private myFeedService: MyFeedService, private interactionService: InteractionService) { }
 
   ngOnInit(): void {
-    this.myFeedService.getMyFeed()
+    const paging = new PagingParam();
+    paging.sortColumn = 'postDate';
+    paging.sortOrder = 'desc';
+    this.myFeedService.getMyFeed(paging)
       .subscribe(result => {
         this.myFeed = result;
       }, error => console.error(error));
@@ -38,6 +42,9 @@ export class MyFeedComponent implements OnInit {
 
   filterFeed(filter: number) {
     this.activeFilter = filter;    
+    const paging = new PagingParam();
+    paging.sortColumn = 'postDate';
+    paging.sortOrder = 'desc';
     switch(filter) {      
       case 1:
         this.myFeedService.getMentionsFeed()
@@ -60,8 +67,8 @@ export class MyFeedComponent implements OnInit {
           }, error => console.error(error));                
         break;
       
-      default:
-        this.myFeedService.getMyFeed()
+      default:        
+        this.myFeedService.getMyFeed(paging)
           .subscribe(result => {
             this.myFeed = result;
           }, error => console.error(error));        

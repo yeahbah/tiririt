@@ -10,6 +10,7 @@ namespace Tiririt.Domain.Models
         public int UserId { get; set; }
         public string UserName { get; set; }
         public int? ResponseToPostId { get; set; }
+        public int? OriginalPostId { get; set; }
 
         public DateTime PostDate { get; set; }
         public DateTime? ModifiedDate { get; set; }

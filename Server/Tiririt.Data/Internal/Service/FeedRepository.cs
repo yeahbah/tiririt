@@ -35,6 +35,8 @@ namespace Tiririt.Data.Internal.Service
                 UserId = data.TIRIRIT_USER_ID,
                 UserName = data.Ref_PostedBy.UserName,
                 ResponseToPostId = data.RESPONSE_TO_POST_ID,
+                OriginalPostId = data.Ref_TiriritPost != null ? 
+                    (data.Ref_TiriritPost.Ref_TiriritPost != null ? data.Ref_TiriritPost.Ref_TiriritPost.TIRIRIT_POST_ID : data.Ref_TiriritPost.TIRIRIT_POST_ID) : (int?)null,
 
                 BullBearLevel = data.Ref_BullBearLevel.BULL_BEAR_LEVEL_CD,
 
@@ -149,14 +151,13 @@ namespace Tiririt.Data.Internal.Service
                 // get all posts the user responded to
                 // get all posts related to the users watch list
                 // TODO include subscriptions
-                .Where(post => post.TIRIRIT_USER_ID == userId 
+                .Where(post => post.TIRIRIT_USER_ID == userId
                     || post.Ref_MentionUsers.Any(mention => mention.TIRIRIT_USER_ID == userId && mention.Ref_TiriritPost.DELETED_IND == 0)
                     || post.Ref_Responses.Any(response => response.TIRIRIT_USER_ID == userId && response.DELETED_IND == 0)
                     || post.Ref_Stocks.Any(
                         stock => stock.Ref_Stock.Ref_StocksInWatchLists.Any(w => w.STOCK_ID == stock.STOCK_ID && w.Ref_WatchList.TIRIRIT_USER_ID == userId)))
-                
-                .Distinct()
-                .OrderByDescending(o => o.POST_DATE);
+
+                .Distinct();
                 
             return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam);
         }

@@ -1,6 +1,13 @@
+
+
 .comment {    
     display: flex;
     flex-direction: column;
+    padding: 5px;
+}
+
+.comment:hover {
+    background-color: #efefef;
 }
 
 pre {

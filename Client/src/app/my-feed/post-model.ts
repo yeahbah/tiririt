@@ -6,7 +6,7 @@ export interface PostModel {
     likeCount: number;
     userId: number;
     userName: string;
-    responseToPostId?: number;
+    originalPostId?: number;
     postDate: Date;
     bullBearLevel: BullBearLevel,
     commentCount: number;

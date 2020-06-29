@@ -1,10 +1,10 @@
 /* .mat-card {
     cursor: pointer;
-}
+} */
 
 .mat-card:hover {
     background-color: #efefef;
-} */
+} 
 
 pre { 
     font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -53,3 +53,20 @@ button {
     transform: scale(0.7);
 }
 
+.actions {
+    display: flex;
+    color: grey;
+    /* align-items: stretch; */
+    /* border: 1px solid #efefef; */
+    height: 25px;
+    padding: 0;
+}
+
+.action-item {
+    width: 24px;
+    margin-right: 10px;
+}
+
+.action-item:hover {
+    cursor: pointer;
+}

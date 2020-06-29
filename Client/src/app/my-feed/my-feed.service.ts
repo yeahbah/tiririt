@@ -1,10 +1,11 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PostModel } from './post-model';
 import { catchError } from 'rxjs/operators';
 import { BaseService } from '../shared/base.service';
 import { IPagingResultEnvelope } from '../core/PagingResultEnvelope';
+import { PagingParam } from '../core/paging-params';
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +19,14 @@ export class MyFeedService extends BaseService{
     super();
   }
 
-  getMyFeed(): Observable<IPagingResultEnvelope<PostModel>> {
-    // const url = './assets/myfeed.json';
+  getMyFeed(paging: PagingParam): Observable<IPagingResultEnvelope<PostModel>> {
     const url = `${this.apiUrl}/Feed`;
-    return this.http.get<IPagingResultEnvelope<PostModel>>(url)
+    const params = new HttpParams()
+            .set('pageIndex', paging.pageIndex.toString())
+            .set('pageSize', paging.pageSize.toString())
+            .set('sortColumn', paging.sortColumn)
+            .set('sortOrder', paging.sortOrder);
+    return this.http.get<IPagingResultEnvelope<PostModel>>(url, { params: params})
       .pipe(
         catchError(this.handleError)
       );

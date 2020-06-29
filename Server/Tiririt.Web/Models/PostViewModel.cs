@@ -12,6 +12,7 @@ namespace Tiririt.Web.Models
         public int DislikeCount { get; set; }
         public int UserId { get; set; }
         public string UserName { get; set; }
+        public int? OriginalPostId { get; set; }
         public DateTime PostDate { get; set; }
         public BullBearLevel? BullBearLevel { get; set; }
         public int CommentCount { get; set; }

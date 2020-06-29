@@ -26,7 +26,7 @@ namespace Tiririt.Web.Controllers.Api
         /// </summary>
         /// <returns></returns>
         [HttpGet(RouteConsts.Feed.UserFeed)]
-        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetUserFeed([FromRoute]PagingParam pagingParam)
+        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetUserFeed([FromQuery]PagingParam pagingParam)
         {
             var pagedResult = await this.feedService.GetUserFeed(pagingParam);
             var data = pagedResult.Data.Select(post => post.ToViewModel());
@@ -35,7 +35,7 @@ namespace Tiririt.Web.Controllers.Api
         }
 
         [HttpGet(RouteConsts.Feed.WatchList)]
-        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetWatchListFeed([FromRoute]PagingParam pagingParam)
+        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetWatchListFeed([FromQuery]PagingParam pagingParam)
         {
             var pagedResult = await this.feedService.GetWatchListFeed(pagingParam);
             var data = pagedResult.Data.Select(post => post.ToViewModel());
@@ -44,7 +44,7 @@ namespace Tiririt.Web.Controllers.Api
         }
 
         [HttpGet(RouteConsts.Feed.Mentions)]
-        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetMentionsFeed([FromRoute]PagingParam pagingParam)
+        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetMentionsFeed([FromQuery]PagingParam pagingParam)
         {
             var pagedResult = await this.feedService.GetMentionFeed(pagingParam);
             var data = pagedResult.Data.Select(post => post.ToViewModel());
@@ -53,7 +53,7 @@ namespace Tiririt.Web.Controllers.Api
         }
 
         [HttpGet(RouteConsts.Feed.Subscription)]
-        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetSubscriptionFeed([FromRoute]PagingParam pagingParam)
+        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetSubscriptionFeed([FromQuery]PagingParam pagingParam)
         {
             var pagedResult = await this.feedService.GetSubscriptionFeed(pagingParam);
             var data = pagedResult.Data.Select(post => post.ToViewModel());

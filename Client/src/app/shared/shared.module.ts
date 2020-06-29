@@ -18,7 +18,7 @@ import { StockChartComponent } from './stock-chart/stock-chart.component';
 import { ReplyFormComponent } from './reply-form/reply-form.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ResponseCommentsComponent } from './response-comments/response-comments.component';
-import { PostActionsComponent } from './post-actions/post-actions.component';
+import { RouterModule } from '@angular/router';
 
 //https://stackoverflow.com/questions/41433766/directive-doesnt-work-in-a-sub-module
 //https://stackoverflow.com/questions/45032043/uncaught-error-unexpected-module-formsmodule-declared-by-the-module-appmodul/45032201
@@ -26,6 +26,7 @@ import { PostActionsComponent } from './post-actions/post-actions.component';
 @NgModule({
   imports:      [
     CommonModule, 
+    RouterModule,
     NgxSpinnerModule,
     NgMaterialModule,
     ReactiveFormsModule,
@@ -40,7 +41,6 @@ import { PostActionsComponent } from './post-actions/post-actions.component';
     StockChartComponent,
     ReplyFormComponent,
     ResponseCommentsComponent,
-    PostActionsComponent
   ],
   exports:      [
     NgxSpinnerModule, 
@@ -52,7 +52,6 @@ import { PostActionsComponent } from './post-actions/post-actions.component';
     StockChartComponent,
     ReplyFormComponent,
     ResponseCommentsComponent,
-    PostActionsComponent
   ],
   providers:  [MyFeedService]
 })
