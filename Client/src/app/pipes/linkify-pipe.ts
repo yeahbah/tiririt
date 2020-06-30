@@ -25,6 +25,33 @@ export class LinkifyPipe implements PipeTransform{
             } 
 
         });
+
+        // process images
+        let ready = false;    // dumb lol
+
+        // images
+        result = result.replace(/(https?:\/\/.*\.(?:png|jpg|gif))/g, (match) => {
+            ready = true;
+            return `<img src="${match}" alt="${match}" style="max-width:700px; max-height:700px">`
+        });
+
+        // youtube
+        const youtubeUrl = (/https?:\/\/(www\.youtube\.com\/watch\?v=)(.+)/g).exec(result);
+        if (youtubeUrl) {
+            result = result.replace(youtubeUrl[0], (match)=> {
+                ready = true;            
+                console.log(youtubeUrl);
+                return `<br/><iframe width="420" height="315"
+                            src="https://www.youtube.com/embed/${youtubeUrl[2]}">
+                        </iframe>`
+            });
+        }
+
+        if (!ready) {
+            result = result.replace(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g, (match) => {
+                return `<a href="${match}" target="_blank">${match}</a>`;
+            });
+        }
         return this.domSanitizer.bypassSecurityTrustHtml(result);        
     }
 

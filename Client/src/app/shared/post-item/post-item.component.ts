@@ -5,6 +5,7 @@ import { PostDetailsDialogComponent } from 'src/app/dialogs/post-details-dialog/
 import { Router } from '@angular/router';
 import { ReplyFormComponent } from '../reply-form/reply-form.component';
 import { IPagingResultEnvelope } from 'src/app/core/PagingResultEnvelope';
+// import { MatLinkPreviewService } from '@angular-material-extensions/link-preview';
 
 @Component({
   selector: 'app-post-item',
@@ -19,7 +20,10 @@ export class PostItemComponent implements OnInit {
   @ViewChild(ReplyFormComponent)
   replyFormComponent: ReplyFormComponent;
 
-  constructor(private dialog: MatDialog, private router: Router) { }
+  constructor(
+    // private linkPreviewService: MatLinkPreviewService,
+    private dialog: MatDialog, 
+    private router: Router) { }
 
   ngOnInit(): void {
   }

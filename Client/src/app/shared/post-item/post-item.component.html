@@ -16,7 +16,9 @@
     
     <mat-card-content>
         <!-- <pre> -->
-            <pre [innerHTML]="post.postText | linkify"></pre>
+            
+                <pre [innerHTML]="post.postText | linkify"></pre>
+                <!-- <ngx-link-preview [parseForLinksStr]="post.postText"></ngx-link-preview> -->
         <!-- </pre> -->
         <div *ngIf="post.originalPostId > 0">
             <a [routerLink]="['/post/', post.originalPostId]">View original post</a>

@@ -65,7 +65,7 @@ import { PostResponseComponent } from './post-response/post-response.component';
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    SharedModule,
+    SharedModule
   ],
   providers: [    
     AuthGuard,

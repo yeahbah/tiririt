@@ -37,7 +37,7 @@ button {
 }
 
 .reply-form {
-    margin-left: 50px;
+    /* padding-left: 50px; */
     display: block;
 }
 

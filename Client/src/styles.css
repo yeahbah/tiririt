@@ -11,4 +11,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 pre {
     font-family: Roboto, "Helvetica Neue", sans-serif;
     font-size: 12pt;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
 }

@@ -15,6 +15,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSortModule } from '@angular/material/sort';
+// import { MatLinkPreviewModule } from '@angular-material-extensions/link-preview';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatTooltipModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
-    MatSortModule
+    MatSortModule,
+    // MatLinkPreviewModule.forRoot()
   ],  
   exports: [
     // CommonModule,
@@ -53,7 +55,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatTooltipModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
-    MatSortModule
+    MatSortModule,
+    // MatLinkPreviewModule
   ]
 })
 export class NgMaterialModule { }
