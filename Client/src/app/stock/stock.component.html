@@ -122,7 +122,7 @@
             <div *ngIf="stockFeed?.data.length == 0" class="first-post">
                 <h2>What!? Nobody posted anything yet on this stock?</h2>
 
-                <button mat-raised-button color="primary">Click me to be the first!</button>
+                <button mat-raised-button color="primary" (click)="showNewPostDialog()">Click me to be the first!</button>
             </div>
         </div>
     </div>

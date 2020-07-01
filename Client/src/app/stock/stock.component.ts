@@ -10,6 +10,8 @@ import { IStockModel } from '../public/models/stock-model';
 import { IStockQuoteModel } from '../public/models/stock-quote-model';
 import { WatchlistService } from '../watchlist/watchlist.service';
 import { InteractionService } from '../core/InteractionService';
+import { MatDialog } from '@angular/material/dialog';
+import { SubmitPostDialogComponent } from '../dialogs/submit-post-dialog/submit-post-dialog.component';
 
 @Component({
   selector: 'app-stock',
@@ -27,6 +29,7 @@ export class StockComponent implements OnInit {
   isWatched = false;
 
   constructor(
+    private dialog: MatDialog,
     private publicFeedService: PublicFeedService,
     private watchListService: WatchlistService,
     private authService: AuthService,
@@ -91,6 +94,10 @@ export class StockComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  showNewPostDialog() {
+    this.dialog.open(SubmitPostDialogComponent, { data: `$${this.stockSymbol}` });
   }
 
 }

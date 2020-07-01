@@ -25,6 +25,7 @@
     "jquery": "^3.5.1",
     "lightweight-charts": "^3.0.1",
     "linq-typescript": "^1.0.251",
+    "ngx-infinite-scroll": "^9.0.0",
     "ngx-spinner": "^9.0.2",
     "oidc-client": "^1.10.1",
     "popper.js": "^1.16.1",

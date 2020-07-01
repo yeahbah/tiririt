@@ -34,6 +34,7 @@ import { PublicFeedService } from './public/public-feed.service';
 import { SubmitPostDialogComponent } from './dialogs/submit-post-dialog/submit-post-dialog.component';
 import { PostDetailsDialogComponent } from './dialogs/post-details-dialog/post-details-dialog.component';
 import { PostResponseComponent } from './post-response/post-response.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { PostResponseComponent } from './post-response/post-response.component';
     BrowserModule,
     ReactiveFormsModule,    
     NgMaterialModule,
+    InfiniteScrollModule,
     FormsModule,    
     HttpClientModule,
     AppRoutingModule,

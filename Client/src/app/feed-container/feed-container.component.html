@@ -1,7 +1,6 @@
 <mat-tab-group mat-align-tabs="center" backgroundColor="primary" color="accent">
-    <mat-tab>
+    <mat-tab *ngIf="isAuthenticated">
         <ng-template mat-tab-label>
-            <!-- <span matBadge="5" matBadgePosition="before" matBadgeColor="accent" matBadgeSize="small"></span> -->
             <mat-icon matBadge="5" matBadgePosition="above before" matBadgeColor="accent">chat_bubble_outline</mat-icon>
             My Feed
         </ng-template>

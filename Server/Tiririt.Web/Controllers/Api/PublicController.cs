@@ -21,7 +21,7 @@ namespace Tiririt.Web.Controllers.Api
         }
 
         [HttpGet(RouteConsts.Feed.Trending)]
-        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetTrendingPosts([FromRoute]PagingParam pagingParam)
+        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetTrendingPosts([FromQuery]PagingParam pagingParam)
         {
             var pagedResult = await this.feedService.GetTrendingPosts(pagingParam);
             var result = pagedResult.Data.Select(post => post.ToViewModel());
@@ -31,7 +31,7 @@ namespace Tiririt.Web.Controllers.Api
 
 
         [HttpGet(RouteConsts.Public.Search)]
-        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> Search([FromRoute]string searchText, [FromRoute]PagingParam pagingParam)
+        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> Search([FromRoute]string searchText, [FromQuery]PagingParam pagingParam)
         {
             var pagedResult = await this.feedService.Search(searchText, pagingParam);
             var result = pagedResult.Data.Select(post => post.ToViewModel());
@@ -39,7 +39,7 @@ namespace Tiririt.Web.Controllers.Api
         }
 
         [HttpGet(RouteConsts.Public.Tag)]
-        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetPostsByTag(string tag, [FromRoute]PagingParam pagingParam)
+        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetPostsByTag(string tag, [FromQuery]PagingParam pagingParam)
         {
             var pagedResult = await this.feedService.GetPostsByTag(tag, pagingParam);
             var result = pagedResult.Data.Select(post => post.ToViewModel());
@@ -47,7 +47,7 @@ namespace Tiririt.Web.Controllers.Api
         }
 
         [HttpGet(RouteConsts.Public.Stock)]
-        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetPostsByStock(string symbol, [FromRoute] PagingParam pagingParam)
+        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetPostsByStock(string symbol, [FromQuery] PagingParam pagingParam)
         {
             var pagedResult = await this.feedService.GetPostsByStock(symbol, pagingParam);            
             var result = pagedResult.Data.Select(post => post.ToViewModel());

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { FeedContainerComponent } from '../feed-container/feed-container.component';
 
 @Component({
     selector: 'app-home',
@@ -6,5 +7,19 @@ import { Component } from '@angular/core';
     styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+
+    @ViewChild(FeedContainerComponent)
+    feedContainer: FeedContainerComponent;
+
+    onScroll() {
+        switch(this.feedContainer.mainTabGroup.selectedIndex) {
+            case 0:
+                break;
+            
+            case 1: 
+                this.feedContainer.trendingFeedComponent.loadNextPage();
+                break;
+        }
+    }
 
 }

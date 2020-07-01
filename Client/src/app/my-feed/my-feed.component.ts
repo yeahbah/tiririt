@@ -4,6 +4,7 @@ import { PostModel } from './post-model';
 import { IPagingResultEnvelope } from '../core/PagingResultEnvelope';
 import { InteractionService } from '../core/InteractionService';
 import { PagingParam } from '../core/paging-params';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-my-feed',
@@ -12,21 +13,16 @@ import { PagingParam } from '../core/paging-params';
 })
 export class MyFeedComponent implements OnInit {
 
-  myFeed: IPagingResultEnvelope<PostModel>;
-
   @Input() feedFilterVisible = true;
   activeFilter = 0;
+  myFeed: IPagingResultEnvelope<PostModel>;
+  spinnerHidden = true;
+  paging = new PagingParam();
 
   constructor(private myFeedService: MyFeedService, private interactionService: InteractionService) { }
 
   ngOnInit(): void {
-    const paging = new PagingParam();
-    paging.sortColumn = 'postDate';
-    paging.sortOrder = 'desc';
-    this.myFeedService.getMyFeed(paging)
-      .subscribe(result => {
-        this.myFeed = result;
-      }, error => console.error(error));
+    this.filterFeed(0);
     
     this.interactionService.reloadMessage$.subscribe(message => {
       if (message == 'RELOAD') {
@@ -36,18 +32,28 @@ export class MyFeedComponent implements OnInit {
     
   }
 
+  reload() {
+    this.paging.sortColumn = 'postDate';
+    this.paging.sortOrder = 'desc';
+    this.myFeedService.getMyFeed(this.paging)
+      .subscribe(result => {
+        this.myFeed = result;
+      }, error => console.error(error));
+  }
+
   goToPost() {
     console.log('hello');
   }
 
   filterFeed(filter: number) {
-    this.activeFilter = filter;    
-    const paging = new PagingParam();
-    paging.sortColumn = 'postDate';
-    paging.sortOrder = 'desc';
+    this.activeFilter = filter;  
+    this.spinnerHidden = false;      
     switch(filter) {      
       case 1:
         this.myFeedService.getMentionsFeed()
+        .pipe(finalize(() => {
+          this.spinnerHidden = true;
+        }))
           .subscribe(result => {
             this.myFeed = result;
           }, error => console.error(error));                
@@ -55,6 +61,9 @@ export class MyFeedComponent implements OnInit {
       
       case 2: 
         this.myFeedService.getWatchlistFeed()
+        .pipe(finalize(() => {
+          this.spinnerHidden = true;
+        }))
           .subscribe(result => {
             this.myFeed = result;
           }, error => console.error(error));              
@@ -62,13 +71,19 @@ export class MyFeedComponent implements OnInit {
       
       case 3:
         this.myFeedService.getSubscriptionFeed()
+        .pipe(finalize(() => {
+          this.spinnerHidden = true;
+        }))
           .subscribe(result => {
             this.myFeed = result;
           }, error => console.error(error));                
         break;
       
-      default:        
-        this.myFeedService.getMyFeed(paging)
+      default:                  
+        this.myFeedService.getMyFeed(this.paging)
+          .pipe(finalize(() => {
+            this.spinnerHidden = true;
+          }))
           .subscribe(result => {
             this.myFeed = result;
           }, error => console.error(error));        

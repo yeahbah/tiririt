@@ -7,6 +7,19 @@ import { BaseService } from '../shared/base.service';
 import { IPagingResultEnvelope } from '../core/PagingResultEnvelope';
 import { PagingParam } from '../core/paging-params';
 
+export enum FeedType {
+  UserFeed,
+  TrendingFeed,
+  MentionsFeed,
+  WatchListFeed,
+  SubscriptionFeed
+}
+
+export class FeedParam {
+  feedType: FeedType;
+  paging: PagingParam;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,22 +32,21 @@ export class MyFeedService extends BaseService{
     super();
   }
 
+  getFeed(feedParam: FeedParam) {
+
+  }
+
   getMyFeed(paging: PagingParam): Observable<IPagingResultEnvelope<PostModel>> {
-    const url = `${this.apiUrl}/Feed`;
-    const params = new HttpParams()
-            .set('pageIndex', paging.pageIndex.toString())
-            .set('pageSize', paging.pageSize.toString())
-            .set('sortColumn', paging.sortColumn)
-            .set('sortOrder', paging.sortOrder);
-    return this.http.get<IPagingResultEnvelope<PostModel>>(url, { params: params})
+    const url = `${this.apiUrl}/Feed`;  
+    return this.http.get<IPagingResultEnvelope<PostModel>>(url, { params: paging.toHttpParams()})
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  getTrendingFeed(): Observable<IPagingResultEnvelope<PostModel>> {
-    const url = `${this.apiUrl}/Public/trending`;
-    return this.http.get<IPagingResultEnvelope<PostModel>>(url)
+  getTrendingFeed(paging: PagingParam): Observable<IPagingResultEnvelope<PostModel>> {
+    const url = `${this.apiUrl}/Public/trending`;    
+    return this.http.get<IPagingResultEnvelope<PostModel>>(url, { params: paging.toHttpParams() })
       .pipe(
         catchError(this.handleError)
       );

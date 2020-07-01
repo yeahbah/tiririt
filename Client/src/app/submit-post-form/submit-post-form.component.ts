@@ -32,7 +32,7 @@ export class SubmitPostFormComponent implements OnInit {
   }
 
   initializeForm() {
-    const postTextControl = new FormControl(this.defaultValue, Validators.required);
+    const postTextControl = new FormControl(this.defaultValue + ' ', Validators.required);
     this.charCount = this.maxPostLength - this.defaultValue.length;
     this.newPostForm = this.formBuilder.group({
       postText: postTextControl,    

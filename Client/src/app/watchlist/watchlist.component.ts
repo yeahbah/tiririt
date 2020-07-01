@@ -36,10 +36,10 @@ export class WatchlistComponent implements OnInit {
 
     this.interactionService.reloadWatchListMessage$
       .pipe(finalize(() => {
-        this.reload(defaultSort)
+        
       }))
       .subscribe(newWatchList => {
-        
+        this.reload(defaultSort)
       });
   }
 
@@ -66,13 +66,11 @@ export class WatchlistComponent implements OnInit {
     this.spinner.show();
     this.watchListService.addStockToWatchList(0, [stockSymbol])
       .pipe(finalize(() => {
-        this.interactionService.sendMessage('RELOAD');
-        this.reload(this.currentSort);
+        this.interactionService.sendMessage('RELOAD');        
         this.spinner.hide();
       }))
       .subscribe(result => {
-        // this.dataSource = new MatTableDataSource<IStockModel>(result?.stocks);
-        // this.refreshList(result)
+        this.reload(this.currentSort);
       });
   }
 
@@ -81,11 +79,10 @@ export class WatchlistComponent implements OnInit {
     this.watchListService.deleteStock(0, stockSymbol)
       .pipe(finalize(() => {
         this.interactionService.sendMessage('RELOAD');
-        this.reload(this.currentSort);
         this.spinner.hide();
       }))
       .subscribe(result => {
-        // this.dataSource = new MatTableDataSource<IStockModel>(result?.stocks);
+        this.reload(this.currentSort);
       })      
   }
 
