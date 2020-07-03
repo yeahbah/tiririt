@@ -7,6 +7,7 @@ import { BaseService } from '../shared/base.service';
 import { Observable } from 'rxjs';
 import { IStockModel } from './models/stock-model';
 import { IStockQuoteModel } from './models/stock-quote-model';
+import { PagingParam } from '../core/paging-params';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +20,9 @@ export class PublicFeedService extends BaseService {
       super();
     }
 
-  getPostsByTag(tag: string): Observable<IPagingResultEnvelope<PostModel>> {
+  getPostsByTag(tag: string, paging: PagingParam): Observable<IPagingResultEnvelope<PostModel>> {
     const url = `${this.apiUrl}/Public/tag/${tag}`;
-    return this.http.get<IPagingResultEnvelope<PostModel>>(url)
+    return this.http.get<IPagingResultEnvelope<PostModel>>(url, { params: paging.toHttpParams() })
       .pipe(
         catchError(this.handleError)
       );

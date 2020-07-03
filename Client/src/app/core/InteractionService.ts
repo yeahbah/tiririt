@@ -4,6 +4,10 @@ import { WatchlistModel } from '../watchlist/watchlist-model';
 import { IStockModel } from '../public/models/stock-model';
 import { PostModel } from '../my-feed/post-model';
 
+export interface IDefaultPostText {
+    defaultText: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -13,6 +17,7 @@ export class InteractionService {
     private watchListMessageSource = new Subject<WatchlistModel>();
     private loadedStockMessageSource = new Subject<IStockModel>();
     private commentPostedMessageSource = new Subject<PostModel>();
+    private defaultPostTextMessageSource = new Subject<IDefaultPostText>();
 
     // reload a page message
     reloadMessage$ = this.messageSource.asObservable();
@@ -25,6 +30,8 @@ export class InteractionService {
 
     // a new comment has been posted
     commentPostedMessage$ = this.commentPostedMessageSource.asObservable();
+
+    defaultPostTextMessage$ = this.defaultPostTextMessageSource.asObservable();
 
 
     constructor() {
@@ -45,5 +52,9 @@ export class InteractionService {
 
     sendCommentPostedMessage(comment: PostModel) {
         this.commentPostedMessageSource.next(comment);
+    }
+
+    sendDefaultPostTextMessage(defaultText: IDefaultPostText) {
+        this.defaultPostTextMessageSource.next(defaultText);
     }
 }

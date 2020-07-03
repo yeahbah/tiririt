@@ -11,7 +11,7 @@ export class HomeComponent {
     @ViewChild(FeedContainerComponent)
     feedContainer: FeedContainerComponent;
 
-    onScroll() {
+    onScroll() {        
         switch(this.feedContainer.mainTabGroup.selectedIndex) {
             case 0:
                 this.feedContainer.myFeedComponent.loadNextPage();

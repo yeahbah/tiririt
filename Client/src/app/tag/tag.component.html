@@ -1,13 +1,14 @@
 
     <div class="flexbox-container">
         <div class="flexbox-item side-navigation" >
-            <app-watchlist *ngIf="isAuthenticated"></app-watchlist>
-            <div *ngIf="!isAuthenticated">
-                Activate your watch list by signing up!
-            </div>
+            <app-side-nav-menu></app-side-nav-menu>
         </div>
 
-        <div class="flexbox-item main-content">
+        <div class="flexbox-item main-content" 
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50"
+        (scrolled)="onScroll()">
             <div class="flex-main-content">      
                 <div class="row">
                     <div class="col-1">
@@ -17,11 +18,23 @@
                     </div>
                     <div class="col-11"><h1 style="text-align: center;">#{{ tag }}</h1></div>
                 </div>          
-                <div *ngFor="let post of tagFeed?.data">    
-                    <app-post-item [post]="post"></app-post-item>
+                <div *ngIf="tagFeed?.data.length > 0">
+                    <div *ngFor="let post of tagFeed?.data">    
+                        <app-post-item [post]="post"></app-post-item>
+                    </div>
                 </div>
+
+                <div *ngIf="tagFeed?.data.length == 0" class="first-post">
+                    What!? Nobody posted anything yet about this topic?
+                    <br><br>
+                    <button mat-raised-button color="primary" (click)="createPost()">Click here to the first!</button>
+                </div>
+
             </div>
+            <mat-spinner [diameter]="25" [hidden]="spinnerHidden"></mat-spinner>
         </div>
+
+    
 
     </div>
 

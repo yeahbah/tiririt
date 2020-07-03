@@ -2,10 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/authentication/auth.service';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { SubmitPostFormComponent } from 'src/app/submit-post-form/submit-post-form.component';
 import { SubmitPostDialogComponent } from 'src/app/dialogs/submit-post-dialog/submit-post-dialog.component';
+import { InteractionService } from 'src/app/core/InteractionService';
 
 @Component({
   selector: 'app-home-header',
@@ -20,13 +21,21 @@ export class HomeHeaderComponent implements OnInit {
   isAuthenticated: boolean;
   isShown: boolean = false;
   subscription: Subscription;
+  defaultText: string = '';
 
-  constructor(        
+  constructor(     
+    private interactionService: InteractionService,
+    private route: ActivatedRoute,   
     private router: Router,
     private authService: AuthService,
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.interactionService.defaultPostTextMessage$
+      .subscribe(result => {
+        this.defaultText = result.defaultText;
+      })
+    
     this.subscription = this.authService.authNavStatus$
       .subscribe(status => { 
         this.isAuthenticated = status,
@@ -59,6 +68,6 @@ export class HomeHeaderComponent implements OnInit {
   }
 
   newPost() {
-    this.dialog.open(SubmitPostDialogComponent, { data: '' });
+    this.dialog.open(SubmitPostDialogComponent, { data: '#' + this.defaultText });
   }
 }
