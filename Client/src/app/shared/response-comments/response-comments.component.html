@@ -15,7 +15,7 @@
   
       <mat-spinner [diameter]="25" [hidden]="spinnerHidden"></mat-spinner>
       
-      <div *ngFor="let comment of replies?.data">
+      <div *ngFor="let comment of replies?.data" class="commentContainer">
         <div class="comment-header mb-2 my-2">     
             <div mat-card-avatar class="avatar"></div>
             <div class="comment-subtitle ml-3">
@@ -34,7 +34,7 @@
                     <mat-icon >thumb_up</mat-icon>
                     <span *ngIf="comment.likeCount > 0">{{ comment.likeCount }}</span>
             </div>
-            <div class="action-item" mat-icon-button (click)="showReplyForm()"
+            <div class="action-item" mat-icon-button (click)="showReplyForm(comment.postId)"
                 matTooltip="Reply to this post" matTooltipPosition="above" >
                 <mat-icon>reply</mat-icon>
             </div>
@@ -55,15 +55,19 @@
                 <mat-icon>more_horiz</mat-icon>
             </div>                
         </div>
-
+        <div>
+            <app-reply-form 
+                [post]="post" 
+                [comment]="comment"
+                [formVisible]="false"
+                [hideAfterPost]="true"
+                class="reply-form mb-2" 
+                [cancelButtonVisible]="true"
+                #replyFormComponent></app-reply-form>
+        </div>
+        
       </div>
-      <app-reply-form 
-      [post]="post" 
-      [formVisible]="false"
-      [hideAfterPost]="true"
-      class="reply-form mb-2" 
-      [cancelButtonVisible]="true"
-      #replyFormComponent></app-reply-form>
+      
     </mat-expansion-panel>
     
   </mat-accordion>

@@ -6,17 +6,13 @@
     background-color: #efefef;
 } 
 
-pre { 
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    font-size: 12pt;
-}
-
 .mat-card-header {
     display: flex;
 }
 
 .mat-card-subtitle {
     flex-shrink: 0;
+    font-size: 10pt;
 }
 
 .mat-card-actions {

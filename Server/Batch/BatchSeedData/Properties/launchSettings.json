@@ -2,7 +2,7 @@
   "profiles": {
     "BatchSeedData": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\alvin\\Downloads\\Data"
+      "commandLineArgs": "C:\\Users\\yeahb\\Downloads\\data\\"
     }
   }
 }

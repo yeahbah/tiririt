@@ -10,11 +10,6 @@
     background-color: #efefef;
 }
 
-pre {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    font-size: 12pt;
-}
-
 .avatar {
     background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
     background-size: cover;
@@ -25,7 +20,7 @@ pre {
 }
 
 .comment-subtitle {
-    font-size: 11pt;
+    font-size: 10pt;
     color: grey;
 }
 

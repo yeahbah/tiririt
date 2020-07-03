@@ -1,33 +1,26 @@
-using IdentityServer4.EntityFramework.Options;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Tiririt.App.Service;
 using Tiririt.Data.Entities;
-using Tiririt.Data.Internal;
-using Tiririt.Data.Service;
 using Tiririt.Domain.Models;
 
 namespace BatchSeedData
 {
     public class StockQuoteDataSeed : DataSeederBase
     {
-        private readonly IStockService stockService;
-        private readonly IStockQuoteService stockQuoteService;
+        //private readonly IStockService stockService;
+        //private readonly IStockQuoteService stockQuoteService;
 
-        private readonly IStockSectorService stockSectorService;
+        //private readonly IStockSectorService stockSectorService;
 
-        public StockQuoteDataSeed(IStockService stockService, 
-            IStockSectorService stockSectorService,
-            IStockQuoteService stockQuoteService)
+        public StockQuoteDataSeed()
         {
-            this.stockService = stockService;
-            this.stockSectorService = stockSectorService;
-            this.stockQuoteService = stockQuoteService;
+            //this.stockService = stockService;
+            //this.stockSectorService = stockSectorService;
+            //this.stockQuoteService = stockQuoteService;
         }
 
         public IStockSectorService StockSectorService { get; }

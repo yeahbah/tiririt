@@ -5,6 +5,7 @@ import { PostDetailsDialogComponent } from 'src/app/dialogs/post-details-dialog/
 import { Router } from '@angular/router';
 import { ReplyFormComponent } from '../reply-form/reply-form.component';
 import { IPagingResultEnvelope } from 'src/app/core/PagingResultEnvelope';
+import { InteractionService } from 'src/app/core/InteractionService';
 // import { MatLinkPreviewService } from '@angular-material-extensions/link-preview';
 
 @Component({
@@ -21,11 +22,15 @@ export class PostItemComponent implements OnInit {
   replyFormComponent: ReplyFormComponent;
 
   constructor(
-    // private linkPreviewService: MatLinkPreviewService,
+    private interactionService: InteractionService,
     private dialog: MatDialog, 
     private router: Router) { }
 
   ngOnInit(): void {
+    this.interactionService.commentPostedMessage$
+      .subscribe(comment => {
+        this.post.commentCount++;
+      })
   }
 
   isBullish(bullBearLevel: any): boolean {

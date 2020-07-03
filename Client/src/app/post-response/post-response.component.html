@@ -1,6 +1,8 @@
 <div *ngIf="postResponses">    
     <h2>{{ postResponses?.data.length}} Comments</h2>
+    <app-reply-form [post]="postData" [formVisible]="true" *ngIf="isAuthenticated">
 
+    </app-reply-form>
     <div *ngFor="let post of postResponses?.data" class="comment">    
             <div class="comment-header mb-4 my-2">     
                 <div mat-card-avatar class="avatar"></div>

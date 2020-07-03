@@ -34,6 +34,10 @@ export class PostDetailsComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }  
+
   reload() {
     this.postService.getPost(this.postId)
       .subscribe(result => {

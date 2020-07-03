@@ -56,4 +56,8 @@ export class RegisterComponent implements OnInit {
         this.error = error;       
       });
   }
+
+  login() {
+    this.authService.login();
+  }
 }

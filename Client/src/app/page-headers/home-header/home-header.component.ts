@@ -59,6 +59,6 @@ export class HomeHeaderComponent implements OnInit {
   }
 
   newPost() {
-    this.dialog.open(SubmitPostDialogComponent);
+    this.dialog.open(SubmitPostDialogComponent, { data: '' });
   }
 }

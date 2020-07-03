@@ -1,9 +1,13 @@
+.mat-accordion {
+    font-size: 10pt;
+}
+
 .mat-expansion-panel:not(.mat-expanded) 
 
 .mat-expansion-panel-header:not([aria-disabled='true']):hover {   background: white; }
 
 .mat-expansion-panel-header {
-    /* height: 25px; */
+    font-size: 10pt;
     padding-top: 0;
     margin-bottom: 5px;
 }
@@ -19,12 +23,17 @@
     width: 25px;    
 }
 
+.commentContainer {
+    display: flex;
+    flex-direction: column;
+}
+
 .comment-header {
     display: flex;    
 }
 
 .comment-subtitle {
-    font-size: 11pt;
+    font-size: 10pt;
     color: grey;
 }
 

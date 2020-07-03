@@ -2,7 +2,8 @@
     <div *ngFor="let post of trendingFeed?.data">    
         <app-post-item [post]="post"></app-post-item>
     </div>
-    <center>
+    <div >
+    <div class="spinner">
         <mat-spinner [diameter]="25" [hidden]="spinnerHidden"></mat-spinner>
-    </center>
+    </div>
 </div>

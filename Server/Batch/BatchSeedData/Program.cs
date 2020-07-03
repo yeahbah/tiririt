@@ -20,17 +20,18 @@ namespace BatchSeedData
                 Console.WriteLine("Tell me where the CSV files are located.");
                 return;
             }
-            RegisterServices();
+            //RegisterServices();
 
-            ProcessFiles(args[0]).GetAwaiter().GetResult();
+            //ProcessFiles(args[0]).GetAwaiter().GetResult();
+            InitialDataSeeder.Execute().GetAwaiter().GetResult();
         }
 
         private static async Task ProcessFiles(string src)
         {
             var sourceFolder = src;
             var dirs = Directory.GetDirectories(sourceFolder);
-            var scope = _serviceProvider.CreateScope();
-            var seeder = scope.ServiceProvider.GetRequiredService<StockQuoteDataSeed>();
+            //var scope = _serviceProvider.CreateScope();
+            var seeder = new StockQuoteDataSeed();//scope.ServiceProvider.GetRequiredService<StockQuoteDataSeed>();
             foreach (var dir in dirs)
             {
                 var files = Directory.GetFiles(dir, "*.csv");
@@ -44,7 +45,7 @@ namespace BatchSeedData
         private static void RegisterServices()
         {
            var services = new ServiceCollection()
-            .AddAppServiceCollection()
+            //.AddAppServiceCollection()
             .AddTransient<StockQuoteDataSeed>();
 
           _serviceProvider = services.BuildServiceProvider(true);

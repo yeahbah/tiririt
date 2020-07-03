@@ -1,21 +1,9 @@
-<!-- <div class="container">
-    
-    <div class="welcome-section">        
-        <h1>Trending Posts</h1>        
-        <app-trending-feed></app-trending-feed>
-    </div>
-    
-</div> -->
-
-
 <div class="flexbox-container" infiniteScroll
     [infiniteScrollDistance]="2"
     [infiniteScrollThrottle]="50"
     (scrolled)="onScroll()">
     <div class="flexbox-item side-navigation" >        
-        <div>
-            Activate your watch list by signing up!
-        </div>
+        <app-side-nav-menu></app-side-nav-menu>
     </div>
 
     <div class="flexbox-item main-content">

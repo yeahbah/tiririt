@@ -35,6 +35,7 @@ import { SubmitPostDialogComponent } from './dialogs/submit-post-dialog/submit-p
 import { PostDetailsDialogComponent } from './dialogs/post-details-dialog/post-details-dialog.component';
 import { PostResponseComponent } from './post-response/post-response.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { SideNavMenuComponent } from './side-nav-menu/side-nav-menu.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     LoginComponent,
     SubmitPostDialogComponent,
     PostDetailsDialogComponent,
-    PostResponseComponent
+    PostResponseComponent,
+    SideNavMenuComponent,
   ],
   imports: [
     BrowserModule,

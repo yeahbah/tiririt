@@ -35,9 +35,9 @@ namespace Tiririt.Data.Internal
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            base.OnConfiguring(builder);
-            builder
-                .UseLoggerFactory(_loggerFactory);
+            //base.OnConfiguring(builder);
+            //builder
+            //    .UseLoggerFactory(_loggerFactory);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

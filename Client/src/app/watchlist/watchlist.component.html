@@ -10,13 +10,17 @@
         <ng-container matColumnDef="symbol">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Symbol</th>
             <td mat-cell *matCellDef="let stock">
-               <a [routerLink]="['/stock/', stock.symbol]" routerLinkActive="active">{{ stock.symbol }}</a>
+               <span>
+                   <a [routerLink]="['/stock/', stock.symbol]" routerLinkActive="active">{{ stock.symbol }}</a>
+                </span>
             </td>
         </ng-container>        
 
         <ng-container matColumnDef="lastTradePrice">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Price</th>
-            <td mat-cell *matCellDef="let stock">{{ stock.lastTradePrice | number }}</td>
+            <td mat-cell *matCellDef="let stock">
+                <span>{{ stock.lastTradePrice | number }}</span>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="percentChange">

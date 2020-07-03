@@ -48,7 +48,9 @@
       </form>      
       <div *ngIf="success" class="alert alert-success" role="alert">
           <h4 class="alert-heading">Well done!</h4>
-          <p>Your account was created successfully, <a routerLink="/login">Please login</a> to continue.</p>        
+          <p>Your account was created successfully!</p>
+          
+          <button mat-raised-button (click)="login()" color="primary">Click here to login</button>        
       </div>  
       <!-- <p>
         Form Value: {{ registrationForm.value | json }}

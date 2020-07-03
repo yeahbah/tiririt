@@ -1,0 +1,24 @@
+<div class="sidebar">
+    <h2>Topics</h2>
+    <mat-divider></mat-divider>
+    <ul class="list-unstyled components" id="tagsSubmenu">
+        <li><a [routerLink]="['/tag','Investments']">#Investments</a></li>
+        <li><a [routerLink]="['/tag','PhilEconomy']">#PhilEconomy</a></li>
+        <li><a [routerLink]="['/tag','USMarket']">#USMarket</a></li>
+        <li><a [routerLink]="['/tag','ForSale']">#ForSale</a></li>
+        <li><a [routerLink]="['/tag','TradeIdea']">#TradeIdea</a></li>
+        <li><a [routerLink]="['/tag','Swerte']">#Swerte</a></li>
+        <li><a [routerLink]="['/tag','Malas']">#Malas</a></li>
+        <li><a [routerLink]="['/tag','KumikitangKabuhayan']">#KumikitangKabuhayan</a></li>
+        <li><a [routerLink]="['/tag','FundementalAnalysis']">#FundamentalAnalysis</a></li>
+        <li><a [routerLink]="['/tag','TechnicalAnalysis']">#TechnicalAnalysis</a></li>
+    </ul>    
+    <div>
+        <h2>Watch List</h2>
+        <mat-divider></mat-divider>
+        <div *ngIf="!isAuthenticated">Activate your watch list by signing up!</div>
+        <app-watchlist *ngIf="isAuthenticated"></app-watchlist>
+    </div>
+
+</div>
+    

@@ -61,9 +61,7 @@
                 </mat-card-actions>
             </mat-card>
             <!-- <mat-divider></mat-divider> -->    
-            <div class="my-2 ml-4">
-                <app-reply-form [post]="post" *ngIf="isAuthenticated"></app-reply-form>
-        
+            <div class="my-2 ml-4">        
                 <!-- <app-submit-post-form [dialogMode]="false"></app-submit-post-form> -->
                 <div *ngIf="post">                    
                     <app-post-response [postData]="post"></app-post-response>                    

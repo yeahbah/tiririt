@@ -14,6 +14,7 @@ import { finalize } from 'rxjs/operators';
 export class ReplyFormComponent implements OnInit {
 
   @Input() post: PostModel;
+  @Input() comment: PostModel;
   @Input() cancelButtonVisible = false;
   @Input() formVisible = true;
   @Input() attachToPostId: number;
@@ -33,7 +34,7 @@ export class ReplyFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.resetForm();
+    this.resetForm();    
   }
 
   submit() {
@@ -54,7 +55,11 @@ export class ReplyFormComponent implements OnInit {
   }
 
   resetForm() {
-    this.replyForm.get('postText').setValue(`@${this.post.userName} `);
+    let atUser = `@${this.post.userName} `;
+    if (this.comment) {
+      atUser += `@${this.comment.userName} `;
+    }
+    this.replyForm.get('postText').setValue(atUser);
   }
 
   onKeyUp(event: any) {
