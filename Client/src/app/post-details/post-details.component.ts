@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Location } from '@angular/common';
 import { PostModel } from '../my-feed/post-model';
 import { TiriritPostService } from '../core/tiririt-post.service';
 import { ActivatedRoute } from '@angular/router';
@@ -20,7 +21,8 @@ export class PostDetailsComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
-    private postService: TiriritPostService) { }
+    private postService: TiriritPostService,
+    private location: Location) { }
 
   ngOnInit(): void {
     this.subscription = this.authService.authNavStatus$
@@ -51,6 +53,10 @@ export class PostDetailsComponent implements OnInit {
 
   isBearish(bullBearLevel: any): boolean {
     return bullBearLevel == 'VeryBearish';
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 }

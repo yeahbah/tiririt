@@ -1,12 +1,16 @@
 
     <div class="flexbox-container">
         <div class="flexbox-item side-navigation">
-            <div *ngIf="!isAuthenticated">
-                Activate your watch list by signing up!
-            </div>
-            <app-watchlist *ngIf="isAuthenticated"></app-watchlist>
+            <app-side-nav-menu></app-side-nav-menu>
         </div>
         <div class="flex-content-container my-2" *ngIf="post">
+            <div class="row">
+
+                <button mat-icon-button (click)="goBack()">
+                    <mat-icon>keyboard_arrow_left</mat-icon>
+                    Back to feeds</button>
+
+            </div>  
             <mat-card>
                 <mat-card-header>     
                     <div mat-card-avatar class="example-header-image"></div>

@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { BaseService } from '../shared/base.service';
 import { IPagingResultEnvelope } from '../core/PagingResultEnvelope';
 import { PagingParam } from '../core/paging-params';
+import { ɵangular_packages_platform_browser_platform_browser_j } from '@angular/platform-browser';
 
 export enum FeedType {
   UserFeed,
@@ -32,8 +33,21 @@ export class MyFeedService extends BaseService{
     super();
   }
 
-  getFeed(feedParam: FeedParam) {
+  getFeed(feedParam: FeedParam): Observable<IPagingResultEnvelope<PostModel>> {
+    switch(feedParam.feedType) {
+      case FeedType.UserFeed: 
+        return this.getMyFeed(feedParam.paging);
+      
+      case FeedType.MentionsFeed:
+        return this.getMentionsFeed(feedParam.paging);
 
+      case FeedType.SubscriptionFeed:
+        return this.getSubscriptionFeed(feedParam.paging);
+
+      case FeedType.WatchListFeed:
+        return this.getWatchlistFeed(feedParam.paging);
+
+    }
   }
 
   getMyFeed(paging: PagingParam): Observable<IPagingResultEnvelope<PostModel>> {
@@ -52,25 +66,25 @@ export class MyFeedService extends BaseService{
       );
   }
 
-  getMentionsFeed(): Observable<IPagingResultEnvelope<PostModel>> {
+  getMentionsFeed(paging: PagingParam): Observable<IPagingResultEnvelope<PostModel>> {
     const url = `${this.apiUrl}/Feed/mentions`;
-    return this.http.get<IPagingResultEnvelope<PostModel>>(url)
+    return this.http.get<IPagingResultEnvelope<PostModel>>(url, { params: paging.toHttpParams() })
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  getWatchlistFeed(): Observable<IPagingResultEnvelope<PostModel>> {
+  getWatchlistFeed(paging: PagingParam): Observable<IPagingResultEnvelope<PostModel>> {
     const url = `${this.apiUrl}/Feed/watchlist`;
-    return this.http.get<IPagingResultEnvelope<PostModel>>(url)
+    return this.http.get<IPagingResultEnvelope<PostModel>>(url, { params: paging.toHttpParams() })
       .pipe(
         catchError(this.handleError)
       );
   }  
 
-  getSubscriptionFeed(): Observable<IPagingResultEnvelope<PostModel>> {
+  getSubscriptionFeed(pagingParam: PagingParam): Observable<IPagingResultEnvelope<PostModel>> {
     const url = `${this.apiUrl}/Feed/subscription`;
-    return this.http.get<IPagingResultEnvelope<PostModel>>(url)
+    return this.http.get<IPagingResultEnvelope<PostModel>>(url, { params: pagingParam.toHttpParams() })
       .pipe(
         catchError(this.handleError)
       );

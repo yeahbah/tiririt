@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../core/authentication/auth.service';
 import { TrendingFeedComponent } from '../shared/trending-feed/trending-feed.component';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { MyFeedComponent } from '../my-feed/my-feed.component';
 
 @Component({
   selector: 'app-feed-container',
@@ -14,13 +15,12 @@ export class FeedContainerComponent implements OnInit {
   @ViewChild(MatTabGroup)
   mainTabGroup: MatTabGroup;
 
+  @ViewChild(MyFeedComponent)
+  myFeedComponent: MyFeedComponent;
+  
   @ViewChild(TrendingFeedComponent)
   trendingFeedComponent: TrendingFeedComponent;
 
-  activeChildComponent: Component;
-
-  // @ViewChild()
-  
   isAuthenticated = false;
   subscription: Subscription;
 
@@ -38,6 +38,6 @@ export class FeedContainerComponent implements OnInit {
   ngOnDestroy() {
     this.subscription.unsubscribe();
  
-}
+  }
 
 }

@@ -22,7 +22,7 @@ namespace BatchSeedData
             }
             //RegisterServices();
 
-            //ProcessFiles(args[0]).GetAwaiter().GetResult();
+            ProcessFiles(args[0]).GetAwaiter().GetResult();
             InitialDataSeeder.Execute().GetAwaiter().GetResult();
         }
 

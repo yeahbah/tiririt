@@ -14,6 +14,7 @@ export class HomeComponent {
     onScroll() {
         switch(this.feedContainer.mainTabGroup.selectedIndex) {
             case 0:
+                this.feedContainer.myFeedComponent.loadNextPage();
                 break;
             
             case 1: 

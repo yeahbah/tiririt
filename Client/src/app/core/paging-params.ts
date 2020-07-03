@@ -14,23 +14,23 @@ export class PagingParam {
     }
 
     toHttpParams(): HttpParams {
-        const result = new HttpParams()
+        let result = new HttpParams()
             .set('pageIndex', this.pageIndex.toString())
-            .set('pageSize', this.pageSize.toString());        
-        if (this.sortColumn) {
-            result.set('sortColumn', this.sortOrder);
+            .set('pageSize', this.pageSize.toString())
+            
+        if (this.sortColumn) {            
+            result = result.set('sortColumn', this.sortColumn);
             if (this.sortOrder) {
-                result.set('sortOrder', this.sortOrder)
+                result = result.set('sortOrder', this.sortOrder)
             }
         }        
 
         if (this.filterColumn) {
-            result.set('filterColumn', this.filterColumn);
+            result = result.set('filterColumn', this.filterColumn);
             if (this.filterQuery) {
-                result.set('filterQuery', this.filterQuery);
+                result = result.set('filterQuery', this.filterQuery);
             }
         }
-
         return result;
     }
 }

@@ -1,9 +1,9 @@
 <div class="feed-filter" *ngIf="feedFilterVisible">
     <mat-button-toggle-group appearance="legacy" #group="matButtonToggleGroup">
-        <mat-button-toggle checked value="all" (click)="filterFeed(0)">All</mat-button-toggle>
-        <mat-button-toggle value="mentions" (click)="filterFeed(1)">Mentions</mat-button-toggle>
-        <mat-button-toggle value="watchlist" (click)="filterFeed(2)">Watch List</mat-button-toggle>
-        <mat-button-toggle value="subscription" (click)="filterFeed(3)">Subscription</mat-button-toggle>
+        <mat-button-toggle checked value="all" (click)="loadAll()">All</mat-button-toggle>
+        <mat-button-toggle value="mentions" (click)="loadMentions()">Mentions</mat-button-toggle>
+        <mat-button-toggle value="watchlist" (click)="loadWatchList()">Watch List</mat-button-toggle>
+        <mat-button-toggle value="subscription" (click)="loadSubscription()">Subscription</mat-button-toggle>
     </mat-button-toggle-group>    
 </div>
 
