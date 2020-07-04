@@ -2,14 +2,42 @@
 
     <mat-card-content>
     <form class="tiririt-form" [formGroup]="newPostForm" (ngSubmit)="submit()">
+        <!-- <mat-accordion [togglePosition]="'before'" >
+            <mat-expansion-panel class="mat-elevation-z0">
+                <mat-expansion-panel-header [collapsedHeight]="headerHeight" [expandedHeight]="headerHeight">
+                    <mat-panel-title>
+                        <span class="link">
+                            Common Tags
+                        </span>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                
+            </mat-expansion-panel>
+            
+        </mat-accordion> -->
+        Use common tags:
+        <div class="tag-options">            
+            <div class="tag-option link" (click)="useTag('#Investments')">#Investments</div> 
+            <div class="tag-option link" (click)="useTag('#PhilEconomy')">#PhilEconomy</div>
+            <div class="tag-option link" (click)="useTag('#USMarket')">#USMarket</div>
+            <div class="tag-option link" (click)="useTag('#ForSale')">#ForSale</div> 
+            <div class="tag-option link" (click)="useTag('#TradeIde')">#TradeIdea</div>
+            <div class="tag-option link" (click)="useTag('#Swerte')">#Swerte</div>
+            <div class="tag-option link" (click)="useTag('#Malas')">#Malas</div> <br>
+            <div class="tag-option link" (click)="useTag('#KumikitangKabuhayan')">#KumikitangKabuhayan</div>
+            <div class="tag-option link" (click)="useTag('#FundamentalAnalysis')">#FundamentalAnalysis</div>
+            <div class="tag-option link" (click)="useTag('#TechnicalAnalysis')">#TechnicalAnalysis</div>
+        </div>
         <mat-form-field class="form-field">
             <!-- <mat-label *ngIf="!dialogMode">Say something about your favorite stock</mat-label> -->
+            
             <textarea matInput placeholder="Ex. @supertrader @bulltactics $GLO did very well last quarter. #panalo" 
                 id="postText" name="postText" formControlName="postText"
                 maxlength="{{ maxPostLength }}" rows="5" (keyup)="onKeyUp($event)"></textarea>
                         
+                
             <span class="charCount">characters remain: {{ charCount }}</span>
-        </mat-form-field>
+        </mat-form-field> 
         <div *ngIf="defaultValue.quotePost" class="quote-post">
             <blockquote>
             <strong>{{ defaultValue.quotePost.userName }}</strong> said:
@@ -17,8 +45,9 @@
             <pre [innerHtml] = "defaultValue.quotePost.postText"></pre>
             </blockquote>
         </div>
+        
     </form>    
-<!-- <mat-card-actions> -->
+
     <div class="post-action-container">
         <div class="post-bear-bull">
             <button mat-stroked-button color="basic" (click)="bearishClick()" [class.isBearish]="isBearish">
@@ -39,5 +68,4 @@
     <ngx-spinner></ngx-spinner>
 </mat-card-content>
 
-<!-- </mat-card-actions>     -->
 </mat-card>

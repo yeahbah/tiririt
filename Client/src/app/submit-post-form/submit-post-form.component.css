@@ -1,3 +1,22 @@
+.mat-accordion {
+    font-size: 10pt;
+}
+
+.mat-expansion-panel:not(.mat-expanded) 
+
+.mat-expansion-panel-header:not([aria-disabled='true']):hover {   background: #efefef; }
+
+.mat-expansion-panel-header {
+    font-size: 10pt;
+    padding-top: 0;
+    /* margin-bottom: 5px; */
+}
+
+.mat-expansion-panel-body {
+    padding: 0;
+    word-wrap: normal;
+}
+
 .mat-card {
     min-width: 500px;
     max-width: 600px;
@@ -43,4 +62,17 @@
 
 .quote-post pre {
     max-height: 75px;
+}
+
+.tag-options {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+.tag-option {
+    /* background-color: #efefef; */
+    /* border-radius: 25px; */
+    padding: 2px;
+    /* font-size: 9pt; */
+    cursor: pointer;
 }

@@ -21,6 +21,7 @@ export class SubmitPostFormComponent implements OnInit {
   charCount: number;
   maxPostLength = 1000;
   newPostForm: FormGroup;
+  headerHeight = '25px';
 
   @Input() dialogMode = false;
   @Input() defaultValue: IDefaultPostText = { defaultText: '' };
@@ -78,9 +79,10 @@ export class SubmitPostFormComponent implements OnInit {
         this.reset();  
         this.interactionService.sendMessage('RELOAD');
         this.spinner.hide();       
-        this.openSnackBar() ;
       }))
-      .subscribe();
+      .subscribe(result => {
+        this.openSnackBar();
+      });
   }
 
   reset() {    
@@ -93,7 +95,6 @@ export class SubmitPostFormComponent implements OnInit {
   bearishClick() {
     this.isBearish = !this.isBearish;
     this.isBullish = false;
-    console.log(this.isBearish);
   }
 
   bullishClick() {
@@ -112,5 +113,10 @@ export class SubmitPostFormComponent implements OnInit {
       horizontalPosition: 'center',
       verticalPosition: 'top'
     });
+  }
+
+  useTag(tag: string) {
+    const value = this.newPostForm.get("postText").value +' '+tag;
+    this.newPostForm.setValue({ postText: value });
   }
 }

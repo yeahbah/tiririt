@@ -77,3 +77,9 @@ button {
 .small {
     font-size: 10pt;
 }
+
+.highlight {
+    /* border-radius: 25px;
+    background-color: #efefef; */
+    font-weight: bold;
+}

@@ -64,3 +64,6 @@ button {
     transform: scale(0.7);
 }
 
+.highlight {
+    font-weight: bold;
+}
