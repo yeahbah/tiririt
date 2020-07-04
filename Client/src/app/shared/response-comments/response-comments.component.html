@@ -29,17 +29,20 @@
             <pre [innerHTML]="comment.postText | linkify"></pre>
         </div>
         <div class="actions">
-            <div class="action-item"
-                matTooltip="Like this post" matTooltipPosition="above">
-                    <mat-icon >thumb_up</mat-icon>
-                    <span *ngIf="comment.likeCount > 0">{{ comment.likeCount }}</span>
+            <div class="action-item mr-2" mat-icon-button (click)="like(comment)" matTooltip="Like this post" matTooltipPosition="above">
+                <div [ngClass]="post.userLiked ? 'link' : 'default'">
+                    <div style="display: flex;">
+                        <mat-icon>thumb_up</mat-icon>
+                        <span style="font-size: 9pt">{{ comment.likeCount }}</span>                    
+                    </div>
+                </div>
             </div>
-            <div class="action-item" mat-icon-button (click)="showReplyForm(comment.postId)"
+            <div class="action-item mr-2" mat-icon-button (click)="showReplyForm(comment.postId)"
                 matTooltip="Reply to this post" matTooltipPosition="above" >
                 <mat-icon>reply</mat-icon>
             </div>
-            <div class="action-item"
-                matTooltip="Quote this post" matTooltipPosition="above">
+            <div class="action-item mr-2"
+                matTooltip="Repost" matTooltipPosition="above">
                 <mat-icon>format_quote</mat-icon>
             </div>        
     

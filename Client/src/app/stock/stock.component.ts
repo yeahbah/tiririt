@@ -42,6 +42,13 @@ export class StockComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.stockSymbol = params['symbol'];
       this.reload();
+      this.interactionService.sendDefaultPostTextMessage({ defaultText: '$' + this.stockSymbol });
+    });
+
+    this.interactionService.reloadMessage$.subscribe(message => {
+      if (message == 'RELOAD') {
+        this.reloadPosts();
+      }
     });
   }
 
@@ -51,21 +58,23 @@ export class StockComponent implements OnInit {
       this.isAuthenticated = status
     });            
 
-  this.stockSymbol = this.route.snapshot.paramMap.get('symbol');
-  this.publicFeedService.getStockInfo(this.stockSymbol)
-    .subscribe(result => {
-      console.log(result);
-      this.stock = result;      
-      this.interactionService.loadedStock(result);
-    });
+    this.stockSymbol = this.route.snapshot.paramMap.get('symbol');
+    this.publicFeedService.getStockInfo(this.stockSymbol)
+      .subscribe(result => {
+        this.stock = result;      
+        this.interactionService.loadedStock(result);
+      });
 
-  this.publicFeedService.getPostsByStock(this.stockSymbol)
+    this.reloadPosts();
+  }
+ 
+  reloadPosts() {
+    this.publicFeedService.getPostsByStock(this.stockSymbol)
     .subscribe(result => {
       this.stockFeed = result;
     });
-
   }
- 
+
   watchStock(symbol: string) {  
     if (!this.isAuthenticated) {
       this.authService.login();
@@ -97,7 +106,7 @@ export class StockComponent implements OnInit {
   }
 
   showNewPostDialog() {
-    this.dialog.open(SubmitPostDialogComponent, { data: `$${this.stockSymbol}` });
+    this.dialog.open(SubmitPostDialogComponent, { data: { defaultText: `$${this.stockSymbol}` } });
   }
 
 }

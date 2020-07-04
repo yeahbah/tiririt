@@ -3,10 +3,7 @@ import { Subject } from 'rxjs';
 import { WatchlistModel } from '../watchlist/watchlist-model';
 import { IStockModel } from '../public/models/stock-model';
 import { PostModel } from '../my-feed/post-model';
-
-export interface IDefaultPostText {
-    defaultText: string;
-}
+import { IDefaultPostText } from './default-submit-post';
 
 @Injectable({
     providedIn: 'root'

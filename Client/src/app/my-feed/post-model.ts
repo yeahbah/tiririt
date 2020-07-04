@@ -10,4 +10,5 @@ export interface PostModel {
     postDate: Date;
     bullBearLevel: BullBearLevel,
     commentCount: number;
+    userLiked: boolean;
 }

@@ -41,7 +41,7 @@ export class TagComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.tag = params['tag'];
       this.reload();
-      this.interactionService.sendDefaultPostTextMessage({ defaultText: this.tag });
+      this.interactionService.sendDefaultPostTextMessage({ defaultText: '#' + this.tag });
     });
 
     this.subscription = this.authService.authNavStatus$
@@ -75,7 +75,7 @@ export class TagComponent implements OnInit {
   }
 
   createPost() {
-    this.dialog.open(SubmitPostDialogComponent, { data: `#${this.tag}` });
+    this.dialog.open(SubmitPostDialogComponent, { data: { defaultText : `#${this.tag}` } });
   }
 
   onScroll() {

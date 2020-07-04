@@ -58,4 +58,7 @@ export class PostResponseComponent implements OnInit {
     this.replyFormComponent.formVisible = true;
   }
 
+  like() {
+    this.postData.likeCount++;
+  }
 }

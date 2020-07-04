@@ -64,4 +64,8 @@ export class ResponseCommentsComponent implements OnInit {
     console.log(replyForm);
   }
 
+  like(comment: PostModel) {
+    comment.likeCount++;
+  }
+
 }

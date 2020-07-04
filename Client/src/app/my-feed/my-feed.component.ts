@@ -41,7 +41,9 @@ export class MyFeedComponent implements OnInit {
     
     this.interactionService.reloadMessage$.subscribe(message => {
       if (message == 'RELOAD') {
-        this.filterFeed(this.activeFilter, true);        
+        if (this.myFeed) {          
+          this.filterFeed(this.activeFilter, true);
+        }
       }
     });
     
@@ -82,7 +84,6 @@ export class MyFeedComponent implements OnInit {
       return;
     }
     this.activeFilter.paging.pageIndex++;
-    console.log(this.activeFilter);
     this.filterFeed(this.activeFilter, true);
   }
 

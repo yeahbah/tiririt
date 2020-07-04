@@ -6,6 +6,8 @@ import { finalize } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { InteractionService } from '../core/InteractionService';
+import { PostModel } from '../my-feed/post-model';
+import { IDefaultPostText } from '../core/default-submit-post';
 
 @Component({
   selector: 'app-submit-post-form',
@@ -21,19 +23,21 @@ export class SubmitPostFormComponent implements OnInit {
   newPostForm: FormGroup;
 
   @Input() dialogMode = false;
-  @Input() defaultValue: string = '';
+  @Input() defaultValue: IDefaultPostText = { defaultText: '' };
+
+  // quotePost: PostModel;
   
   constructor(
     private formBuilder: FormBuilder, 
     private postService: TiriritPostService,
     private spinner: NgxSpinnerService,
     private snackBar: MatSnackBar,
-    private interactionService: InteractionService) { 
+    private interactionService: InteractionService) {       
   }
 
   initializeForm() {
-    const postTextControl = new FormControl(this.defaultValue + ' ', Validators.required);
-    this.charCount = this.maxPostLength - this.defaultValue.length;
+    const postTextControl = new FormControl(this.defaultValue.defaultText, Validators.required);
+    this.charCount = this.maxPostLength - this.defaultValue.defaultText.length;
     this.newPostForm = this.formBuilder.group({
       postText: postTextControl,    
     });
@@ -60,6 +64,13 @@ export class SubmitPostFormComponent implements OnInit {
       postText: value,
       bullBearLevel: bullBearLevel
     };
+
+    if (this.defaultValue.quotePost) {
+      const postDate = this.defaultValue.quotePost.postDate;
+      
+      newPost.postText += `<blockquote><strong>@${this.defaultValue.quotePost.userName}</strong> said: <br>${this.defaultValue.quotePost.postText}</blockquote>`;
+    }
+
     this.postService.submitPost(newPost)
       .pipe(finalize(() => {
         this.reset();  

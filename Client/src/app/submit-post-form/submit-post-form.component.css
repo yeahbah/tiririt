@@ -1,5 +1,6 @@
 .mat-card {
     min-width: 500px;
+    max-width: 600px;
 }
 
 .tiririt-form {
@@ -40,3 +41,6 @@
     float: right;
 }
 
+.quote-post pre {
+    max-height: 75px;
+}

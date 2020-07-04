@@ -6,9 +6,17 @@
             <!-- <mat-label *ngIf="!dialogMode">Say something about your favorite stock</mat-label> -->
             <textarea matInput placeholder="Ex. @supertrader @bulltactics $GLO did very well last quarter. #panalo" 
                 id="postText" name="postText" formControlName="postText"
-                maxlength="{{ maxPostLength }}" rows="10" (keyup)="onKeyUp($event)"></textarea>
+                maxlength="{{ maxPostLength }}" rows="5" (keyup)="onKeyUp($event)"></textarea>
+                        
             <span class="charCount">characters remain: {{ charCount }}</span>
         </mat-form-field>
+        <div *ngIf="defaultValue.quotePost" class="quote-post">
+            <blockquote>
+            <strong>{{ defaultValue.quotePost.userName }}</strong> said:
+            <br>
+            <pre [innerHtml] = "defaultValue.quotePost.postText"></pre>
+            </blockquote>
+        </div>
     </form>    
 <!-- <mat-card-actions> -->
     <div class="post-action-container">

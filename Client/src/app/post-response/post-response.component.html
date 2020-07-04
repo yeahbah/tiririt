@@ -20,10 +20,11 @@
             </div>
         
             <div class="actions ">
-                <div class="action-item"
-                  matTooltip="Like this post" matTooltipPosition="above">
+                <div class="action-item" matTooltip="Like this post" matTooltipPosition="above" (click)="like()">
+                    <div [ngClass]="post.userLiked ? 'link' : 'default'">
                         <mat-icon >thumb_up</mat-icon>
                         <span *ngIf="post.likeCount > 0">{{ post.likeCount }}</span>
+                    </div>
                 </div>
                 <div class="action-item" (click)="showReplyForm()"
                     matTooltip="Reply to this post" matTooltipPosition="above" >

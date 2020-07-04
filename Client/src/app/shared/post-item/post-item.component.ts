@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { ReplyFormComponent } from '../reply-form/reply-form.component';
 import { IPagingResultEnvelope } from 'src/app/core/PagingResultEnvelope';
 import { InteractionService } from 'src/app/core/InteractionService';
+import { SubmitPostDialogComponent } from 'src/app/dialogs/submit-post-dialog/submit-post-dialog.component';
 // import { MatLinkPreviewService } from '@angular-material-extensions/link-preview';
 
 @Component({
@@ -55,5 +56,12 @@ export class PostItemComponent implements OnInit {
     this.replyFormComponent.formVisible = true;
   }
 
+  like() {
+    this.post.likeCount++;
+  }
+
+  repost() {
+    this.dialog.open(SubmitPostDialogComponent, { data: { defaultText: '', quotePost: this.post } });
+  }
 }
 

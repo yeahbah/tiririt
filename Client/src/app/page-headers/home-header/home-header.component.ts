@@ -68,6 +68,6 @@ export class HomeHeaderComponent implements OnInit {
   }
 
   newPost() {
-    this.dialog.open(SubmitPostDialogComponent, { data: '#' + this.defaultText });
+    this.dialog.open(SubmitPostDialogComponent, { data: { defaultText: this.defaultText } });
   }
 }

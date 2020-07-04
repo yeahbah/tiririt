@@ -53,3 +53,7 @@ button {
 .action-item:hover {
     cursor: pointer;
 }
+
+.default {
+    color: grey;
+}

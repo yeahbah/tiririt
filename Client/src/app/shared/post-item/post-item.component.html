@@ -27,25 +27,25 @@
 
     <mat-card-actions>
         <div class="actions">
-            <div class="action-item" mat-icon-button
-                matTooltip="Like this post" matTooltipPosition="above">
-                <!-- <span matBadge="{{ post.likeCount }}" matBadgePosition="before" matBadgeColor="accent" matBadgeSize="small" *ngIf="post.likeCount > 0"></span> -->
-                    <!-- <img src="https://img.icons8.com/material-sharp/24/000000/thumb-up.png"/>                 -->
-                    <mat-icon >thumb_up</mat-icon>
-                    <span *ngIf="post.likeCount > 0">{{ post.likeCount }}</span>
+            <div class="action-item mr-2" mat-icon-button (click)="like()" matTooltip="Like this post" matTooltipPosition="above">
+                <div [ngClass]="post.userLiked ? 'link' : 'default'">
+                    <div style="display: flex;">
+                        <mat-icon>thumb_up</mat-icon>
+                        <span style="font-size: 9pt">{{ post.likeCount }}</span>                    
+                    </div>
+                </div>
             </div>
-            <div class="action-item" mat-icon-button (click)="showReplyForm()"
+            
+            
+            <div class="action-item mr-2" mat-icon-button (click)="showReplyForm()"
                 matTooltip="Reply to this post" matTooltipPosition="above" >
                 <mat-icon>reply</mat-icon>
+                <!-- Reply -->
             </div>
-            <div class="action-item" mat-icon-button 
-                matTooltip="Quote this post" matTooltipPosition="above">
+            <div class="action-item mr-2" mat-icon-button matTooltip="Repost" matTooltipPosition="above"
+                (click)="repost()">
                 <mat-icon>format_quote</mat-icon>
-            </div>
-            <div class="action-item" mat-icon-button (click)="goToPostDetails(post.postId)" 
-                matTooltip="Show comments" matTooltipPosition="above">
-                    <mat-icon>mode_comment</mat-icon>
-                    <span *ngIf="post.commentCount > 0">{{ post.commentCount }}</span>
+                <!-- Repost -->
             </div>
             
             <mat-menu #postMenu="matMenu">
