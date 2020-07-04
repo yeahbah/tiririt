@@ -121,6 +121,9 @@ namespace Tiririt.Data.Internal.Service
                         .Where(tag => tag.DELETED_IND == 0)
                         .Select(tag => tag.Ref_HashTag.ToDomainModel()),
 
+                    OriginalPostId = data.Ref_TiriritPost != null ?
+                        (data.Ref_TiriritPost.Ref_TiriritPost != null ? data.Ref_TiriritPost.Ref_TiriritPost.TIRIRIT_POST_ID : data.Ref_TiriritPost.TIRIRIT_POST_ID) : (int?)null,
+
                     Comments = data.Ref_Responses
                         .Select(comment => new PostModel
                         {
@@ -196,8 +199,7 @@ namespace Tiririt.Data.Internal.Service
 
         public async Task<PostModel> LikeOrDislikePost(int postId, bool like)
         {
-            // TODO get current user
-            var userId = 1;
+            var userId = this.currentPrincipal.GetUserId();
             // delete existing user like/dislike
             var existingRecord = await dbContext.LikeDislikePost
                 .SingleOrDefaultAsync(l => l.TIRIRIT_USER_ID == userId && l.TIRIRIT_POST_ID == postId);
@@ -221,7 +223,7 @@ namespace Tiririt.Data.Internal.Service
                 var newRecord = new LIKE_DISLIKE_POST
                 {
                     TIRIRIT_POST_ID = postId,
-                    TIRIRIT_USER_ID = userId,
+                    TIRIRIT_USER_ID = userId.Value,
                     USER_LIKE_IND = like ? 1 : 0
                 };
                 dbContext.LikeDislikePost.Add(newRecord);

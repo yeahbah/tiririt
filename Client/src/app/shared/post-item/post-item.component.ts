@@ -7,6 +7,7 @@ import { ReplyFormComponent } from '../reply-form/reply-form.component';
 import { IPagingResultEnvelope } from 'src/app/core/PagingResultEnvelope';
 import { InteractionService } from 'src/app/core/InteractionService';
 import { SubmitPostDialogComponent } from 'src/app/dialogs/submit-post-dialog/submit-post-dialog.component';
+import { TiriritPostService } from 'src/app/core/tiririt-post.service';
 // import { MatLinkPreviewService } from '@angular-material-extensions/link-preview';
 
 @Component({
@@ -16,6 +17,7 @@ import { SubmitPostDialogComponent } from 'src/app/dialogs/submit-post-dialog/su
 })
 export class PostItemComponent implements OnInit {
 
+  @Input() enableMouseHover = true;
   @Input() post: PostModel;
   replies: IPagingResultEnvelope<PostModel>;
 
@@ -23,6 +25,7 @@ export class PostItemComponent implements OnInit {
   replyFormComponent: ReplyFormComponent;
 
   constructor(
+    private postService: TiriritPostService,
     private interactionService: InteractionService,
     private dialog: MatDialog, 
     private router: Router) { }
@@ -30,7 +33,10 @@ export class PostItemComponent implements OnInit {
   ngOnInit(): void {
     this.interactionService.commentPostedMessage$
       .subscribe(comment => {
-        this.post.commentCount++;
+        if (comment.originalPostId == this.post.postId) {
+          this.post.commentCount++;
+        }
+        this.replyFormComponent.formVisible = false;
       })
   }
 
@@ -57,7 +63,10 @@ export class PostItemComponent implements OnInit {
   }
 
   like() {
-    this.post.likeCount++;
+    this.postService.likePost(this.post.postId)
+      .subscribe(result => {
+        this.post = result;
+      })
   }
 
   repost() {

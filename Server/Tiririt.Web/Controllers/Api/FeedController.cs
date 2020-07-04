@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Tiririt.App.Service;
 using Tiririt.Core.Collection;
+using Tiririt.Core.Identity;
 using Tiririt.Web.Common;
 using Tiririt.Web.Models;
 using Tiririt.Web.Models.Mappings;
@@ -15,10 +16,12 @@ namespace Tiririt.Web.Controllers.Api
     public class FeedController : TiriritControllerBase
     {
         private readonly IFeedService feedService;
+        private readonly ICurrentPrincipal currentPrincipal;
 
-        public FeedController(IFeedService feedService)
+        public FeedController(IFeedService feedService, ICurrentPrincipal currentPrincipal)
         {
             this.feedService = feedService;
+            this.currentPrincipal = currentPrincipal;
         }
 
         /// <summary>
@@ -29,7 +32,7 @@ namespace Tiririt.Web.Controllers.Api
         public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetUserFeed([FromQuery]PagingParam pagingParam)
         {
             var pagedResult = await this.feedService.GetUserFeed(pagingParam);
-            var data = pagedResult.Data.Select(post => post.ToViewModel());
+            var data = pagedResult.Data.Select(post => post.ToViewModel(this.currentPrincipal));
 
             return Ok(new PagingResultEnvelope<PostViewModel>(data, pagedResult.TotalCount, pagingParam));
         }
@@ -38,7 +41,7 @@ namespace Tiririt.Web.Controllers.Api
         public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetWatchListFeed([FromQuery]PagingParam pagingParam)
         {
             var pagedResult = await this.feedService.GetWatchListFeed(pagingParam);
-            var data = pagedResult.Data.Select(post => post.ToViewModel());
+            var data = pagedResult.Data.Select(post => post.ToViewModel(this.currentPrincipal));
 
             return Ok(new PagingResultEnvelope<PostViewModel>(data, pagedResult.TotalCount, pagingParam));
         }
@@ -47,7 +50,7 @@ namespace Tiririt.Web.Controllers.Api
         public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetMentionsFeed([FromQuery]PagingParam pagingParam)
         {
             var pagedResult = await this.feedService.GetMentionFeed(pagingParam);
-            var data = pagedResult.Data.Select(post => post.ToViewModel());
+            var data = pagedResult.Data.Select(post => post.ToViewModel(this.currentPrincipal));
 
             return Ok(new PagingResultEnvelope<PostViewModel>(data, pagedResult.TotalCount, pagingParam));
         }
@@ -56,7 +59,7 @@ namespace Tiririt.Web.Controllers.Api
         public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetSubscriptionFeed([FromQuery]PagingParam pagingParam)
         {
             var pagedResult = await this.feedService.GetSubscriptionFeed(pagingParam);
-            var data = pagedResult.Data.Select(post => post.ToViewModel());
+            var data = pagedResult.Data.Select(post => post.ToViewModel(this.currentPrincipal));
 
             return Ok(new PagingResultEnvelope<PostViewModel>(data, pagedResult.TotalCount, pagingParam));
         }

@@ -1,17 +1,23 @@
 using System;
 using System.Linq;
 using Tiririt.Core.Enums;
+using Tiririt.Core.Identity;
 using Tiririt.Domain.Models;
 
 namespace Tiririt.Web.Models.Mappings
 {
     public static class PostModelMapping
     {
-        public static PostViewModel ToViewModel(this PostModel value)
+        public static PostViewModel ToViewModel(this PostModel value, ICurrentPrincipal currentPrincipal)
         {
             if (value == null) return null;
 
-            return new PostViewModel 
+            var likedByUser = false;
+            if (currentPrincipal != null)
+            {
+                likedByUser = currentPrincipal.GetUserId() == null ? false : value.LikedBy.Any(u => u.UserId == currentPrincipal.GetUserId());
+            }
+            return new PostViewModel
             {
                 BullBearLevel = (BullBearLevel)Enum.Parse(typeof(BullBearLevel), value.BullBearLevel),
                 DislikeCount = value.DislikedBy.Count(),
@@ -22,7 +28,8 @@ namespace Tiririt.Web.Models.Mappings
                 UserId = value.UserId,
                 UserName = value.UserName,
                 CommentCount = value.Comments == null ? 0 : value.Comments.Count(),
-                OriginalPostId = value.OriginalPostId
+                OriginalPostId = value.OriginalPostId,
+                LikedByUser = likedByUser
             };
         }                
     }

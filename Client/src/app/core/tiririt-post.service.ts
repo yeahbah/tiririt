@@ -56,6 +56,14 @@ export class TiriritPostService extends BaseService {
                 catchError(this.handleError)
             );
     }
+
+    likePost(postId: number): Observable<PostModel> {
+        const url = `${this.apiUrl}/Post/${postId}/like/1`;
+        return this.http.put<PostModel>(url, null)
+            .pipe(
+                catchError(this.handleError)
+            );
+    }    
 }
 
 export interface NewOrUpdatePostModel {

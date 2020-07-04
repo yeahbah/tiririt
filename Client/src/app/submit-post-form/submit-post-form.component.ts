@@ -68,7 +68,9 @@ export class SubmitPostFormComponent implements OnInit {
     if (this.defaultValue.quotePost) {
       const postDate = this.defaultValue.quotePost.postDate;
       
-      newPost.postText += `<blockquote><strong>@${this.defaultValue.quotePost.userName}</strong> said: <br>${this.defaultValue.quotePost.postText}</blockquote>`;
+      // maybe this could be wrapped with a custom tag, e.g. <RESPOST></RESPOST>
+      // for rendering flexibility
+      newPost.postText += `<blockquote>@${this.defaultValue.quotePost.userName} said: <br>${this.defaultValue.quotePost.postText}</blockquote>`;
     }
 
     this.postService.submitPost(newPost)

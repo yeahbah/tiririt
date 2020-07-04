@@ -3,6 +3,7 @@
 // importing them individually results in: Type xxx is part of the declarations of 2 modules: ... Please consider moving to a higher module...
 // https://github.com/angular/angular/issues/10646  
 
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule }           from '@angular/core';
 import { CommonModule }       from '@angular/common';
  
@@ -25,6 +26,7 @@ import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports:      [
+    BrowserModule,
     CommonModule, 
     RouterModule,
     NgxSpinnerModule,

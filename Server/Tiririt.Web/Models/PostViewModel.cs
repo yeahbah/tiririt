@@ -16,5 +16,6 @@ namespace Tiririt.Web.Models
         public DateTime PostDate { get; set; }
         public BullBearLevel? BullBearLevel { get; set; }
         public int CommentCount { get; set; }
+        public bool LikedByUser { get; set; }
     }
 }

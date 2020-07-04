@@ -35,12 +35,17 @@ export class ResponseCommentsComponent implements OnInit {
       .subscribe(comment => {
         if (!this.replies) return;
         this.replies.data.push(comment);
+        this.post.commentCount++;
       });
   }
 
   afterExpand() {
     if (this.replies) return;
-    this.spinnerHidden = false;
+    this.reloadReplies(true);
+  }
+
+  reloadReplies(withSpinner: boolean) {
+    this.spinnerHidden = false || !withSpinner;
     const paging = new PagingParam()
     paging.sortColumn = 'postDate';
     paging.sortOrder = 'asc';
@@ -56,16 +61,19 @@ export class ResponseCommentsComponent implements OnInit {
   }
 
   showReplyForm(commentId: number) {
-    //this.replyFormComponent.formVisible = true;    
     const replyForm = this.replyFormComponent.find(x => {
       return x.comment.postId == commentId
     });
     replyForm.formVisible = true;
-    console.log(replyForm);
   }
 
   like(comment: PostModel) {
-    comment.likeCount++;
+    
+    this.postService.likePost(comment.postId)
+      .subscribe(result => {
+        // there must a better way than reloading the replies
+        this.reloadReplies(false);        
+      });
   }
 
 }

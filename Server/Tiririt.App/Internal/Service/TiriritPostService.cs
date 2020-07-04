@@ -33,8 +33,6 @@ namespace Tiririt.App.Internal.Service
 
         public async Task DeletePost(int postId)
         {
-            //TODO validate if user can delete
-
             using var transaction = await dbContext.Database.BeginTransactionAsync();
             try
             {

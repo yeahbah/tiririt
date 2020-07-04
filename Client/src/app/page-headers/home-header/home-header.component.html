@@ -18,7 +18,9 @@
       <li>
         <!-- <button mat-button > -->
           <!-- //Hello, {{ name }} -->
-          <div mat-card-avatar class="profile-avatar mr-2" [matMenuTriggerFor]="userMenu"></div>
+          <div  [matMenuTriggerFor]="userMenu">
+            <img class="profile-avatar mr-2" src="https://material.angular.io/assets/img/examples/shiba1.jpg" alt="">
+          </div>
         <!-- </button> -->
         <mat-menu #userMenu="matMenu">
           <button mat-menu-item>Profile</button>

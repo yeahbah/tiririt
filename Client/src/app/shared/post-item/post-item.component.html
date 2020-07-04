@@ -1,3 +1,70 @@
+<div class="post-container" *ngIf="post">
+    <div class="comment-header mb-4 my-2">     
+        <!-- <div class="avatar"> -->
+            <img src="https://material.angular.io/assets/img/examples/shiba1.jpg" alt="" class="avatar">
+        <!-- </div> -->
+        <div class="comment-subtitle ml-3">
+            <div>
+            {{ post.userName }}   <br>
+            Posted {{ post.postDate | date: 'medium' }}
+            </div>                        
+        </div>        
+    </div>
+
+    <div class="post-text">
+        <pre [innerHTML]="post.postText | linkify"></pre>
+        <div *ngIf="post.originalPostId > 0">
+            <a [routerLink]="['/post/', post.originalPostId]">View original post</a>
+        </div>
+    </div>
+
+    <div class="actions ">
+        <div class="action-item mr-2" mat-icon-button (click)="like()" matTooltip="Like this post" matTooltipPosition="above">
+            <div [ngClass]="post.likedByUser ? 'link' : 'default'">
+                <div style="display: flex;">
+                    <mat-icon>thumb_up</mat-icon>
+                    <span style="font-size: 9pt" *ngIf="post.likeCount > 0">{{ post.likeCount }}</span>                    
+                </div>
+            </div>
+        </div>
+        <div class="action-item mr-2" (click)="showReplyForm()"
+            matTooltip="Reply to this post" matTooltipPosition="above" >
+            <mat-icon>reply</mat-icon>
+        </div>
+        <div class="action-item mr-2"
+            matTooltip="Repost" matTooltipPosition="above" (click)="repost()">
+            <mat-icon>format_quote</mat-icon>
+        </div>
+
+        <mat-menu #postMenu="matMenu">
+            <button mat-menu-item>Follow this post</button>
+            <button mat-menu-item>Follow {{ post.userName }} </button>
+            <button mat-menu-item>Mute</button>
+            <button mat-menu-item>Block</button>
+            <button mat-menu-item>Report</button>            
+        </mat-menu>
+        <div class="action-item mr-2" [matMenuTriggerFor]="postMenu"
+            matTooltip="More" matTooltipPosition="above">
+            <mat-icon>more_horiz</mat-icon>
+        </div>                
+    </div>
+    <app-reply-form 
+        [post]="post" 
+        [formVisible]="false"
+        class="reply-form mb-2" 
+        [cancelButtonVisible]="true"
+        #replyFormComponent></app-reply-form>
+    <app-response-comments 
+        [post]="post" 
+        *ngIf="post.commentCount > 0">
+    </app-response-comments>
+
+    <mat-divider></mat-divider>        
+</div>
+
+<!-- 
+
+
 <mat-card>
     <mat-card-header>     
         <div mat-card-avatar class="example-header-image"></div>
@@ -15,11 +82,7 @@
     </mat-card-header>
     
     <mat-card-content>
-        <!-- <pre> -->
-            
-                <pre [innerHTML]="post.postText | linkify"></pre>
-                <!-- <ngx-link-preview [parseForLinksStr]="post.postText"></ngx-link-preview> -->
-        <!-- </pre> -->
+        <pre [innerHTML]="post.postText | linkify"></pre>
         <div *ngIf="post.originalPostId > 0">
             <a [routerLink]="['/post/', post.originalPostId]">View original post</a>
         </div>
@@ -28,10 +91,10 @@
     <mat-card-actions>
         <div class="actions">
             <div class="action-item mr-2" mat-icon-button (click)="like()" matTooltip="Like this post" matTooltipPosition="above">
-                <div [ngClass]="post.userLiked ? 'link' : 'default'">
+                <div [ngClass]="post.likedByUser ? 'link' : 'default'">
                     <div style="display: flex;">
                         <mat-icon>thumb_up</mat-icon>
-                        <span style="font-size: 9pt">{{ post.likeCount }}</span>                    
+                        <span style="font-size: 9pt" *ngIf="post.likeCount > 0">{{ post.likeCount }}</span>                    
                     </div>
                 </div>
             </div>
@@ -40,12 +103,10 @@
             <div class="action-item mr-2" mat-icon-button (click)="showReplyForm()"
                 matTooltip="Reply to this post" matTooltipPosition="above" >
                 <mat-icon>reply</mat-icon>
-                <!-- Reply -->
             </div>
             <div class="action-item mr-2" mat-icon-button matTooltip="Repost" matTooltipPosition="above"
                 (click)="repost()">
                 <mat-icon>format_quote</mat-icon>
-                <!-- Repost -->
             </div>
             
             <mat-menu #postMenu="matMenu">
@@ -71,4 +132,4 @@
         <app-response-comments [post]="post" *ngIf="post.commentCount > 0"></app-response-comments>                
     </mat-card-actions>
 </mat-card>
-<mat-divider></mat-divider>
+<mat-divider></mat-divider> -->

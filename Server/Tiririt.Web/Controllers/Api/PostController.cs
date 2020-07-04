@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tiririt.App.Service;
 using Tiririt.Core.Collection;
 using Tiririt.Core.Enums;
+using Tiririt.Core.Identity;
 using Tiririt.Web.Common;
 using Tiririt.Web.Models;
 using Tiririt.Web.Models.Mappings;
@@ -16,10 +17,12 @@ namespace Tiririt.Web.Controllers
     public class PostController : TiriritControllerBase
     {
         private readonly ITiriritPostService tiriritPostService;
+        private readonly ICurrentPrincipal currentPrincipal;
 
-        public PostController(ITiriritPostService tiriritPostService)
+        public PostController(ITiriritPostService tiriritPostService, ICurrentPrincipal currentPrincipal)
         {
             this.tiriritPostService = tiriritPostService;
+            this.currentPrincipal = currentPrincipal;
         }
 
         /// <summary>
@@ -33,7 +36,7 @@ namespace Tiririt.Web.Controllers
                 .GetPostsByUserId(userId, pagingParam);
             
             var data = pagedResult.Data
-                .Select(post => post.ToViewModel());
+                .Select(post => post.ToViewModel(this.currentPrincipal));
                 
             return Ok(new PagingResultEnvelope<PostViewModel>(data, pagedResult.TotalCount, pagingParam));
         }
@@ -45,7 +48,7 @@ namespace Tiririt.Web.Controllers
             var result = await tiriritPostService
                 .GetPost(postId);
 
-            return OkOrNotFound(result.ToViewModel());
+            return OkOrNotFound(result.ToViewModel(this.currentPrincipal));
         }
 
         /// <summary>
@@ -59,17 +62,16 @@ namespace Tiririt.Web.Controllers
             var result = await tiriritPostService
                 .AddOrModifyPost(newPostViewModel.PostText, newPostViewModel.BullBearLevel);
                 
-            return Ok(result.ToViewModel());
+            return Ok(result.ToViewModel(this.currentPrincipal));
         }
 
                 
         [HttpPost(RouteConsts.TiriritPost.Reply)]
         public async Task<ActionResult<PostViewModel>> PostComment(int postId, [FromBody]string postText)
         {
-            // TODO fix this
             var result = await tiriritPostService
                 .AddOrModifyPost(postText, BullBearLevel.Neutral, null, postId);
-            return Ok(result.ToViewModel());
+            return Ok(result.ToViewModel(this.currentPrincipal));
         }
 
         /// <summary>
@@ -82,7 +84,7 @@ namespace Tiririt.Web.Controllers
         {
             var result = await tiriritPostService
                 .AddOrModifyPost(newPostViewModel.PostText, newPostViewModel.BullBearLevel, postId);
-            return Ok(result.ToViewModel());
+            return Ok(result.ToViewModel(this.currentPrincipal));
         }
 
         [HttpDelete]
@@ -104,7 +106,7 @@ namespace Tiririt.Web.Controllers
         {
             var pagedResult = await tiriritPostService
                 .GetResponses(postId, pagingParam);
-            var data = pagedResult.Data.Select(post => post.ToViewModel());                
+            var data = pagedResult.Data.Select(post => post.ToViewModel(this.currentPrincipal));                
 
             return Ok(new PagingResultEnvelope<PostViewModel>(data, pagedResult.TotalCount, pagingParam));
         }
@@ -115,11 +117,11 @@ namespace Tiririt.Web.Controllers
         /// <param name="postId"></param>
         /// <param name="like"></param>
         /// <returns></returns>
-        [HttpGet(RouteConsts.TiriritPost.LikeDislike)]
+        [HttpPut(RouteConsts.TiriritPost.LikeDislike)]
         public async Task<ActionResult<PostViewModel>> LikeDislike(int postId, int like)
         {
             var result = await tiriritPostService.LikeOrDislikePost(postId, like == 1 ? true : false);
-            return Ok(result.ToViewModel());
+            return Ok(result.ToViewModel(this.currentPrincipal));
         }
 
     }

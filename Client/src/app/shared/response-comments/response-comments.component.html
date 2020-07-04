@@ -16,8 +16,13 @@
       <mat-spinner [diameter]="25" [hidden]="spinnerHidden"></mat-spinner>
       
       <div *ngFor="let comment of replies?.data" class="commentContainer">
+          <!-- <app-post-item [post]="comment" [id]="comment.postId"></app-post-item> -->
+
+        <!-- Necessary duplication for now. 
+        Infinite recursion will be possible if we reuse app-post-item           
+        I am only allowing up to 3 levels: Main post / comment / reply -->
         <div class="comment-header mb-2 my-2">     
-            <div mat-card-avatar class="avatar"></div>
+            <img src="https://material.angular.io/assets/img/examples/shiba1.jpg" alt="" class="avatar">
             <div class="comment-subtitle ml-3">
                 <div>
                 {{ comment.userName }} on {{ comment.postDate | date: 'medium' }}
@@ -30,10 +35,10 @@
         </div>
         <div class="actions">
             <div class="action-item mr-2" mat-icon-button (click)="like(comment)" matTooltip="Like this post" matTooltipPosition="above">
-                <div [ngClass]="post.userLiked ? 'link' : 'default'">
+                <div [ngClass]="comment.likedByUser ? 'link' : 'default'">
                     <div style="display: flex;">
                         <mat-icon>thumb_up</mat-icon>
-                        <span style="font-size: 9pt">{{ comment.likeCount }}</span>                    
+                        <span style="font-size: 9pt" *ngIf="comment.likeCount > 0">{{ comment.likeCount }}</span>                    
                     </div>
                 </div>
             </div>

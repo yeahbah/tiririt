@@ -1,6 +1,74 @@
-/* .mat-card {
+.post-container {    
+    /* display: flex; */
+    /* flex-direction: column; */
+    padding: 5px;
+}
+
+.post-container:hover {
+    background-color: #efefef;
+}
+
+.post-container-nohover {
+    padding: 5px;
+}
+
+.post-text {
+    font-size: 10pt;
+}
+
+.avatar {
+    /* background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover; */
+  vertical-align: middle;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.comment-header {
+    display: flex;    
+}
+
+.comment-subtitle {
+    font-size: 10pt;
+    color: grey;
+}
+
+.mat-icon {
+    transform: scale(0.7);
+}
+
+button {
+    color: grey;
+}
+
+.reply-form {
+    /* margin-left: 50px; */
+    display: block;
+}
+
+.actions {
+    display: flex;
+    color: grey;
+    /* align-items: stretch; */
+    /* border: 1px solid #efefef; */
+    height: 25px;
+}
+
+.action-item {
+    min-width: 75px;
+}
+
+.action-item:hover {
     cursor: pointer;
-} */
+}
+
+.default {
+    color: grey;
+}
+
+
+/* 
 
 .mat-card:hover {
     background-color: #efefef;
@@ -64,15 +132,7 @@ button {
 
 .action-item {
     min-width: 75px;
-    /* max-width: 60px; */
-    /* margin-right: 10px; */
-    /* border: 1px solid #efefef; */
-    /* text-align: center; */
-    /* vertical-align: middle; */
-}
-
-.liked {
-    color: blue;
+   
 }
 
 .default {
@@ -81,4 +141,4 @@ button {
 
 .action-item:hover {
     cursor: pointer;
-}
+} */

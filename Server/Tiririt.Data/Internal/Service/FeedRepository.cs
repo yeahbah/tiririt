@@ -128,9 +128,8 @@ namespace Tiririt.Data.Internal.Service
 
         public async Task<PagingResultEnvelope<PostModel>> GetSubscriptionFeed(PagingParam pagingParam)
         {
-            // TODO
             var query = GetAll()
-                            .OrderByDescending(o => o.POST_DATE);
+                .OrderByDescending(o => o.POST_DATE);
 
             return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam);
         }

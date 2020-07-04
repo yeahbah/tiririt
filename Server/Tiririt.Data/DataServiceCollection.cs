@@ -11,7 +11,6 @@ namespace Tiririt.Data
     {
         public static IServiceCollection AddDataService(this IServiceCollection services) 
         {
-            // TODO move connection string to connectionStrings.json
             var config = new ConfigurationBuilder()                
                 .AddJsonFile("connectionStrings.json", false)
                 .AddUserSecrets("8c724486-0e01-4d42-bfff-aeda2705bfc7")
