@@ -24,6 +24,7 @@ export class PostResponseComponent implements OnInit {
   postResponses: IPagingResultEnvelope<PostModel>;
   isAuthenticated = false;
   subscription: Subscription;
+  showMore = false;
   
   constructor(
     private authService: AuthService,

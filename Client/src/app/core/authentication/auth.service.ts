@@ -33,6 +33,7 @@ export class AuthService extends BaseService  {
   }
 
   login() { 
+    // console.log(this.baseUrl); return;
     return this.manager.signinRedirect();   
   }
 
@@ -72,7 +73,7 @@ export function getClientSettings(baseUrl: string): UserManagerSettings {
       authority: `https://localhost/tiririt`,
       client_id: 'tiririt',
       redirect_uri: `${baseUrl}auth-callback`,
-      post_logout_redirect_uri: baseUrl,
+      post_logout_redirect_uri: `${baseUrl}index.html`,
       response_type:"code",
       scope:"openid profile IdentityServerApi",
       filterProtocolClaims: true,

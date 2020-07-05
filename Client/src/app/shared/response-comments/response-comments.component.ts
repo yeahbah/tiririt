@@ -25,6 +25,7 @@ export class ResponseCommentsComponent implements OnInit {
 
   @Input() postData: PostModel;
   replyFormVisible = false;
+  showMore = false;
 
   constructor(
     private interactionService: InteractionService,

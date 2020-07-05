@@ -67,3 +67,11 @@ button {
 .highlight {
     font-weight: bold;
 }
+
+.content {
+    font-size: 10pt;    
+    flex-grow: 1;
+}
+    .post-text {
+        white-space: nowrap;
+    }

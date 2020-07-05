@@ -28,9 +28,18 @@
                 </mat-card-header>
                 
                 <mat-card-content>
-                    <!-- <pre> -->
-                        <pre [innerHTML]="post.postText | linkify"></pre>
-                    <!-- </pre> -->
+                    <div class="content">
+                        <div class="post-text">
+                            <pre *ngIf="showMore" [innerHTML]="post.postText | linkify"></pre>            
+                            <pre *ngIf="!showMore" [innerHTML]="(post.postText | linkify | slice:0:300) + (post.postText.length > 300 ? '...' : '')"></pre>      
+                            <div *ngIf="post.postText.length > 300">                
+                                <a href="javascript:;" *ngIf="!showMore" (click)="showMore=true">Show More</a>     
+                            </div>
+                            <div *ngIf="showMore">
+                                <a href="javascript:;" (click)="showMore=false">Show Less</a>     
+                            </div>
+                        </div>            
+                    </div>
                 </mat-card-content>
             
                 <mat-card-actions>

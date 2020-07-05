@@ -17,6 +17,7 @@ export class PostDetailsComponent implements OnInit {
   post: PostModel;
   isAuthenticated: boolean = false;
   subscription: Subscription;
+  showMore = false;
 
   constructor(
     private authService: AuthService,

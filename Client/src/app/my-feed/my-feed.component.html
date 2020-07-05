@@ -7,7 +7,7 @@
     </mat-button-toggle-group>    
 </div>
 
-<div *ngFor="let post of myFeed?.data">    
+<div *ngFor="let post of myFeed?.data" class="post-item-containter">    
     <app-post-item [post]="post"></app-post-item>
 </div>
 

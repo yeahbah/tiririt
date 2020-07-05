@@ -30,8 +30,17 @@
             </div>        
         </div>
         
-        <div>
-            <pre [innerHTML]="comment.postText | linkify"></pre>
+        <div class="content">
+            <div class="post-text">
+                <pre *ngIf="showMore" [innerHTML]="comment.postText | linkify"></pre>            
+                <pre *ngIf="!showMore" [innerHTML]="(comment.postText | linkify | slice:0:300) + (comment.postText.length > 300 ? '...' : '')"></pre>      
+                <div *ngIf="comment.postText.length > 300">                
+                    <a href="javascript:;" *ngIf="!showMore" (click)="showMore=true">Show More</a>     
+                </div>
+                <div *ngIf="showMore">
+                    <a href="javascript:;" (click)="showMore=false">Show Less</a>     
+                </div>
+            </div>            
         </div>
         <div class="actions">
             <div class="action-item mr-2" mat-icon-button (click)="like(comment)" matTooltip="Like this post" matTooltipPosition="above">

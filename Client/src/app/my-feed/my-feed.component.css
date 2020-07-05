@@ -10,3 +10,8 @@
 .mat-spinner {
     text-align: center;
 }
+
+.post-item-containter {
+    display: flex;
+    flex-direction: column;
+}

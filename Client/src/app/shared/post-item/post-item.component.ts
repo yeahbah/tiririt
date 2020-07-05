@@ -23,6 +23,7 @@ export class PostItemComponent implements OnInit {
 
   @ViewChild(ReplyFormComponent)
   replyFormComponent: ReplyFormComponent;
+  showMore = false;
 
   constructor(
     private postService: TiriritPostService,

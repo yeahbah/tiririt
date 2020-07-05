@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform, SecurityContext } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Pipe({

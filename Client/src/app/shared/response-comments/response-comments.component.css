@@ -37,6 +37,14 @@
     color: grey;
 }
 
+.content {
+    font-size: 10pt;    
+    flex-grow: 1;
+}
+    .post-text {
+        white-space: nowrap;
+    }
+
 .mat-icon {
     transform: scale(0.7);
 }
