@@ -37,6 +37,7 @@ import { PostResponseComponent } from './post-response/post-response.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SideNavMenuComponent } from './side-nav-menu/side-nav-menu.component';
 import { SideNavMenu2Component } from './side-nav-menu2/side-nav-menu2.component';
+import { MarketSummaryComponent } from './market-summary/market-summary.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { SideNavMenu2Component } from './side-nav-menu2/side-nav-menu2.component
     PostDetailsDialogComponent,
     PostResponseComponent,
     SideNavMenuComponent,
-    SideNavMenu2Component
+    SideNavMenu2Component,
+    MarketSummaryComponent,
   ],
   imports: [
     BrowserModule,

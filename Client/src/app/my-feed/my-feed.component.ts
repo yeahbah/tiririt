@@ -44,9 +44,13 @@ export class MyFeedComponent implements OnInit {
         if (this.myFeed) {          
           this.filterFeed(this.activeFilter, true);
         }
-      }
+      }    
     });
-    
+
+    this.interactionService.commentPostedMessage$
+      .subscribe(result => {
+        this.myFeed.data.unshift(result);
+      })    
   }
 
   reload() {

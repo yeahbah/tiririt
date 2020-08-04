@@ -50,6 +50,11 @@ export class StockComponent implements OnInit {
         this.reloadPosts();
       }
     });
+
+    this.interactionService.commentPostedMessage$
+      .subscribe(result => {
+        this.stockFeed.data.unshift(result);
+      })
   }
 
   reload() {
@@ -106,7 +111,7 @@ export class StockComponent implements OnInit {
   }
 
   showNewPostDialog() {
-    this.dialog.open(SubmitPostDialogComponent, { data: { defaultText: `$${this.stockSymbol}` } });
+    this.dialog.open(SubmitPostDialogComponent, { data: { defaultText: `$${this.stockSymbol} ` } });
   }
 
 }

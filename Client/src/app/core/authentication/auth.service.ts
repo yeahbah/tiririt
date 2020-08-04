@@ -33,13 +33,17 @@ export class AuthService extends BaseService  {
   }
 
   login() { 
-    // console.log(this.baseUrl); return;
     return this.manager.signinRedirect();   
+  }
+
+  silentSignin() {
+    console.log(this.user.access_token);
+    this.manager.signinSilentCallback();
   }
 
   async completeAuthentication() {
       this.user = await this.manager.signinRedirectCallback();      
-      console.log(`The user: ${this.user}`);
+      // console.log(`The user: ${this.user}`);
       this._authNavStatusSource.next(this.isAuthenticated());      
   }  
 

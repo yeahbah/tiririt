@@ -63,17 +63,18 @@ namespace Tiririt.Web.Controllers.Identity
                     ClientName = "Tiririt Client",
                     ClientUri = "http://localhost:4200",
 
-                    AllowedGrantTypes = GrantTypes.Code,
+                    AllowedGrantTypes = GrantTypes.Implicit,
                     RequirePkce = true,
                     RequireClientSecret = true,
                     RequireConsent = false,
                     ClientSecrets = { new Secret("secret".Sha256()) },
-                    
+                    AccessTokenLifetime = 900,
 
                     RedirectUris =
                     {
                         "http://localhost:4200/auth-callback",
-                        "http://localhost:4200/callback.html"
+                        "http://localhost:4200/callback.html",
+                        "http://localhost:4200/silent-refresh.html"
                     },
 
                         //"http://localhost:4200/callback.html",

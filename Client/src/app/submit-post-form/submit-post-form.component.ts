@@ -77,11 +77,13 @@ export class SubmitPostFormComponent implements OnInit {
     this.postService.submitPost(newPost)
       .pipe(finalize(() => {
         this.reset();  
-        this.interactionService.sendMessage('RELOAD');
+        //this.interactionService.sendMessage('RELOAD');
+        
         this.spinner.hide();       
       }))
       .subscribe(result => {
         this.openSnackBar();
+        this.interactionService.sendCommentPostedMessage(result);
       });
   }
 

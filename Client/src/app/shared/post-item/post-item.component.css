@@ -70,6 +70,23 @@ button {
     color: grey;
 }
 
+.bearbullindicator {    
+    color: white;
+    width: 50px;    
+    text-align: center;
+    height: 25px;
+    font-size: 9pt;
+    float: right;
+}
+
+.bullish {
+    background-color: green;
+}
+
+.bearish {
+    background-color: red;
+}
+
 
 /* 
 

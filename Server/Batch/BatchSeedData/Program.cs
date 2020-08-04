@@ -23,7 +23,7 @@ namespace BatchSeedData
             //RegisterServices();
 
             ProcessFiles(args[0]).GetAwaiter().GetResult();
-            InitialDataSeeder.Execute().GetAwaiter().GetResult();
+            //InitialDataSeeder.Execute().GetAwaiter().GetResult();
         }
 
         private static async Task ProcessFiles(string src)

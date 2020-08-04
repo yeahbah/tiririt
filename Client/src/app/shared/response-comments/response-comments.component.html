@@ -16,7 +16,8 @@
       <mat-spinner [diameter]="25" [hidden]="spinnerHidden"></mat-spinner>
       
       <div *ngFor="let comment of replies?.data" class="commentContainer">
-          <!-- <app-post-item [post]="comment" [id]="comment.postId"></app-post-item> -->
+          <!-- <app-post-item 
+            [post]="post" [comment]="comment"></app-post-item> -->
 
         <!-- Necessary duplication for now. 
         Infinite recursion will be possible if we reuse app-post-item           
