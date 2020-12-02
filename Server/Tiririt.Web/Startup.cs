@@ -15,17 +15,12 @@ using Tiririt.Core.Identity;
 using Tiririt.Data.Entities;
 using Tiririt.Data.Internal;
 using Tiririt.Web.Controllers.Identity;
-using Swashbuckle.AspNetCore;
 using System.Collections.Generic;
 
 namespace Tiririt.Web
 {
     public class Startup
     {
-
-        //private string corsSpecificOrigins = "_corsSpecificOrigins";
-        //private readonly ILoggerFactory loggerFactory;
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -58,26 +53,28 @@ namespace Tiririt.Web
                 .AddCoreServices()
                 .AddAppServiceCollection();
 
-            services.AddIdentity<TIRIRIT_USER, IdentityRole<int>>(config =>
-            {
-                config.Password.RequireNonAlphanumeric = false;
-                config.Password.RequiredLength = 4;
-                config.Password.RequireDigit = false;
-                config.Password.RequireLowercase = false;
-                config.Password.RequireUppercase = false;
-                config.SignIn.RequireConfirmedEmail = false;
-            })
+            services
+                .AddIdentity<TIRIRIT_USER, IdentityRole<int>>(config =>
+                {
+                    config.Password.RequireNonAlphanumeric = false;
+                    config.Password.RequiredLength = 4;
+                    config.Password.RequireDigit = false;
+                    config.Password.RequireLowercase = false;
+                    config.Password.RequireUppercase = false;
+                    config.SignIn.RequireConfirmedEmail = false;
+                })
                 .AddEntityFrameworkStores<TiriritDbContext>()
                 .AddClaimsPrincipalFactory<ClaimsFactory>()
                 .AddDefaultTokenProviders();
 
-            var builder = services.AddIdentityServer(options =>
-            {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseInformationEvents = true;
-                options.Events.RaiseFailureEvents = true;
-                options.Events.RaiseSuccessEvents = true;
-            })
+            var builder = services
+                .AddIdentityServer(options =>
+                {
+                    options.Events.RaiseErrorEvents = true;
+                    options.Events.RaiseInformationEvents = true;
+                    options.Events.RaiseFailureEvents = true;
+                    options.Events.RaiseSuccessEvents = true;
+                })
                 .AddInMemoryIdentityResources(IdentityServerConfig.Ids)
                 .AddInMemoryApiResources(IdentityServerConfig.Apis)
                 .AddInMemoryClients(IdentityServerConfig.Clients)
