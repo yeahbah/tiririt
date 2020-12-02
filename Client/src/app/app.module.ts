@@ -38,6 +38,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SideNavMenuComponent } from './side-nav-menu/side-nav-menu.component';
 import { SideNavMenu2Component } from './side-nav-menu2/side-nav-menu2.component';
 import { MarketSummaryComponent } from './market-summary/market-summary.component';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { MarketSummaryComponent } from './market-summary/market-summary.componen
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    SharedModule
+    SharedModule,
+    GraphQLModule
   ],
   providers: [    
     AuthGuard,

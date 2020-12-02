@@ -16,6 +16,7 @@ using Tiririt.Data.Entities;
 using Tiririt.Data.Internal;
 using Tiririt.Web.Controllers.Identity;
 using System.Collections.Generic;
+using Tiririt.Data;
 
 namespace Tiririt.Web
 {
@@ -138,6 +139,10 @@ namespace Tiririt.Web
             services.AddLocalApiAuthentication();
 
             services.AddSwaggerGenNewtonsoftSupport();
+
+            services
+                .AddGraphQLServer()
+                .AddQueryType<Query>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -175,6 +180,7 @@ namespace Tiririt.Web
             app.UseEndpoints(endpoints =>
             {                
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapGraphQL();
             });
             
         }

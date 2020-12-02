@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Tiririt.Data.Internal;
 using Tiririt.Data.Internal.Service;
 using Tiririt.Data.Service;
+using HotChocolate;
 
 namespace Tiririt.Data
 {
