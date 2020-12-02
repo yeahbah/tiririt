@@ -63,7 +63,7 @@ namespace Tiririt.Web.Controllers.Identity
                     ClientName = "Tiririt Client",
                     ClientUri = "http://localhost:4200",
 
-                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                     RequirePkce = true,
                     RequireClientSecret = true,
                     RequireConsent = false,
