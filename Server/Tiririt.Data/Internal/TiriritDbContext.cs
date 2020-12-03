@@ -207,7 +207,7 @@ namespace Tiririt.Data.Internal
 
                 foreach (var index in entity.GetIndexes())
                 {
-                    index.SetName(index.GetName().ToSnakeCase());
+                    index.SetDatabaseName(index.GetDatabaseName().ToSnakeCase());
                 }
             }
         }        
