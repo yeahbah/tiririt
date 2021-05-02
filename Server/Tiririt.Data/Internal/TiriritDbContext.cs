@@ -252,8 +252,8 @@ namespace Tiririt.Data.Internal
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(@Directory.GetCurrentDirectory() + "\\connectionStrings.json")
-                .AddUserSecrets("8c724486-0e01-4d42-bfff-aeda2705bfc7")                
+                .AddJsonFile(Path.Combine(@Directory.GetCurrentDirectory(), "connectionStrings.json"))
+                //.AddUserSecrets("8c724486-0e01-4d42-bfff-aeda2705bfc7")                
                 .Build(); 
 
             var builder = new DbContextOptionsBuilder<TiriritDbContext>(); 

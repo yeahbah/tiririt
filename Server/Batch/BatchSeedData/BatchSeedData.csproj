@@ -17,4 +17,9 @@
     <ProjectReference Include="..\..\Tiririt.Domain\Tiririt.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="connectionStrings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

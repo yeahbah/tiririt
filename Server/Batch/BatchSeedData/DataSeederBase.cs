@@ -1,4 +1,5 @@
-﻿using IdentityServer4.EntityFramework.Options;
+﻿using System.IO;
+using IdentityServer4.EntityFramework.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -11,8 +12,10 @@ namespace BatchSeedData
         protected static TiriritDbContext CreateDbContext()
         {
             var configuration = new ConfigurationBuilder()
-                .AddUserSecrets("8c724486-0e01-4d42-bfff-aeda2705bfc7")
-                .Build();
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(Path.Combine(@Directory.GetCurrentDirectory(), "connectionStrings.json"))
+                //.AddUserSecrets("8c724486-0e01-4d42-bfff-aeda2705bfc7")
+            .Build();
 
             var builder = new DbContextOptionsBuilder<TiriritDbContext>();
 
