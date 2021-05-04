@@ -1,6 +1,6 @@
 import { BaseService } from '../shared/base.service';
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PostModel } from '../my-feed/post-model';
 import { retry, catchError } from 'rxjs/operators';
@@ -51,7 +51,7 @@ export class TiriritPostService extends BaseService {
 
     postComment(postId: number, postText: string): Observable<PostModel> {
         const url = `${this.apiUrl}/Post/${postId}/comment`;
-        return this.http.post<PostModel>(url, JSON.stringify(postText))
+        return this.http.post<PostModel>(url, JSON.stringify(postText), {headers: headers})
             .pipe(
                 catchError(this.handleError)
             );

@@ -74,7 +74,7 @@ export class AuthService extends BaseService  {
 
 export function getClientSettings(baseUrl: string): UserManagerSettings {
   return {
-      authority: `https://localhost/tiririt`,
+      authority: `https://localhost:5001/`,
       client_id: 'tiririt',
       redirect_uri: `${baseUrl}auth-callback`,
       post_logout_redirect_uri: `${baseUrl}index.html`,

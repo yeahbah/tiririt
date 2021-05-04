@@ -9,7 +9,8 @@ export function getBaseUrl() {
 }
 
 export function getApiUrl() {
-  return 'https://localhost/tiririt/api/v1';
+  //return 'https://localhost/tiririt/api/v1';
+  return 'https://localhost:5001/api/v1';
 }
 
 const providers = [

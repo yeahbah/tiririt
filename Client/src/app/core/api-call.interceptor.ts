@@ -13,7 +13,7 @@ export class ApiCallInterceptor implements HttpInterceptor
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (req.url.match("https://localhost/tiririt/api/v1")?.length > 0) {                        
+        if (req.url.match(this.apiUrl)?.length > 0) {                        
             req = req.clone({
                 setHeaders: { 
                     'X-Requested-With': 'XMLHttpRequest', // IdentityServer will forward to a login page without this header
