@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Tiririt.Core.Collection
 {
@@ -23,7 +24,7 @@ namespace Tiririt.Core.Collection
             TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
         }
 
-        public static async Task<PagingResultEnvelope<T>> ToPagingEnvelope(IQueryable<T> data, PagingParam pagingParam)
+        public static async Task<PagingResultEnvelope<T>> ToPagingEnvelope(IQueryable<T> data, PagingParam pagingParam, CancellationToken cancellationToken = default)
         {        
             pagingParam.PageSize = pagingParam.PageSize == 0 ? 10 : pagingParam.PageSize;
             if (!string.IsNullOrEmpty(pagingParam.SortColumn) && IsValidProperty(pagingParam.SortColumn)) 
@@ -43,7 +44,7 @@ namespace Tiririt.Core.Collection
             var result = await data
                 .Skip(pagingParam.PageSize * pagingParam.PageIndex)
                 .Take(pagingParam.PageSize)
-                .ToListAsync();            
+                .ToListAsync(cancellationToken);            
                 
             return new PagingResultEnvelope<T>(result, totalCount, pagingParam);
         }

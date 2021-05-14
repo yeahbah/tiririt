@@ -12,6 +12,7 @@ using Tiririt.Domain.Models;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Tiririt.Core.Identity;
+using System.Threading;
 
 namespace Tiririt.Data.Internal.Service
 {
@@ -166,27 +167,27 @@ namespace Tiririt.Data.Internal.Service
             return result;
         }
 
-        public async Task<PostModel> GetPost(int postId)
+        public async Task<PostModel> GetPost(int postId, CancellationToken cancellationToken = default)
         {
             var result = await GetAll()                
-                .SingleOrDefaultAsync(post => post.PostId == postId);
+                .SingleOrDefaultAsync(post => post.PostId == postId, cancellationToken);
 
             return result;
         }
 
-        public async Task<PagingResultEnvelope<PostModel>> GetPostsByUserId(int userId, PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<PostModel>> GetPostsByUserId(int userId, PagingParam pagingParam, CancellationToken cancellationToken = default)
         {
             var result = GetAll()
                 .Where(post => post.UserId == userId);
                         
-            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(result, pagingParam);
+            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(result, pagingParam, cancellationToken);
         }
 
-        public async Task<PagingResultEnvelope<PostModel>> GetResponses(int postId, PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<PostModel>> GetComments(int postId, PagingParam pagingParam, CancellationToken cancellationToken)
         {
             var result = GetAll()
                 .Where(post => post.ResponseToPostId == postId);
-            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(result, pagingParam);
+            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(result, pagingParam, cancellationToken);
         }
 
         public async Task<IEnumerable<PostModel>> GetResponsesNoPaging(int postId)
@@ -197,17 +198,17 @@ namespace Tiririt.Data.Internal.Service
             return await result.ToListAsync();
         }
 
-        public async Task<PostModel> LikeOrDislikePost(int postId, bool like)
+        public async Task<PostModel> LikeOrDislikePost(int postId, bool like, CancellationToken cancellationToken)
         {
             var userId = this.currentPrincipal.GetUserId();
             // delete existing user like/dislike
             var existingRecord = await dbContext.LikeDislikePost
-                .SingleOrDefaultAsync(l => l.TIRIRIT_USER_ID == userId && l.TIRIRIT_POST_ID == postId);
+                .SingleOrDefaultAsync(l => l.TIRIRIT_USER_ID == userId && l.TIRIRIT_POST_ID == postId, cancellationToken);
             
             if (existingRecord != null)
             {
                 // toggle like/dislike
-                var pastAction = existingRecord.USER_LIKE_IND == 1 ? true : false;
+                var pastAction = existingRecord.USER_LIKE_IND == 1;
                 if (pastAction == like)
                 {
                     // withdraw the action by deleting
@@ -228,8 +229,8 @@ namespace Tiririt.Data.Internal.Service
                 };
                 dbContext.LikeDislikePost.Add(newRecord);
             }
-            await dbContext.SaveChangesAsync();
-            return await GetPost(postId);
+            await dbContext.SaveChangesAsync(cancellationToken);
+            return await GetPost(postId, cancellationToken);
         }
 
         public async Task ModifyPost(int postId, string postText)

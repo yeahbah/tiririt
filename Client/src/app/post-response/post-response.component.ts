@@ -48,7 +48,7 @@ export class PostResponseComponent implements OnInit {
     pagingParam.sortColumn = 'postDate';
     pagingParam.sortOrder = 'desc';    
 
-    this.postService.getPostReponses(this.postData.postId, pagingParam)
+    this.postService.getPostComments(this.postData.postId, pagingParam)
     .subscribe(result => {
         this.postResponses = result;
     });

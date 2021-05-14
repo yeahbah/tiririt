@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Tiririt.Core.Collection;
 using Tiririt.Core.Identity;
@@ -113,7 +114,7 @@ namespace Tiririt.Data.Internal.Service
             return result;
         }
 
-        public async Task<PagingResultEnvelope<PostModel>> GetMentionFeed(PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<PostModel>> GetMentionFeed(PagingParam pagingParam, CancellationToken cancellationToken = default)
         {
             var userId = this.currentPrincipal.GetUserId();
             var query = GetAll()
@@ -123,26 +124,26 @@ namespace Tiririt.Data.Internal.Service
                 .Distinct()
                 .OrderByDescending(o => o.POST_DATE);
 
-            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam);
+            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam, cancellationToken);
         }
 
-        public async Task<PagingResultEnvelope<PostModel>> GetSubscriptionFeed(PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<PostModel>> GetSubscriptionFeed(PagingParam pagingParam, CancellationToken cancellationToken = default)
         {
             var query = GetAll()
                 .OrderByDescending(o => o.POST_DATE);
 
-            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam);
+            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam, cancellationToken);
         }
 
-        public async Task<PagingResultEnvelope<PostModel>> GetTrendingPosts(PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<PostModel>> GetTrendingPosts(PagingParam pagingParam, CancellationToken cancellationToken = default)
         {
             var query = GetAll()
                 .OrderByDescending(o => o.POST_DATE);
 
-            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam);
+            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam, cancellationToken);
         }
 
-        public async Task<PagingResultEnvelope<PostModel>> GetUserFeed(PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<PostModel>> GetUserFeed(PagingParam pagingParam, CancellationToken cancellationToken = default)
         {
             var userId = this.currentPrincipal.GetUserId();
             var query = GetAll()
@@ -158,10 +159,10 @@ namespace Tiririt.Data.Internal.Service
 
                 .Distinct();
                 
-            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam);
+            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam, cancellationToken);
         }
 
-        public async Task<PagingResultEnvelope<PostModel>> GetWatchListFeed(PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<PostModel>> GetWatchListFeed(PagingParam pagingParam, CancellationToken cancellationToken = default)
         {
             var userId = this.currentPrincipal.GetUserId();
             var query = GetAll()
@@ -170,31 +171,31 @@ namespace Tiririt.Data.Internal.Service
                 .Distinct()
                 .OrderByDescending(o => o.POST_DATE);
 
-            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam);
+            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam, cancellationToken);
         }
 
-        public async Task<PagingResultEnvelope<PostModel>> Search(string searchText, PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<PostModel>> Search(string searchText, PagingParam pagingParam, CancellationToken cancellationToken = default)
         {
             var query = GetAll();
-            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam);
+            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam, cancellationToken);
         }
 
-        public async Task<PagingResultEnvelope<PostModel>> GetPostsByStock(string symbol, PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<PostModel>> GetPostsByStock(string symbol, PagingParam pagingParam, CancellationToken cancellationToken = default)
         {
             var query = GetAll()
                 .Where(post => post.Ref_Stocks.Any(stock => stock.Ref_Stock.SYMBOL == symbol))
                 .OrderByDescending(o => o.POST_DATE);
 
-            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam);
+            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam, cancellationToken);
         }
 
-        public async Task<PagingResultEnvelope<PostModel>> GetPostsByTag(string tag, PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<PostModel>> GetPostsByTag(string tag, PagingParam pagingParam, CancellationToken cancellationToken = default)
         {
             var query = GetAll()
                 .Where(post => post.Ref_HashTags.Any(hashTag => hashTag.Ref_HashTag.HASH_TAG_TEXT == tag))
                 .OrderByDescending(o => o.POST_DATE);
 
-            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam);
+            return await PagingResultEnvelope<PostModel>.ToPagingEnvelope(ToDomainModel(query), pagingParam, cancellationToken);
         }
     }
 }

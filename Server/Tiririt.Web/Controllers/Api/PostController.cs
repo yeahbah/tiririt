@@ -1,28 +1,25 @@
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using IdentityServer4;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tiririt.App.Service;
+using Tiririt.App.Models;
+using Tiririt.App.Post.Commands;
+using Tiririt.App.Post.Queries;
 using Tiririt.Core.Collection;
-using Tiririt.Core.Enums;
-using Tiririt.Core.Identity;
 using Tiririt.Web.Common;
-using Tiririt.Web.Models;
-using Tiririt.Web.Models.Mappings;
 
 namespace Tiririt.Web.Controllers
 {
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public class PostController : TiriritControllerBase
-    {
-        private readonly ITiriritPostService tiriritPostService;
-        private readonly ICurrentPrincipal currentPrincipal;
+    {        
+        private readonly IMediator mediator;
 
-        public PostController(ITiriritPostService tiriritPostService, ICurrentPrincipal currentPrincipal)
+        public PostController(IMediator mediator)
         {
-            this.tiriritPostService = tiriritPostService;
-            this.currentPrincipal = currentPrincipal;
+            this.mediator = mediator;
         }
 
         /// <summary>
@@ -30,25 +27,18 @@ namespace Tiririt.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet(RouteConsts.TiriritPost.UserPostings)]
-        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetPosts(int userId, PagingParam pagingParam)
+        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetPosts(int userId, PagingParam pagingParam, CancellationToken cancellationToken)
         {
-            var pagedResult = await tiriritPostService
-                .GetPostsByUserId(userId, pagingParam);
-            
-            var data = pagedResult.Data
-                .Select(post => post.ToViewModel(this.currentPrincipal));
-                
-            return Ok(new PagingResultEnvelope<PostViewModel>(data, pagedResult.TotalCount, pagingParam));
+            var result = await this.mediator.Send(new GetPostsByUserIdQuery { PagingParam = pagingParam, UserId = userId }, cancellationToken);
+            return Ok(result);
         }
 
         [AllowAnonymous]
         [HttpGet(RouteConsts.TiriritPost.PostDetails)]
-        public async Task<IActionResult> GetPost(int postId)
+        public async Task<IActionResult> GetPost(int postId, CancellationToken cancellationToken)
         {
-            var result = await tiriritPostService
-                .GetPost(postId);
-
-            return OkOrNotFound(result.ToViewModel(this.currentPrincipal));
+            var result = await this.mediator.Send(new GetPostQuery { PostId = postId }, cancellationToken);
+            return OkOrNotFound(result);            
         }
 
         /// <summary>
@@ -57,21 +47,26 @@ namespace Tiririt.Web.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route(RouteConsts.TiriritPost.Post)]
-        public async Task<ActionResult<PostViewModel>> NewPost([FromBody]NewPostViewModel newPostViewModel)
+        public async Task<ActionResult<PostViewModel>> NewPost([FromBody]AddOrModifyPostCommand newPostCommand, CancellationToken cancellationToken)
         {
-            var result = await tiriritPostService
-                .AddOrModifyPost(newPostViewModel.PostText, newPostViewModel.BullBearLevel);
+            var result = await this.mediator.Send(newPostCommand, cancellationToken);
+            return Ok(result);
+            //var result = await tiriritPostService
+            //    .AddOrModifyPost(newPostViewModel.PostText, newPostViewModel.BullBearLevel);
                 
-            return Ok(result.ToViewModel(this.currentPrincipal));
+            //return Ok(result.ToViewModel(this.currentPrincipal));
         }
 
                 
         [HttpPost(RouteConsts.TiriritPost.Reply)]
-        public async Task<ActionResult<PostViewModel>> PostComment(int postId, [FromBody]string postText)
+        public async Task<ActionResult<PostViewModel>> PostComment([FromBody]PostCommentCommand postCommentCommand, CancellationToken cancellationToken)//(int postId, [FromBody]string postText)
         {
-            var result = await tiriritPostService
-                .AddOrModifyPost(postText, BullBearLevel.Neutral, null, postId);
-            return Ok(result.ToViewModel(this.currentPrincipal));
+            var result = await mediator.Send(postCommentCommand);
+            return Ok(result);
+                
+            //var result = await tiriritPostService
+            //    .AddOrModifyPost(postText, BullBearLevel.Neutral, null, postId);
+            //return Ok(result.ToViewModel(this.currentPrincipal));
         }
 
         /// <summary>
@@ -80,18 +75,20 @@ namespace Tiririt.Web.Controllers
         /// <param name="postId"></param>
         /// <returns></returns>
         [HttpPut(RouteConsts.TiriritPost.ModifyPost)]
-        public async Task<ActionResult<PostViewModel>> ModifyPost(int postId, [FromBody]NewPostViewModel newPostViewModel)
+        public async Task<ActionResult<PostViewModel>> ModifyPost([FromBody]AddOrModifyPostCommand addOrModifyPostCommand, CancellationToken cancellationToken) //(int postId, [FromBody]NewPostViewModel newPostViewModel)
         {
-            var result = await tiriritPostService
-                .AddOrModifyPost(newPostViewModel.PostText, newPostViewModel.BullBearLevel, postId);
-            return Ok(result.ToViewModel(this.currentPrincipal));
+            var result = await this.mediator.Send(addOrModifyPostCommand, cancellationToken);
+            return Ok(result);
+            //var result = await tiriritPostService
+            //    .AddOrModifyPost(newPostViewModel.PostText, newPostViewModel.BullBearLevel, postId);
+            //return Ok(result.ToViewModel(this.currentPrincipal));
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeletePost(int postId)
+        public async Task<IActionResult> DeletePost(int postId, CancellationToken cancellationToken)
         {
-            await tiriritPostService.DeletePost(postId);
-            return Ok();
+            await this.mediator.Send(new DeletePostCommand(postId), cancellationToken);
+            return Ok();            
         }        
 
         /// <summary>
@@ -100,15 +97,17 @@ namespace Tiririt.Web.Controllers
         /// <param name="postId"></param>
         /// <returns></returns>
         [AllowAnonymous]
-        [HttpGet(RouteConsts.TiriritPost.Responses)]
-        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetResponses(
-            int postId, [FromQuery]PagingParam pagingParam)
+        [HttpGet(RouteConsts.TiriritPost.Comments)]
+        public async Task<ActionResult<PagingResultEnvelope<PostViewModel>>> GetComments(
+            int postId, [FromQuery]PagingParam pagingParam, CancellationToken cancellationToken)
         {
-            var pagedResult = await tiriritPostService
-                .GetResponses(postId, pagingParam);
-            var data = pagedResult.Data.Select(post => post.ToViewModel(this.currentPrincipal));                
+            var result = await this.mediator.Send(new GetCommentsQuery { PagingParam = pagingParam, PostId = postId }, cancellationToken);
+            return Ok(result);
+            //var pagedResult = await tiriritPostService
+            //    .GetResponses(postId, pagingParam);
+            //var data = pagedResult.Data.Select(post => post.ToViewModel(this.currentPrincipal));                
 
-            return Ok(new PagingResultEnvelope<PostViewModel>(data, pagedResult.TotalCount, pagingParam));
+            //return Ok(new PagingResultEnvelope<PostViewModel>(data, pagedResult.TotalCount, pagingParam));
         }
 
         /// <summary>
@@ -118,10 +117,13 @@ namespace Tiririt.Web.Controllers
         /// <param name="like"></param>
         /// <returns></returns>
         [HttpPut(RouteConsts.TiriritPost.LikeDislike)]
-        public async Task<ActionResult<PostViewModel>> LikeDislike(int postId, int like)
+        public async Task<ActionResult<PostViewModel>> LikeDislike(LikeDislikeCommand likeDislikeCommand, CancellationToken cancellationToken)
         {
-            var result = await tiriritPostService.LikeOrDislikePost(postId, like == 1 ? true : false);
-            return Ok(result.ToViewModel(this.currentPrincipal));
+            var result = await this.mediator.Send(likeDislikeCommand, cancellationToken);
+            return Ok(result);
+
+            //var result = await tiriritPostService.LikeOrDislikePost(postId, like == 1 ? true : false);
+            //return Ok(result.ToViewModel(this.currentPrincipal));
         }
 
     }

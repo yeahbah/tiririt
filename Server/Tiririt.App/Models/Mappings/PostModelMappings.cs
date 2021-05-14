@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using System.Linq;
 using Tiririt.Core.Enums;
 using Tiririt.Core.Identity;
 using Tiririt.Domain.Models;
 
-namespace Tiririt.Web.Models.Mappings
-{
+namespace Tiririt.App.Models.Mappings
+{    
     public static class PostModelMapping
     {
         public static PostViewModel ToViewModel(this PostModel value, ICurrentPrincipal currentPrincipal)
@@ -31,6 +31,7 @@ namespace Tiririt.Web.Models.Mappings
                 OriginalPostId = value.OriginalPostId,
                 LikedByUser = likedByUser
             };
-        }                
+        }
     }
+    
 }

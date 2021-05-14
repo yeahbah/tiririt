@@ -28,8 +28,8 @@ export class TiriritPostService extends BaseService {
             );
     }
 
-    getPostReponses(postId: number, pagingParam: PagingParam): Observable<IPagingResultEnvelope<PostModel>> {
-        const url = `${this.apiUrl}/Post/${postId}/responses`;
+    getPostComments(postId: number, pagingParam: PagingParam): Observable<IPagingResultEnvelope<PostModel>> {
+        const url = `${this.apiUrl}/Post/${postId}/comments`;
         const params = new HttpParams()
             .set('pageIndex', pagingParam.pageIndex.toString())
             .set('pageSize', pagingParam.pageSize.toString())

@@ -2,7 +2,7 @@
 using System;
 using Tiririt.Core.Enums;
 
-namespace Tiririt.Web.Models
+namespace Tiririt.App.Models
 {
     public class PostViewModel 
     {

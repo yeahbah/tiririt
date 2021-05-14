@@ -11,7 +11,7 @@ namespace Tiririt.App.Service
         /// </summary>
         /// <param name="pagingParam"></param>
         /// <returns></returns>
-        Task<PagingResultEnvelope<PostModel>> GetUserFeed(PagingParam pagingParam);
+        //Task<PagingResultEnvelope<PostModel>> GetUserFeed(PagingParam pagingParam);
 
         /// <summary>
         /// Returns posts that are trending
@@ -25,21 +25,21 @@ namespace Tiririt.App.Service
         /// </summary>
         /// <param name="pagingParam"></param>
         /// <returns></returns>
-        Task<PagingResultEnvelope<PostModel>> GetWatchListFeed(PagingParam pagingParam);
+        //Task<PagingResultEnvelope<PostModel>> GetWatchListFeed(PagingParam pagingParam);
 
         /// <summary>
         /// Returns posts that the user is mentioned
         /// </summary>
         /// <param name="pagingParam"></param>
         /// <returns></returns>
-        Task<PagingResultEnvelope<PostModel>> GetMentionFeed(PagingParam pagingParam);
+        //Task<PagingResultEnvelope<PostModel>> GetMentionFeed(PagingParam pagingParam);
 
         /// <summary>
         /// Returns posts that the user is subscribed to
         /// </summary>
         /// <param name="pagingParam"></param>
         /// <returns></returns>
-        Task<PagingResultEnvelope<PostModel>> GetSubscriptionFeed(PagingParam pagingParam);
+        //Task<PagingResultEnvelope<PostModel>> GetSubscriptionFeed(PagingParam pagingParam);
 
         /// <summary>
         /// Search posts

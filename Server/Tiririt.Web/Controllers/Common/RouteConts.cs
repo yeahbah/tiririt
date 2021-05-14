@@ -13,7 +13,7 @@ namespace Tiririt.Web.Common
             public const string ModifyPost = "{postId}";
             public const string Post = "";
             public const string DeletePost = "";
-            public const string Responses = "{postId}/responses";
+            public const string Comments = "{postId}/comments";
             public const string LikeDislike = "{postId}/like/{like}";
             public const string PostDetails = "{postId}";
         }
