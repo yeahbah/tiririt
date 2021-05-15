@@ -139,7 +139,7 @@ namespace Tiririt.Web
             services.AddLocalApiAuthentication();
 
             services.AddSwaggerGenNewtonsoftSupport();
-
+            services.AddDatabaseDeveloperPageExceptionFilter();
             services
                 .AddGraphQLServer()
                 .AddQueryType<Query>();
@@ -151,7 +151,7 @@ namespace Tiririt.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                app.UseMigrationsEndPoint();
             }
             else
             {
