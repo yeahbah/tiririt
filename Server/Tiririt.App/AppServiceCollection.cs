@@ -16,8 +16,7 @@ namespace Tiririt.App
                 .AddScoped<IStockService, StockService>()
                 .AddScoped<IWatchListService, WatchListService>()
                 .AddScoped<IStockSectorService, StockSectorService>()
-                .AddScoped<IStockQuoteService, StockQuoteService>();
-                //.AddScoped<ITiriritPostService, TiriritPostService>();                
+                .AddScoped<IStockQuoteService, StockQuoteService>();                              
         }
     }
 }

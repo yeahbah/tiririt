@@ -1,12 +1,11 @@
 using IdentityServer4;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 using System.Threading.Tasks;
-using Tiririt.App.Service;
-using Tiririt.Core.Identity;
+using Tiririt.App.Stock;
 using Tiririt.Web.Common;
-using Tiririt.Web.Models.Mappings;
 
 namespace Tiririt.Web.Controllers
 {
@@ -14,42 +13,19 @@ namespace Tiririt.Web.Controllers
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public class StockController : TiriritControllerBase
     {
-        private readonly IStockService stockService;
-        private readonly IStockSectorService stockSectorService;
-        private readonly IStockQuoteService stockQuoteService;
-        private readonly IWebHostEnvironment environment;
-        private readonly ICurrentPrincipal currentPrincipal;
-        private readonly IWatchListService watchListService;
+        private readonly IMediator mediator;
 
         public StockController(
-            IStockService stockService, 
-            IStockSectorService stockSectorService,
-            IStockQuoteService stockQuoteService,
-            IWebHostEnvironment environment,
-            ICurrentPrincipal currentPrincipal,
-            IWatchListService watchListService)
+            IMediator mediator)
         {
-            this.stockService = stockService;
-            this.stockSectorService = stockSectorService;
-            this.stockQuoteService = stockQuoteService;
-            this.environment = environment;
-            this.currentPrincipal = currentPrincipal;
-            this.watchListService = watchListService;
+            this.mediator = mediator;
         }
 
         [HttpGet(RouteConsts.Stock.GetStock)]    
         [ProducesResponseType(200)]
-        public async Task<IActionResult> GetStock(string symbol)
+        public async Task<IActionResult> GetStock(string symbol, CancellationToken cancellationToken)
         {
-            var stock = await stockService
-                .GetStock(symbol);
-
-            var userId = this.currentPrincipal.GetUserId();
-            var result = stock.ToViewModel();
-            if (userId != null) 
-            {
-                result.IsWatchedByUser = await this.watchListService.IsWatchedByUser(symbol, userId.Value);
-            }
+            var result = await this.mediator.Send(new GetStockQuery(symbol), cancellationToken);
             return OkOrNotFound(result);
         }        
     }

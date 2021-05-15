@@ -20,6 +20,7 @@
     <Folder Include="Post\" />
     <Folder Include="Post\Queries\" />
     <Folder Include="Post\Commands\" />
+    <Folder Include="Stock\" />
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>

@@ -6,6 +6,7 @@ using Tiririt.Domain.Models;
 using System.Threading.Tasks;
 using Tiririt.Data.Entities;
 using Tiririt.Core.Identity;
+using System.Threading;
 
 namespace Tiririt.Data.Internal.Service
 {
@@ -40,7 +41,7 @@ namespace Tiririt.Data.Internal.Service
             return result;
         }
 
-        public async Task<StockModel> AddStock(StockModel stockModel)
+        public async Task<StockModel> AddStock(StockModel stockModel, CancellationToken cancellationToken)
         {
             var stock = new STOCK 
             {                
@@ -49,14 +50,16 @@ namespace Tiririt.Data.Internal.Service
                 SYMBOL = stockModel.Symbol
             };
             dbContext.Stocks.Add(stock);
-            await dbContext.SaveChangesAsync();
-            return await GetStock(stockModel.Symbol);
+            await dbContext.SaveChangesAsync(cancellationToken);
+
+            //TODO: just return the stock object converted to domain model
+            return await GetStock(stockModel.Symbol, cancellationToken);
         }
 
-        public async Task<StockModel> GetStock(string stockSymbol)
+        public async Task<StockModel> GetStock(string stockSymbol, CancellationToken cancellationToken)
         {
             return await GetAll()                
-                .SingleOrDefaultAsync(stock => stock.Symbol.ToUpper() == stockSymbol.ToUpper());
+                .SingleOrDefaultAsync(stock => stock.Symbol.ToUpper() == stockSymbol.ToUpper(), cancellationToken);
         }
 
         public async Task LinkPostToStocks(int postId, string[] symbols)
