@@ -11,12 +11,13 @@ namespace Tiririt.App
         public static IServiceCollection AddAppServiceCollection(this IServiceCollection services)
         {
             return services
-                .AddMediatR(typeof(AppServiceCollection).Assembly)
                 .AddDataService()
-                .AddScoped<IStockService, StockService>()
-                .AddScoped<IWatchListService, WatchListService>()
-                .AddScoped<IStockSectorService, StockSectorService>()
-                .AddScoped<IStockQuoteService, StockQuoteService>();                              
+                .AddMediatR(typeof(AppServiceCollection).Assembly);
+                    
+                //.AddScoped<IStockService, StockService>()
+                //.AddScoped<IWatchListService, WatchListService>()
+                //.AddScoped<IStockSectorService, StockSectorService>()
+                //.AddScoped<IStockQuoteService, StockQuoteService>();                              
         }
     }
 }

@@ -16,13 +16,11 @@ namespace Tiririt.Web.Controllers
 {
     [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
     public class WatchListController : TiriritControllerBase
-    {
-        private readonly IWatchListService watchListService;
+    {        
         private readonly IMediator mediator;
 
-        public WatchListController(IWatchListService watchListService, IMediator mediator)
-        {
-            this.watchListService = watchListService;
+        public WatchListController(IMediator mediator)
+        {            
             this.mediator = mediator;
         }
 

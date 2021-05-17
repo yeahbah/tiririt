@@ -18,7 +18,7 @@ namespace Tiririt.Data.Service
         private readonly TiriritDbContext dbContext;
         private readonly ICurrentPrincipal currentPrincipal;
 
-        public WatchListRepository(TiriritDbContext dbContext, ICurrentPrincipal currentPrincipal, CancellationToken cancellationToken)
+        public WatchListRepository(TiriritDbContext dbContext, ICurrentPrincipal currentPrincipal)
         {
             this.dbContext = dbContext;
             this.currentPrincipal = currentPrincipal;
