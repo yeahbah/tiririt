@@ -1,6 +1,6 @@
 using System;
 
-namespace Tiririt.Web.Models
+namespace Tiririt.App.Models
 {
     public class StockQuoteViewModel
     {

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Tiririt.Core.Collection;
@@ -18,7 +19,7 @@ namespace Tiririt.Data.Internal.Service
             this.dbContext = dbContext;
         }
 
-        public async Task<StockQuoteModel> AddStockQuote(StockQuoteModel stockQuote)
+        public async Task<StockQuoteModel> AddStockQuote(StockQuoteModel stockQuote, CancellationToken cancellationToken)
         {
             var quote = new STOCK_QUOTE 
             {
@@ -56,7 +57,7 @@ namespace Tiririt.Data.Internal.Service
             return result;
         }
 
-        public async Task<PagingResultEnvelope<StockQuoteModel>> GetStockQuotes(string symbol, PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<StockQuoteModel>> GetStockQuotes(string symbol, PagingParam pagingParam, CancellationToken cancellationToken)
         {
             var result = dbContext.StockQuotes
                 .AsNoTracking()
@@ -73,10 +74,10 @@ namespace Tiririt.Data.Internal.Service
                     TradeDate = data.TRADE_DATE,
                     Volume = data.VOLUMNE
                 });                
-            return await PagingResultEnvelope<StockQuoteModel>.ToPagingEnvelope(result, pagingParam);
+            return await PagingResultEnvelope<StockQuoteModel>.ToPagingEnvelope(result, pagingParam, cancellationToken);
         }
 
-        public async Task<IEnumerable<StockQuoteModel>> GetStockQuotes(string symbol)
+        public async Task<IEnumerable<StockQuoteModel>> GetStockQuotes(string symbol, CancellationToken cancellationToken)
         {
             var result = await dbContext.StockQuotes
                 .AsNoTracking()
@@ -95,7 +96,7 @@ namespace Tiririt.Data.Internal.Service
                     Volume = data.VOLUMNE
                 })
                 .OrderBy(o => o.TradeDate)
-                .ToListAsync();
+                .ToListAsync(cancellationToken: cancellationToken);
             return result;
         }
     }

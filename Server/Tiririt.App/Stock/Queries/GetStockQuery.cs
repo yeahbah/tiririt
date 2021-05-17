@@ -7,7 +7,7 @@ using Tiririt.App.Models.Mappings;
 using Tiririt.Core.Identity;
 using Tiririt.Data.Service;
 
-namespace Tiririt.App.Stock
+namespace Tiririt.App.Stock.Queries
 {
     public record GetStockQuery(string StockSymbol) : IRequest<StockViewModel>;
 

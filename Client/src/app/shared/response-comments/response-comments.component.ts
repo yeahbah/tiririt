@@ -50,7 +50,7 @@ export class ResponseCommentsComponent implements OnInit {
     const paging = new PagingParam()
     paging.sortColumn = 'postDate';
     paging.sortOrder = 'asc';
-    this.postService.getPostReponses(this.post.postId, paging)
+    this.postService.getPostComments(this.post.postId, paging)
       .pipe(
         finalize(() => {
           this.spinnerHidden = true;

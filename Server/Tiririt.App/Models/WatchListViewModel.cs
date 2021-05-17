@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Tiririt.Web.Models 
+namespace Tiririt.App.Models
 {
     public class WatchListViewModel 
     {

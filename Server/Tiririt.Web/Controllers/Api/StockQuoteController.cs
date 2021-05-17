@@ -1,58 +1,36 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Tiririt.App.Service;
-using Tiririt.Core.Collection;
+using Tiririt.App.Models;
+using Tiririt.App.Stock.Queries;
 using Tiririt.Web.Common;
-using Tiririt.Web.Models;
-using Tiririt.Web.Models.Mappings;
 
 namespace Tiririt.Web.Controllers
 {
     public class StockQuoteController : TiriritControllerBase
     {
-        private readonly IStockQuoteService stockQuoteService;
-        
-        public StockQuoteController(IStockQuoteService stockQuoteService)
+        private readonly IMediator mediator;
+
+        public StockQuoteController(IMediator mediator)
         {
-            this.stockQuoteService = stockQuoteService;
-        }
-
-        //[HttpGet(RouteConsts.StockQuote.EndOfDay)]
-        //public async Task<ActionResult<PagingResultEnvelope<StockQuoteViewModel>>> GetStockQuotes(string symbol, PagingParam pagingParam)
-        //{
-        //    var pagedResult = await stockQuoteService
-        //        .GetStockQuotes(symbol, pagingParam);
-        //    var data = pagedResult
-        //        .Data.Select(q => q.ToViewModel())
-        //        .ToList();
-
-        //    return OkOrNotFoundOf(new PagingResultEnvelope<StockQuoteViewModel>(data, pagedResult.TotalCount, pagingParam));
-        //}
+            this.mediator = mediator;
+        }        
 
         [HttpGet(RouteConsts.StockQuote.EndOfDay)]
-        public async Task<ActionResult<IEnumerable<StockQuoteViewModel>>> GetStockQuotes(string symbol)
+        public async Task<ActionResult<IEnumerable<StockQuoteViewModel>>> GetStockQuotes(string symbol, CancellationToken cancellationToken)
         {
-            var result = await stockQuoteService
-                .GetStockQuotes(symbol);
-
-            return Ok(result.Select(q => q.ToViewModel()));
+            var result = await this.mediator.Send(new GetStockQuotesQuery(symbol), cancellationToken);
+            return Ok(result);                           
         }
 
         [HttpGet(RouteConsts.StockQuote.EndOfDayChart)]
-        public async Task<ActionResult<IEnumerable<ChartSeriesModel>>> GetChartData(string symbol)
+        public async Task<ActionResult<IEnumerable<ChartSeriesViewModel>>> GetChartData(string symbol, CancellationToken cancellationToken)
         {
-            var quotes = await stockQuoteService
-                .GetStockQuotes(symbol);
-            if (!quotes.Any()) return NotFound();
-
-            var result = quotes.Select(q => new ChartSeriesModel
-            {
-                Time = q.TradeDate,
-                Value = q.Close
-            });
+            var result = await this.mediator.Send(new GetStockChartDataQuery(symbol), cancellationToken);
+            if (!result.Any()) return NotFound();
 
             return Ok(result);
         }

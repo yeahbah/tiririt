@@ -21,6 +21,11 @@
     <Folder Include="Post\Queries\" />
     <Folder Include="Post\Commands\" />
     <Folder Include="Stock\" />
+    <Folder Include="Stock\Queries\" />
+    <Folder Include="Stock\Commands\" />
+    <Folder Include="WatchList\" />
+    <Folder Include="WatchList\Queries\" />
+    <Folder Include="WatchList\Commands\" />
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>

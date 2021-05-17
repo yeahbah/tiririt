@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Tiririt.Web.Models
+namespace Tiririt.App.Models
 {
     public class ChartSeriesModel
     {
@@ -15,7 +15,7 @@ namespace Tiririt.Web.Models
     //    public IEnumerable<ChartSeriesModel> Series { get; set; }
     //}
 
-    public class ChartDataViewModel
+    public class ChartSeriesViewModel
     {
         public IEnumerable<ChartSeriesModel> ChartData { get; set; }
     }

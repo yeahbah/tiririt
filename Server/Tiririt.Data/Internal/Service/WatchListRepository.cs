@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Tiririt.Core.Collection;
 using Tiririt.Core.Identity;
@@ -17,26 +18,26 @@ namespace Tiririt.Data.Service
         private readonly TiriritDbContext dbContext;
         private readonly ICurrentPrincipal currentPrincipal;
 
-        public WatchListRepository(TiriritDbContext dbContext, ICurrentPrincipal currentPrincipal)
+        public WatchListRepository(TiriritDbContext dbContext, ICurrentPrincipal currentPrincipal, CancellationToken cancellationToken)
         {
             this.dbContext = dbContext;
             this.currentPrincipal = currentPrincipal;
         }
 
-        private async Task<WATCH_LIST> GetDefaultWatchList(int userId)
+        private async Task<WATCH_LIST> GetDefaultWatchList(int userId, CancellationToken cancellationToken)
         {
             return await this.dbContext.WatchLists
                     .Where(w => w.TIRIRIT_USER_ID == userId)
                     .OrderBy(w => w.WATCH_LIST_ID)
-                    .FirstOrDefaultAsync();
+                    .FirstOrDefaultAsync(cancellationToken: cancellationToken);
         }
 
-        public async Task<WatchListModel> AddStocks(int watchlistId, IEnumerable<string> stockSymbols)
+        public async Task<WatchListModel> AddStocks(int watchlistId, IEnumerable<string> stockSymbols, CancellationToken cancellationToken)
         {
             var userId = this.currentPrincipal.GetUserId();
             if (watchlistId == 0)
             {
-                var defaultWatchList = await GetDefaultWatchList(userId.Value);
+                var defaultWatchList = await GetDefaultWatchList(userId.Value, cancellationToken);
                 if (defaultWatchList == null) return null;
                 watchlistId = defaultWatchList.WATCH_LIST_ID;
             }
@@ -47,7 +48,7 @@ namespace Tiririt.Data.Service
             var stocksToAdd = await dbContext.Stocks                
                 .Where(s => stocks.ToArray().Contains(s.SYMBOL.ToUpper())
                     && !s.Ref_StocksInWatchLists.Any(w => w.Ref_WatchList.TIRIRIT_USER_ID == userId && w.STOCK_ID == s.STOCK_ID))                
-                .ToListAsync();
+                .ToListAsync(cancellationToken: cancellationToken);
                            
             stocksToAdd.ForEach(s =>
             {
@@ -57,16 +58,16 @@ namespace Tiririt.Data.Service
                     STOCK_ID = s.STOCK_ID
                 });
             });
-            await dbContext.SaveChangesAsync();
-            return await GetWatchList(watchlistId);        
+            await dbContext.SaveChangesAsync(cancellationToken);
+            return await GetWatchList(watchlistId, cancellationToken);        
         }
 
-        public async Task<WatchListModel> DeleteStocks(int watchlistId, string symbol)
+        public async Task<WatchListModel> DeleteStocks(int watchlistId, string symbol, CancellationToken cancellationToken)
         {
             var userId = this.currentPrincipal.GetUserId();
             if (watchlistId == 0)
             {
-                var defaultWatchList = await GetDefaultWatchList(userId.Value);
+                var defaultWatchList = await GetDefaultWatchList(userId.Value, cancellationToken);
                 if (defaultWatchList == null) return null;
                 watchlistId = defaultWatchList.WATCH_LIST_ID;
             }
@@ -74,20 +75,20 @@ namespace Tiririt.Data.Service
             var stocks = this.dbContext.WatchListStocks
                 .Where(w => w.Ref_WatchList.TIRIRIT_USER_ID == userId && w.Ref_Stock.SYMBOL == symbol.ToUpper());
             dbContext.WatchListStocks.RemoveRange(stocks);
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync(cancellationToken);
 
-            return await GetWatchList(watchlistId);
+            return await GetWatchList(watchlistId, cancellationToken);
         }
 
-        public async Task DeleteWatchList(int id)
+        public async Task DeleteWatchList(int id, CancellationToken cancellationToken)
         {
             var userId = this.currentPrincipal.GetUserId();
             var watchList = await dbContext.WatchLists
-                .SingleOrDefaultAsync(w => w.WATCH_LIST_ID == id && w.TIRIRIT_USER_ID == userId);
+                .SingleOrDefaultAsync(w => w.WATCH_LIST_ID == id && w.TIRIRIT_USER_ID == userId, cancellationToken: cancellationToken);
             if (watchList != null) 
             {
                 watchList.DELETED_IND = 1;
-                await dbContext.SaveChangesAsync();
+                await dbContext.SaveChangesAsync(cancellationToken);
             }
         }        
 
@@ -113,31 +114,32 @@ namespace Tiririt.Data.Service
                 });
         }
 
-        public async Task<IEnumerable<WatchListModel>> GetWatchList()
+        public async Task<IEnumerable<WatchListModel>> GetWatchList(CancellationToken cancellationToken)
         {
             var userId = this.currentPrincipal.GetUserId();
             var query = GetAll()
                 .Where(w => w.UserId == userId);
             
-            return await query.ToListAsync();
+            return await query.ToListAsync(cancellationToken: cancellationToken);
         }
 
-        public async Task<WatchListModel> GetWatchList(int watchListId)
+        public async Task<WatchListModel> GetWatchList(int watchListId, CancellationToken cancellationToken)
         {
             var result = await GetAll()
                 .Where(w => w.WatchListId == watchListId)                        
-                .SingleOrDefaultAsync();
+                .SingleOrDefaultAsync(cancellationToken);
             
             return result;
         }
 
-        public async Task<bool> IsWatchedByUser(string symbol, int userId)
+        public async Task<bool> IsWatchedByUser(string symbol, int userId, CancellationToken cancellationToken)
         {
             return await this.dbContext.WatchListStocks
-                .AnyAsync(w => w.Ref_Stock.SYMBOL.ToUpper() == symbol.ToUpper() && w.Ref_WatchList.TIRIRIT_USER_ID == userId);
+                .AnyAsync(w => w.Ref_Stock.SYMBOL.ToUpper() == symbol.ToUpper() && w.Ref_WatchList.TIRIRIT_USER_ID == userId,
+                    cancellationToken);
         }
 
-        public async Task<WatchListModel> NewWatchList(NewWatchListModel watchListModel)
+        public async Task<WatchListModel> NewWatchList(NewWatchListModel watchListModel, CancellationToken cancellationToken)
         {
             var userId = this.currentPrincipal.GetUserId();
             var watchList = new WATCH_LIST
@@ -164,24 +166,24 @@ namespace Tiririt.Data.Service
                 });
             }
             
-            await dbContext.SaveChangesAsync();
-            return await GetWatchList(watchList.WATCH_LIST_ID);
+            await dbContext.SaveChangesAsync(cancellationToken);
+            return await GetWatchList(watchList.WATCH_LIST_ID, cancellationToken);
         }
 
-        public async Task<WatchListModel> RenameWatchList(int watchListId, string newName)
+        public async Task<WatchListModel> RenameWatchList(int watchListId, string newName, CancellationToken cancellationToken)
         {
             var watchList = await dbContext.WatchLists
                 .SingleOrDefaultAsync(w => w.WATCH_LIST_ID == watchListId);
             if (watchList != null)
             {
                 watchList.WATCH_LIST_NAME = newName;
-                await dbContext.SaveChangesAsync();
-                return await GetWatchList(watchList.WATCH_LIST_ID);
+                await dbContext.SaveChangesAsync(cancellationToken);
+                return await GetWatchList(watchList.WATCH_LIST_ID, cancellationToken);
             }
             return null;
         }
 
-        public async Task<PagingResultEnvelope<StockModel>> GetStocksFromWatchlist(int watchListId, PagingParam pagingParam)
+        public async Task<PagingResultEnvelope<StockModel>> GetStocksFromWatchlist(int watchListId, PagingParam pagingParam, CancellationToken cancellationToken)
         {
             var userId = this.currentPrincipal.GetUserId();
             var result = dbContext.WatchListStocks
@@ -198,7 +200,7 @@ namespace Tiririt.Data.Service
                         Wacthers = stock.Ref_Stock.Ref_StocksInWatchLists.Select(w => w.Ref_WatchList.Ref_TiriritUser.ToDomainModel())
                 });
 
-            return await PagingResultEnvelope<StockModel>.ToPagingEnvelope(result, pagingParam);
+            return await PagingResultEnvelope<StockModel>.ToPagingEnvelope(result, pagingParam, cancellationToken);
         }
     }
 }

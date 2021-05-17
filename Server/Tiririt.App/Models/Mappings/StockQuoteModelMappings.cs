@@ -1,6 +1,6 @@
 using Tiririt.Domain.Models;
 
-namespace Tiririt.Web.Models.Mappings
+namespace Tiririt.App.Models.Mappings
 {
     public static class StockQuoteModelMapping
     {

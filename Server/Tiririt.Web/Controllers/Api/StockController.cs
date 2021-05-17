@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 using Tiririt.App.Stock;
+using Tiririt.App.Stock.Queries;
 using Tiririt.Web.Common;
 
 namespace Tiririt.Web.Controllers
