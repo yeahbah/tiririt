@@ -60,14 +60,14 @@ namespace Tiririt.App.Post.Commands
                 else
                 {
                     // refactor to separate commands
-                    tasks.Add(hashTagRepository.RemoveTagsFromPost(postId.Value, true));
-                    tasks.Add(stockRepository.RemoveStockLinksFromPost(postId.Value, true));
-                    tasks.Add(mentionRepository.RemoveMentions(postId.Value, true));
-                    tasks.Add(postRepository.ModifyPost(postId.Value, postText));
+                    await hashTagRepository.RemoveTagsFromPost(postId.Value, true);
+                    await stockRepository.RemoveStockLinksFromPost(postId.Value, true);
+                    await mentionRepository.RemoveMentions(postId.Value, true);
+                    await postRepository.ModifyPost(postId.Value, postText);
                 }
-                tasks.Add(hashTagRepository.AddTagsToPost(postId.Value, tags));
-                tasks.Add(stockRepository.LinkPostToStocks(postId.Value, stocks));
-                tasks.Add(mentionRepository.AddPostMention(postId.Value, mentions));
+                await hashTagRepository.AddTagsToPost(postId.Value, tags);
+                await stockRepository.LinkPostToStocks(postId.Value, stocks);
+                await mentionRepository.AddPostMention(postId.Value, mentions);
                 Task.WaitAll(tasks.ToArray(), cancellationToken);
 
                 await transaction.CommitAsync(cancellationToken);

@@ -80,7 +80,7 @@ namespace Tiririt.Web.Controllers
         }
 
         [HttpDelete(RouteConsts.WatchList.DeleteWatchList)]
-        public async Task<IActionResult> DeleteWatchList(DeleteWatchListCommand deleteWatchListCommand, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteWatchList([FromBody]DeleteWatchListCommand deleteWatchListCommand, CancellationToken cancellationToken)
         {
             //await watchListService.DeleteWatchList(id);
             await this.mediator.Send(deleteWatchListCommand, cancellationToken);
@@ -89,9 +89,9 @@ namespace Tiririt.Web.Controllers
 
         [HttpDelete]
         [Route(RouteConsts.WatchList.DeleteStock)]
-        public async Task<ActionResult<WatchListViewModel>> DeleteStock([FromBody]DeleteStockFromWatchListCommand deleteStockFromWatchListCommand, CancellationToken cancellationToken)//([FromRoute]int id, string symbol)
+        public async Task<ActionResult<WatchListViewModel>> DeleteStock([FromRoute]int id, [FromRoute]string stockSymbol, CancellationToken cancellationToken)//([FromRoute]int id, string symbol)
         {
-            var result = await this.mediator.Send(deleteStockFromWatchListCommand, cancellationToken);
+            var result = await this.mediator.Send(new DeleteStockFromWatchListCommand(id, stockSymbol), cancellationToken);
             return Ok(result);
             //var result = await this.watchListService
             //    .DeleteStocks(id, symbol);

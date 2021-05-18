@@ -61,7 +61,7 @@ namespace Tiririt.Web.Controllers
         [HttpPost(RouteConsts.TiriritPost.Reply)]
         public async Task<ActionResult<PostViewModel>> PostComment([FromBody]PostCommentCommand postCommentCommand, CancellationToken cancellationToken)//(int postId, [FromBody]string postText)
         {
-            var result = await mediator.Send(postCommentCommand);
+            var result = await mediator.Send(postCommentCommand, cancellationToken);
             return Ok(result);
                 
             //var result = await tiriritPostService

@@ -51,7 +51,8 @@ export class TiriritPostService extends BaseService {
 
     postComment(postId: number, postText: string): Observable<PostModel> {
         const url = `${this.apiUrl}/Post/${postId}/comment`;
-        return this.http.post<PostModel>(url, JSON.stringify(postText), {headers: headers})
+        const body = {postId: postId, commentText: postText};
+        return this.http.post<PostModel>(url, JSON.stringify(body))
             .pipe(
                 catchError(this.handleError)
             );

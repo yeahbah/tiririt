@@ -38,7 +38,7 @@ namespace Tiririt.Web.Common
 
             public const string Stocks = "{id}/stocks";            
 
-            public const string DeleteStock = "{id}/stocks/{symbol}";            
+            public const string DeleteStock = "{id}/stocks/{stockSymbol}";            
 
         }
 

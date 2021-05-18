@@ -35,7 +35,8 @@ export class WatchlistService extends BaseService {
 
   addStockToWatchList(watchListId: number, stockSymbols: string[]): Observable<WatchlistModel> {
     const url = `${this.apiUrl}/${this.controllerName}/${watchListId}/stocks`;
-    return this.http.put<WatchlistModel>(url, stockSymbols)
+    const body = { id: watchListId, stockSymbols: stockSymbols };
+    return this.http.put<WatchlistModel>(url, body)
       .pipe(
         retry(3),
         catchError(this.handleError));
