@@ -1,8 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
-using Tiririt.App.Internal.Service;
-using Tiririt.App.Service;
 using Tiririt.Data;
 using MediatR;
+using FluentValidation;
+using Tiririt.App.PipelineBehaviours;
+using Tiririt.App.PipelineBehaviors;
 
 namespace Tiririt.App
 {
@@ -12,12 +13,11 @@ namespace Tiririt.App
         {
             return services
                 .AddDataService()
-                .AddMediatR(typeof(AppServiceCollection).Assembly);
-                    
-                //.AddScoped<IStockService, StockService>()
-                //.AddScoped<IWatchListService, WatchListService>()
-                //.AddScoped<IStockSectorService, StockSectorService>()
-                //.AddScoped<IStockQuoteService, StockQuoteService>();                              
+                .AddMediatR(typeof(AppServiceCollection).Assembly)
+                .AddValidatorsFromAssembly(typeof(AppServiceCollection).Assembly)
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>))
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+                                                   
         }
     }
 }

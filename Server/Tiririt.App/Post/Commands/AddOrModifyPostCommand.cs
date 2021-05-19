@@ -12,7 +12,11 @@ using Tiririt.Data.Service;
 
 namespace Tiririt.App.Post.Commands
 {
-    public record AddOrModifyPostCommand(string PostText, BullBearLevel BullBearLevel, int? PostId = null, int? ResponseToPostId = null) : IRequest<PostViewModel>;
+    public record AddOrModifyPostCommand(
+        string PostText, 
+        BullBearLevel BullBearLevel, 
+        int? PostId = null, 
+        int? ResponseToPostId = null) : IRequest<PostViewModel>;
 
     public class NewPostCommandHandler : IRequestHandler<AddOrModifyPostCommand, PostViewModel>
     {
