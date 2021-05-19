@@ -1,21 +1,22 @@
 
 using System;
+using Tiririt.Core.CQRS;
 using Tiririt.Core.Enums;
 
 namespace Tiririt.App.Models
 {
-    public class PostViewModel 
+    public record PostViewModel : BaseResponse
     {
-        public int PostId { get; set; }
-        public string PostText { get; set; }
-        public int LikeCount { get; set; }
-        public int DislikeCount { get; set; }
-        public int UserId { get; set; }
-        public string UserName { get; set; }
-        public int? OriginalPostId { get; set; }
-        public DateTime PostDate { get; set; }
-        public BullBearLevel? BullBearLevel { get; set; }
-        public int CommentCount { get; set; }
-        public bool LikedByUser { get; set; }
+        public int PostId { get; init; }
+        public string PostText { get; init; }
+        public int LikeCount { get; init; }
+        public int DislikeCount { get; init; }
+        public int UserId { get; init; }
+        public string UserName { get; init; }
+        public int? OriginalPostId { get; init; }
+        public DateTime PostDate { get; init; }
+        public BullBearLevel? BullBearLevel { get; init; }
+        public int CommentCount { get; init; }
+        public bool LikedByUser { get; init; }
     }
 }

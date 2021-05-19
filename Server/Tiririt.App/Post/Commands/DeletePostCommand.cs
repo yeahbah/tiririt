@@ -1,15 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Tiririt.Core.CQRS;
 using Tiririt.Data.Internal;
 using Tiririt.Data.Service;
 
 namespace Tiririt.App.Post.Commands
 {
-    public record DeletePostCommand(int PostId) : IRequest<Unit>;
+    public record DeletePostCommand(int PostId) : IRequest<BaseResponse>;
 
-    public class DeletPostCommandHandler : IRequestHandler<DeletePostCommand, Unit>
+    public class DeletPostCommandHandler : IRequestHandler<DeletePostCommand, BaseResponse>
     {
         private readonly TiriritDbContext dbContext;
         private readonly IHashTagRepository hashTagRepository;
@@ -24,7 +26,7 @@ namespace Tiririt.App.Post.Commands
             this.stockRepository = stockRepository;
         }
 
-        public async Task<Unit> Handle(DeletePostCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(DeletePostCommand request, CancellationToken cancellationToken)
         {
             using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
             try
@@ -38,14 +40,16 @@ namespace Tiririt.App.Post.Commands
                 Task.WaitAll(tasks.ToArray(), cancellationToken);
                 await transaction.CommitAsync(cancellationToken);
 
-                return Unit.Value;
+                return new BaseResponse();
             }
-            catch
+            catch (Exception ex)
             {
                 await transaction.RollbackAsync(cancellationToken);
-
-                // TODO: mediator error handling
-                throw;
+                return new BaseResponse
+                {
+                    ErrorMessage = ex.Message,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                };
             }
         }
     }

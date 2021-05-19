@@ -13,10 +13,10 @@ namespace Tiririt.App
         {
             return services
                 .AddDataService()
-                .AddMediatR(typeof(AppServiceCollection).Assembly)
-                .AddValidatorsFromAssembly(typeof(AppServiceCollection).Assembly)
+                .AddMediatR(typeof(AppServiceCollection).Assembly)                
                 .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>))
-                .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>))
+                .AddValidatorsFromAssembly(typeof(AppServiceCollection).Assembly);
                                                    
         }
     }

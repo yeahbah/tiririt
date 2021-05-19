@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Tiririt.App.Models;
 using Tiririt.App.Models.Mappings;
+using Tiririt.Core.CQRS;
 using Tiririt.Core.Enums;
 using Tiririt.Core.Extensions;
 using Tiririt.Core.Identity;
@@ -12,11 +13,13 @@ using Tiririt.Data.Service;
 
 namespace Tiririt.App.Post.Commands
 {
-    public record AddOrModifyPostCommand(
-        string PostText, 
-        BullBearLevel BullBearLevel, 
-        int? PostId = null, 
-        int? ResponseToPostId = null) : IRequest<PostViewModel>;
+    public record AddOrModifyPostCommand : IRequest<PostViewModel>
+    {
+        public string PostText { get; init; }
+        public BullBearLevel BullBearLevel { get; init; } 
+        public int? PostId { get; init; }
+        public int? ResponseToPostId { get; init; }
+    }
 
     public class NewPostCommandHandler : IRequestHandler<AddOrModifyPostCommand, PostViewModel>
     {

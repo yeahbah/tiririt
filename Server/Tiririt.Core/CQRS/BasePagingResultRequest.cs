@@ -1,7 +1,7 @@
 ﻿using System;
 using Tiririt.Core.Collection;
 
-namespace Tiririt.App
+namespace Tiririt.Core.CQRS
 {
     public record BasePagingResultRequest
     {

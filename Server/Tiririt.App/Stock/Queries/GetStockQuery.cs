@@ -29,14 +29,13 @@ namespace Tiririt.App.Stock.Queries
 
         public async Task<StockViewModel> Handle(GetStockQuery request, CancellationToken cancellationToken)
         {
-            var stock = await this.stockRepository.GetStock(request.StockSymbol, cancellationToken);
-            var result = stock.ToViewModel();
+            var stock = await this.stockRepository.GetStock(request.StockSymbol, cancellationToken);            
             var userId = this.currentPrincipal.GetUserId();
             if (userId != null)
             {
-                result.IsWatchedByUser = await this.watchListRepository.IsWatchedByUser(request.StockSymbol, userId.Value);
+                return stock.ToViewModel(await this.watchListRepository.IsWatchedByUser(request.StockSymbol, userId.Value));                
             }
-            return result;
+            return stock.ToViewModel();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Tiririt.App.Models.Mappings
 {
     public static class StockModelMapping
     {
-        public static StockViewModel ToViewModel(this StockModel value)
+        public static StockViewModel ToViewModel(this StockModel value, bool isWatchedByUser = false)
         {
             if (value == null) return null;
 
@@ -29,7 +29,7 @@ namespace Tiririt.App.Models.Mappings
                 Low = lastTrade?.Low,
                 NetForeignBuy = lastTrade?.NetForeignBuy,
                 Open = lastTrade?.Open,
-                IsWatchedByUser = false,
+                IsWatchedByUser = isWatchedByUser,
                 WatchersCount = value.Wacthers.Count(),
                 Volume = lastTrade.Volume,
                 PointsChange = lastTrade.Close - previousTrade.Close,

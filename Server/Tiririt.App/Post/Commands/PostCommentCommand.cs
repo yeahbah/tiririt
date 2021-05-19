@@ -21,7 +21,12 @@ namespace Tiririt.App.Post.Commands
         public async Task<PostViewModel> Handle(PostCommentCommand request, CancellationToken cancellationToken)
         {
             var result = await this.mediator.Send(
-                new AddOrModifyPostCommand(request.CommentText, BullBearLevel.Neutral, null, request.PostId),
+                new AddOrModifyPostCommand
+                {
+                    PostText = request.CommentText,
+                    BullBearLevel = BullBearLevel.Neutral,
+                    ResponseToPostId = request.PostId
+                },
                 cancellationToken);
             return result;
         }

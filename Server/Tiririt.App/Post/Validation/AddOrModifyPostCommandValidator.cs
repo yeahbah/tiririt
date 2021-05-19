@@ -8,7 +8,7 @@ namespace Tiririt.App.Post.Validation
         public AddOrModifyPostCommandValidator()
         {
             RuleFor(x => x.PostText)
-                .NotEmpty();            
+                .Must(x => x.Length > 10);                 
         }
     }
 }

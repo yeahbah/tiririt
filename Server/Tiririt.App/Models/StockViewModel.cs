@@ -1,26 +1,27 @@
 ﻿using System;
+using Tiririt.Core.CQRS;
 
 namespace Tiririt.App.Models
 {
-    public class StockViewModel
+    public record StockViewModel : BaseResponse
     {
-        public int StockId { get; set; }
-        public string Symbol { get; set; }
-        public string Name { get; set; }
-        public int? SectorId { get; set; }
+        public int StockId { get; init; }
+        public string Symbol { get; init; }
+        public string Name { get; init; }
+        public int? SectorId { get; init; }
 
-        public DateTime? LastTradeDate { get; set; }
-        public decimal? LastTradePrice { get; set; }
-        public decimal? PreviousClose { get; set; }
-        public decimal? Open { get; set; }
-        public decimal? High { get; set; }
-        public decimal? Low { get; set; }
-        public long? Volume { get; set; }
-        public decimal? NetForeignBuy { get; set; }
+        public DateTime? LastTradeDate { get; init; }
+        public decimal? LastTradePrice { get; init; }
+        public decimal? PreviousClose { get; init; }
+        public decimal? Open { get; init; }
+        public decimal? High { get; init; }
+        public decimal? Low { get; init; }
+        public long? Volume { get; init; }
+        public decimal? NetForeignBuy { get; init; }
 
-        public bool IsWatchedByUser { get; set; }
-        public int WatchersCount { get; set; }
-        public decimal PointsChange { get; set; }
-        public decimal PercentChange { get; set; }
+        public bool IsWatchedByUser { get; init; }
+        public int WatchersCount { get; init; }
+        public decimal PointsChange { get; init; }
+        public decimal PercentChange { get; init; }
     }
 }

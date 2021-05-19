@@ -6,6 +6,7 @@ using MediatR;
 using Tiririt.App.Models;
 using Tiririt.App.Models.Mappings;
 using Tiririt.Core.Collection;
+using Tiririt.Core.CQRS;
 using Tiririt.Data.Service;
 
 namespace Tiririt.App.WatchList.Queries
